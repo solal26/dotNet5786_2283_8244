@@ -1,13 +1,13 @@
 ﻿partial class Program
 {
-    private static void Main(string[] args)
+     static void Main(string[] args)
     {
         Welcome2283();
         Welcome8244();
 
     }
 
-    private static void Welcome2283()
+     static void Welcome2283()
     {
         Console.Write("Enter your name:");
         string name = Console.ReadLine();
