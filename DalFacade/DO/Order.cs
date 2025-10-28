@@ -1,4 +1,5 @@
-﻿namespace DO;
+﻿
+namespace DO;
 
 public record Order
     (
@@ -16,7 +17,7 @@ public record Order
 {
     public Order(): this(0, TypeOfOrder.Regular, "", 0.0, 0.0, "", "", 0.0, DateTime.MinValue)
     {
-    }
+}
 
 }
 
