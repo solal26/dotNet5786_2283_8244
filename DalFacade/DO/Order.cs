@@ -3,7 +3,7 @@ namespace DO;
 
 public record Order
     (
-    int Id,
+    int OrderId,
     TypeOfOrder typeOfOrder,
     string ShippingAddress,
     double Latitude,
@@ -12,14 +12,14 @@ public record Order
     string CustomerPhone,
     double weight,
     DateTime OrderInitiation,
-    string? VerbalDescription=null;
+    string? VerbalDescription=null
     )
 {
-    public Order(): this(0, TypeOfOrder.Regular, "", 0.0, 0.0, "", "", 0.0, DateTime.MinValue)
-    {
+    public Order(): this(0, TypeOfOrder.SingleOrder, "", 0.0, 0.0, "", "", 0.0, DateTime.MinValue) { }
+    
 }
 
-}
+
 
 
 

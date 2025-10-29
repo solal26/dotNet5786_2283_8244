@@ -12,5 +12,6 @@ public record Delivery
     double? Distance = null 
     )
 { 
+    public Delivery() : this(0, 0, 0, TypeOfShipment.Car, DateTime.MinValue) { }    
 }
 
