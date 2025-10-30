@@ -5,7 +5,7 @@ using DalApi;
 using DO;
 using System.Collections.Generic;
 
-internal class DeliveryImplementation : IDelivery
+public class DeliveryImplementation : IDelivery
 {
     public void Create(Delivery item)
     {
