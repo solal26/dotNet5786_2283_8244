@@ -3,7 +3,6 @@ namespace DO;
 
 public record Order
     (
-    int Id,
     int OrderId,
     TypeOfOrder typeOfOrder,
     string ShippingAddress,

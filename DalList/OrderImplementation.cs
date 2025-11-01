@@ -13,7 +13,7 @@ namespace Dal
         public void Create(Order item)
         {
             int newId = Config.NextOrderId;
-            Order copy = item with { Id = newId };
+            Order copy = item with { OrderId = newId };
             DataSource.Orders.Add(copy);
         }
 
