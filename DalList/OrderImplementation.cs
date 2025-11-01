@@ -19,7 +19,7 @@ namespace Dal
 
         public Order? Read(int id)
         {
-            return DataSource.Orders.Find(o => o.Id == id)!;
+            return DataSource.Orders.Find(o => o.OrderId == id)!;
         }
 
         public List<Order> ReadAll()
@@ -29,10 +29,10 @@ namespace Dal
 
         public void Update(Order item)
         {
-            if (Read(item.Id) is null)
-                throw new Exception($"Order with ID={item.Id} does NOT exist (cannot update).");
+            if (Read(item.OrderId) is null)
+                throw new Exception($"Order with ID={item.OrderId} does NOT exist (cannot update).");
 
-            DataSource.Orders.RemoveAll(o => o.Id == item.Id);
+            DataSource.Orders.RemoveAll(o => o.OrderId == item.OrderId);
             DataSource.Orders.Add(item);
         }
 
@@ -41,7 +41,7 @@ namespace Dal
             if (Read(id) is null)
                 throw new Exception($"Order with ID={id} does NOT exist (cannot delete).");
 
-            DataSource.Orders.RemoveAll(o => o.Id == id);
+            DataSource.Orders.RemoveAll(o => o.OrderId == id);
         }
 
         public void DeleteAll()
