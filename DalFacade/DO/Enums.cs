@@ -19,7 +19,7 @@ public enum TypeOfOrder
 
 
 
-public enum endofcourier
+public enum Endofcourier
 {
     Delivered,
     Refused,

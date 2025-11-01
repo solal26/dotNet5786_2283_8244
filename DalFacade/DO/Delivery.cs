@@ -7,7 +7,7 @@ public record Delivery
     int CourierId,
     TypeOfShipment typeofshipment,//shiluah
     DateTime TimeBegin,
-    endofcourier? endcour=null,
+    Endofcourier? endcour=null,
     DateTime? TimeEnd = null,
     double? Distance = null 
     )
