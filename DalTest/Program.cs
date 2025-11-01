@@ -492,7 +492,7 @@ namespace DalTest
 
                 Console.Write("Enter End of Courier (optional, leave empty for null): ");
                 string? endCourierInput = Console.ReadLine();
-                endofcourier? endCourier = string.IsNullOrWhiteSpace(endCourierInput) ? null : Enum.Parse<endofcourier>(endCourierInput);
+                Endofcourier? endCourier = string.IsNullOrWhiteSpace(endCourierInput) ? null : Enum.Parse<Endofcourier>(endCourierInput);
 
                 Console.Write("Enter Time End (optional, leave empty for null): ");
                 string? timeEndInput = Console.ReadLine();
@@ -580,7 +580,7 @@ namespace DalTest
 
                 Console.Write("Enter End of Courier (leave empty to keep current): ");
                 input = Console.ReadLine()!;
-                endofcourier? endCourier = string.IsNullOrWhiteSpace(input) ? existingDelivery.endcour : Enum.Parse<endofcourier>(input);
+                Endofcourier? endCourier = string.IsNullOrWhiteSpace(input) ? existingDelivery.endcour : Enum.Parse<Endofcourier>(input);
 
                 Console.Write("Enter Time End (leave empty to keep current): ");
                 input = Console.ReadLine()!;
