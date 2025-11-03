@@ -8,7 +8,7 @@ using System;
 /// This class exposes Config values via instance properties so callers use the
 /// <see cref="IConfig"/> interface while the storage remains centralized in <see cref="Config"/>.
 /// </summary>
-public class ConfigImplementation : IConfig
+internal class ConfigImplementation : IConfig
 {
     /// <summary>
     /// Global system clock used by the DAL. Reading and writing delegates to <see cref="Config.Clock"/>.

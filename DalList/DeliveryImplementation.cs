@@ -7,7 +7,7 @@ namespace Dal
 {
     // Minimal in-memory CRUD implementation for Delivery entities.
     // Operates on the shared `DataSource.Deliveries` list and is intended for demos/tests.
-    public class DeliveryImplementation : IDelivery
+    internal class DeliveryImplementation : IDelivery
     {
         // Create: assign a new delivery id and add a copy to the data store.
         public void Create(Delivery item)

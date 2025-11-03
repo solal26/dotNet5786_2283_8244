@@ -10,7 +10,7 @@ namespace Dal
 {
     // Simple in-memory CRUD repository for Order entities.
     // Operates on DataSource.Orders and used for demo/testing.
-    public class OrderImplementation : IOrder
+    internal class OrderImplementation : IOrder
     {
         // Create: assign a generated OrderId and add a copy to the store.
         public void Create(Order item)

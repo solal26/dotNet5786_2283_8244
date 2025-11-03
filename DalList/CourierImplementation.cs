@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 // Simple in-memory CRUD repository for Courier entities.
 // Operates on the shared DataSource.Couriers list and is intended for demo/tests.
-public class CourierImplementation : ICourier
+internal class CourierImplementation : ICourier
 {
     // Create: add a new courier if the id is not already present.
     public void Create(Courier item)
