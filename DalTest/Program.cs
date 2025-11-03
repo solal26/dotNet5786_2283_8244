@@ -129,9 +129,6 @@ namespace DalTest
                 Console.Write("Is Active (true/false): ");
                 bool active = bool.Parse(Console.ReadLine()!);
 
-                Console.Write("Enter Start Time (yyyy-MM-dd HH:mm): ");
-                DateTime timeBegin = DateTime.Parse(Console.ReadLine()!);
-
                 Console.Write("Enter Type of Shipment (Car / Bike / Drone): ");
                 TypeOfShipment type = Enum.Parse<TypeOfShipment>(Console.ReadLine()!, true);
 
@@ -139,7 +136,7 @@ namespace DalTest
                 string? distanceInput = Console.ReadLine();
                 double? distance = string.IsNullOrWhiteSpace(distanceInput) ? null : double.Parse(distanceInput);
 
-                Courier newCourier = new(id, name, phone, email, code, active, timeBegin, type, distance);
+                Courier newCourier = new(id, name, phone, email, code, active, DateTime.Now, type, distance);
 
                 s_dalCourier!.Create(newCourier);
             }
@@ -194,7 +191,7 @@ namespace DalTest
                     Console.WriteLine("Courier not found.");
                     return;
                 }
-
+               
                 Console.WriteLine("Current Courier:");
                 Console.WriteLine(existingCourier);
 
@@ -218,10 +215,6 @@ namespace DalTest
                 string activeInput = Console.ReadLine()!;
                 bool active = string.IsNullOrWhiteSpace(activeInput) ? existingCourier.Active : bool.Parse(activeInput);
 
-                Console.Write("Enter new Time Begin (yyyy-MM-dd HH:mm, leave empty to keep current): ");
-                string timeInput = Console.ReadLine()!;
-                DateTime timeBegin = string.IsNullOrWhiteSpace(timeInput) ? existingCourier.TimeBegin : DateTime.Parse(timeInput);
-
                 Console.Write("Enter Type of Shipment (Car/Drone/Bike, leave empty to keep current): ");
                 string typeInput = Console.ReadLine()!;
                 TypeOfShipment type = string.IsNullOrWhiteSpace(typeInput) ? existingCourier.typeofshipment : Enum.Parse<TypeOfShipment>(typeInput);
@@ -230,7 +223,7 @@ namespace DalTest
                 string distInput = Console.ReadLine()!;
                 double? distance = string.IsNullOrWhiteSpace(distInput) ? existingCourier.Distance : double.Parse(distInput);
 
-                var updatedCourier = new Courier(id, name, phone, email, code, active, timeBegin, type, distance);
+                var updatedCourier = new Courier(id, name, phone, email, code, active, existingCourier.TimeBegin, type, distance);
 
                 s_dalCourier.Update(updatedCourier);
             }
@@ -287,21 +280,13 @@ namespace DalTest
         private static void CreateOrder()
         {
             try
-            {
-                Console.Write("Enter Order ID: ");
-                int id = int.Parse(Console.ReadLine()!);
+            { 
 
                 Console.Write("Enter Type of Order (SingleOrder/OtherType...): ");
                 TypeOfOrder type = Enum.Parse<TypeOfOrder>(Console.ReadLine()!);
 
                 Console.Write("Enter Shipping Address: ");
                 string address = Console.ReadLine()!;
-
-                Console.Write("Enter Latitude: ");
-                double lat = double.Parse(Console.ReadLine()!);
-
-                Console.Write("Enter Longitude: ");
-                double lon = double.Parse(Console.ReadLine()!);
 
                 Console.Write("Enter Customer Name: ");
                 string customerName = Console.ReadLine()!;
@@ -312,14 +297,11 @@ namespace DalTest
                 Console.Write("Enter Weight: ");
                 double weight = double.Parse(Console.ReadLine()!);
 
-                Console.Write("Enter Order Initiation Date (yyyy-MM-dd HH:mm): ");
-                DateTime initiation = DateTime.Parse(Console.ReadLine()!);
-
                 Console.Write("Enter Verbal Description (optional, leave empty if none): ");
                 string? desc = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(desc)) desc = null;
 
-                var newOrder = new Order(id, type, address, lat, lon, customerName, customerPhone, weight, initiation, desc);
+                var newOrder = new Order(0, type, address, 0, 0, customerName, customerPhone, weight, DateTime.Now, desc);
 
                 s_dalOrder!.Create(newOrder);
                 Console.WriteLine("Order created successfully.");
@@ -387,14 +369,6 @@ namespace DalTest
                 string address = Console.ReadLine()!;
                 if (string.IsNullOrWhiteSpace(address)) address = existingOrder.ShippingAddress;
 
-                Console.Write("Enter new Latitude (leave empty to keep current): ");
-                string latInput = Console.ReadLine()!;
-                double lat = string.IsNullOrWhiteSpace(latInput) ? existingOrder.Latitude : double.Parse(latInput);
-
-                Console.Write("Enter new Longitude (leave empty to keep current): ");
-                string lonInput = Console.ReadLine()!;
-                double lon = string.IsNullOrWhiteSpace(lonInput) ? existingOrder.Longitude : double.Parse(lonInput);
-
                 Console.Write("Enter new Customer Name (leave empty to keep current): ");
                 string customerName = Console.ReadLine()!;
                 if (string.IsNullOrWhiteSpace(customerName)) customerName = existingOrder.CustomerName;
@@ -407,15 +381,11 @@ namespace DalTest
                 string weightInput = Console.ReadLine()!;
                 double weight = string.IsNullOrWhiteSpace(weightInput) ? existingOrder.weight : double.Parse(weightInput);
 
-                Console.Write("Enter new Order Initiation Date (yyyy-MM-dd HH:mm, leave empty to keep current): ");
-                string dateInput = Console.ReadLine()!;
-                DateTime initiation = string.IsNullOrWhiteSpace(dateInput) ? existingOrder.OrderInitiation : DateTime.Parse(dateInput);
-
                 Console.Write("Enter new Verbal Description (leave empty to keep current): ");
                 string? desc = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(desc)) desc = existingOrder.VerbalDescription;
 
-                var updatedOrder = new Order(id, type, address, lat, lon, customerName, customerPhone, weight, initiation, desc);
+                var updatedOrder = new Order(id, type, address,0,0, customerName, customerPhone, weight, existingOrder.OrderInitiation, desc);
 
                 s_dalOrder.Update(updatedOrder);
             }
@@ -475,9 +445,6 @@ namespace DalTest
         {
             try
             {
-                Console.Write("Enter Delivery ID: ");
-                int id = int.Parse(Console.ReadLine()!);
-
                 Console.Write("Enter Order ID: ");
                 int orderId = int.Parse(Console.ReadLine()!);
 
@@ -487,22 +454,11 @@ namespace DalTest
                 Console.Write("Enter Type of Shipment (Car/Drone/Bike): ");
                 TypeOfShipment type = Enum.Parse<TypeOfShipment>(Console.ReadLine()!);
 
-                Console.Write("Enter Time Begin (yyyy-MM-dd HH:mm): ");
-                DateTime timeBegin = DateTime.Parse(Console.ReadLine()!);
-
-                Console.Write("Enter End of Courier (optional, leave empty for null): ");
-                string? endCourierInput = Console.ReadLine();
-                Endofcourier? endCourier = string.IsNullOrWhiteSpace(endCourierInput) ? null : Enum.Parse<Endofcourier>(endCourierInput);
-
-                Console.Write("Enter Time End (optional, leave empty for null): ");
-                string? timeEndInput = Console.ReadLine();
-                DateTime? timeEnd = string.IsNullOrWhiteSpace(timeEndInput) ? null : DateTime.Parse(timeEndInput);
-
                 Console.Write("Enter Distance (optional, leave empty for null): ");
                 string? distanceInput = Console.ReadLine();
                 double? distance = string.IsNullOrWhiteSpace(distanceInput) ? null : double.Parse(distanceInput);
 
-                var newDelivery = new Delivery(id, orderId, courierId, type, timeBegin, endCourier, timeEnd, distance);
+                var newDelivery = new Delivery(0, orderId, courierId, type, DateTime.Now, null, null, distance);
 
                 s_dalDelivery!.Create(newDelivery);
                 Console.WriteLine("Delivery created successfully.");
@@ -538,61 +494,6 @@ namespace DalTest
             {
                 foreach (var d in s_dalDelivery!.ReadAll())
                     Console.WriteLine(d);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception caught: {ex.Message}");
-            }
-        }
-
-        private static void UpdateDelivery()
-        {
-            try
-            {
-                Console.Write("Enter ID of delivery to update: ");
-                int id = int.Parse(Console.ReadLine()!);
-
-                var existingDelivery = s_dalDelivery!.Read(id);
-                if (existingDelivery == null)
-                {
-                    Console.WriteLine("Delivery not found.");
-                    return;
-                }
-
-                Console.WriteLine("Current delivery: " + existingDelivery);
-
-                // קלט עם אפשרות להשאיר ריק כדי לא לעדכן
-                Console.Write("Enter new Order ID (leave empty to keep current): ");
-                string input = Console.ReadLine()!;
-                int orderId = string.IsNullOrWhiteSpace(input) ? existingDelivery.OrderId : int.Parse(input);
-
-                Console.Write("Enter new Courier ID (leave empty to keep current): ");
-                input = Console.ReadLine()!;
-                int courierId = string.IsNullOrWhiteSpace(input) ? existingDelivery.CourierId : int.Parse(input);
-
-                Console.Write("Enter Type of Shipment (Car/Drone/Bike, leave empty to keep current): ");
-                input = Console.ReadLine()!;
-                TypeOfShipment type = string.IsNullOrWhiteSpace(input) ? existingDelivery.typeofshipment : Enum.Parse<TypeOfShipment>(input);
-
-                Console.Write("Enter new Time Begin (yyyy-MM-dd HH:mm, leave empty to keep current): ");
-                input = Console.ReadLine()!;
-                DateTime timeBegin = string.IsNullOrWhiteSpace(input) ? existingDelivery.TimeBegin : DateTime.Parse(input);
-
-                Console.Write("Enter End of Courier (leave empty to keep current): ");
-                input = Console.ReadLine()!;
-                Endofcourier? endCourier = string.IsNullOrWhiteSpace(input) ? existingDelivery.endcour : Enum.Parse<Endofcourier>(input);
-
-                Console.Write("Enter Time End (leave empty to keep current): ");
-                input = Console.ReadLine()!;
-                DateTime? timeEnd = string.IsNullOrWhiteSpace(input) ? existingDelivery.TimeEnd : DateTime.Parse(input);
-
-                Console.Write("Enter Distance (leave empty to keep current): ");
-                input = Console.ReadLine()!;
-                double? distance = string.IsNullOrWhiteSpace(input) ? existingDelivery.Distance : double.Parse(input);
-
-                var updatedDelivery = new Delivery(id, orderId, courierId, type, timeBegin, endCourier, timeEnd, distance);
-
-                s_dalDelivery.Update(updatedDelivery);
             }
             catch (Exception ex)
             {
@@ -639,7 +540,7 @@ namespace DalTest
                             ReadAllDeliveries();
                             break;
                         case CrudOption.Update:
-                            UpdateDelivery();
+                            Console.WriteLine("Update operation is not implemented for Delivery.");
                             break;
                         case CrudOption.Delete:
                             DeleteDelivery();
@@ -702,8 +603,6 @@ namespace DalTest
                 Console.WriteLine("1. Manager ID");
                 Console.WriteLine("2. Manager Password");
                 Console.WriteLine("3. Company Address");
-                Console.WriteLine("4. Latitude");
-                Console.WriteLine("5. Longitude");
                 Console.WriteLine("6. Max Range");
                 Console.WriteLine("7. Avg Car Speed");
                 Console.WriteLine("8. Avg Motorbike Speed");
@@ -726,8 +625,6 @@ namespace DalTest
                     case 1: Console.WriteLine($"Manager ID: {s_dalConfig!.ManagerId}"); break;
                     case 2: Console.WriteLine($"Manager Password: {s_dalConfig!.ManagerPassword}"); break;
                     case 3: Console.WriteLine($"Company Address: {s_dalConfig!.CompanyAddress}"); break;
-                    case 4: Console.WriteLine($"Latitude: {s_dalConfig!.Latitude}"); break;
-                    case 5: Console.WriteLine($"Longitude: {s_dalConfig!.Longitude}"); break;
                     case 6: Console.WriteLine($"Max Range: {s_dalConfig!.MaxRange}"); break;
                     case 7: Console.WriteLine($"Avg Car Speed: {s_dalConfig!.AvgCarSpeed}"); break;
                     case 8: Console.WriteLine($"Avg Motorbike Speed: {s_dalConfig!.AvgMotorbikeSpeed}"); break;
@@ -759,6 +656,10 @@ namespace DalTest
                 Console.WriteLine("6. Avg Motorbike Speed");
                 Console.WriteLine("7. Avg Bicycle Speed");
                 Console.WriteLine("8. Avg Walking Speed");
+                Console.WriteLine("9. Max Delivery Time");
+                Console.WriteLine("10. Risk Range");
+                Console.WriteLine("11. Inactivity Range");
+                Console.WriteLine("12. Clock");
                 Console.Write("Choose an option: ");
 
                 if (!int.TryParse(Console.ReadLine(), out int option)) return;
@@ -797,6 +698,22 @@ namespace DalTest
                         Console.Write("Enter new Avg Walking Speed: ");
                         s_dalConfig!.AvgWalkingSpeed = double.Parse(Console.ReadLine()!);
                         break;
+                    case 9:
+                        Console.Write("Enter new Max Delivery Time: ");
+                        s_dalConfig!.MaxDeliveryTime = TimeSpan.Parse(Console.ReadLine()!);
+                        break;
+                    case 10:
+                        Console.Write("Enter new Risk Range: ");
+                        s_dalConfig!.RiskRange = TimeSpan.Parse(Console.ReadLine()!);
+                        break;
+                    case 11:
+                        Console.Write("Enter new Inactivity Range: ");
+                        s_dalConfig!.InactivityRange = TimeSpan.Parse(Console.ReadLine()!);
+                        break;
+                    case 12:
+                        Console.Write("Enter new Clock (hh:mm:ss): ");
+                        s_dalConfig!.Clock = DateTime.Parse(Console.ReadLine()!);
+                        break;
                     default:
                         Console.WriteLine("Invalid choice.");
                         break;
@@ -807,6 +724,7 @@ namespace DalTest
                 Console.WriteLine($"Exception caught: {ex.Message}");
             }
         }
+
         // -------------------- SHOW ALL DATA --------------------
         private static void ShowAllData()
         {
