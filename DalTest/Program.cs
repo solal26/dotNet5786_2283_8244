@@ -4,8 +4,17 @@ using DO;
 
 namespace DalTest
 {
+    /// <summary>
+    /// Console demo application for exercising the DAL implementations.
+    /// Provides interactive menus to create, read, update and delete entities:
+    /// Couriers, Orders and Deliveries, plus simple configuration and data init.
+    /// </summary>
     internal class Program
     {
+        /// <summary>
+        /// Top-level main menu choices presented to the user.
+        /// Values map to the numeric input from the console.
+        /// </summary>
         enum MainMenuOption
         {
             Exit = 0,
@@ -18,7 +27,9 @@ namespace DalTest
             ResetDatabase = 8
         }
 
-        // CRUD options
+        /// <summary>
+        /// CRUD submenu choices for each entity type.
+        /// </summary>
         enum CrudOption
         {
             Exit = 0,
@@ -30,7 +41,9 @@ namespace DalTest
             DeleteAll = 6
         }
 
-        // Configuration options
+        /// <summary>
+        /// Configuration-related operations exposed in the configuration menu.
+        /// </summary>
         enum ConfigOption
         {
             Exit = 0,
@@ -42,12 +55,17 @@ namespace DalTest
             ResetConfig = 6
         }
 
-        // Static DAL instances
+        // Static DAL instances used by the console app to delegate persistence operations.
+        // These are concrete implementations used for testing and manual interaction.
         private static ICourier? s_dalCourier = new CourierImplementation();
         private static IOrder? s_dalOrder = new OrderImplementation();
         private static IDelivery? s_dalDelivery = new DeliveryImplementation();
         private static IConfig? s_dalConfig = new ConfigImplementation();
 
+        /// <summary>
+        /// Print the main menu to the console.
+        /// Kept minimal — numeric choices correspond to <see cref="MainMenuOption"/>.
+        /// </summary>
         private static void ShowMainMenu()
         {
             Console.WriteLine("\n--- Main Menu ---");
@@ -61,6 +79,11 @@ namespace DalTest
             Console.WriteLine("8. Reset Database");
             Console.Write("Choose an option: ");
         }
+
+        /// <summary>
+        /// Application entry point. Runs an interactive loop until the user chooses to exit.
+        /// All top-level menu choices are handled here and exceptions are displayed to the console.
+        /// </summary>
         static void Main(string[] args)
         {
             bool exit = false;
@@ -93,6 +116,11 @@ namespace DalTest
                 }
             }
         }
+
+        /// <summary>
+        /// Generic CRUD menu header printer for a given entity name.
+        /// Numbers correspond to <see cref="CrudOption"/>.
+        /// </summary>
         private static void ShowCrudMenu(string entityName)
         {
             Console.WriteLine($"\n--- {entityName} Menu ---");
@@ -107,6 +135,11 @@ namespace DalTest
         }
 
         // -------------------- COURIER MENU --------------------
+
+        /// <summary>
+        /// Prompt the user and create a new courier entity.
+        /// Input is not heavily validated — intended for manual testing only.
+        /// </summary>
         private static void CreateCourier()
         {
             try
@@ -146,6 +179,9 @@ namespace DalTest
             }
         }
 
+        /// <summary>
+        /// Read and display a courier by id.
+        /// </summary>
         private static void ReadCourier()
         {
             try
@@ -165,6 +201,9 @@ namespace DalTest
             }
         }
 
+        /// <summary>
+        /// Display all couriers returned from the DAL.
+        /// </summary>
         private static void ReadAllCouriers()
         {
             try
@@ -178,6 +217,9 @@ namespace DalTest
             }
         }
 
+        /// <summary>
+        /// Update a courier interactively. Empty input keeps the current value.
+        /// </summary>
         private static void UpdateCourier()
         {
             try
@@ -191,7 +233,7 @@ namespace DalTest
                     Console.WriteLine("Courier not found.");
                     return;
                 }
-               
+
                 Console.WriteLine("Current Courier:");
                 Console.WriteLine(existingCourier);
 
@@ -233,6 +275,9 @@ namespace DalTest
             }
         }
 
+        /// <summary>
+        /// Delete a courier by id.
+        /// </summary>
         private static void DeleteCourier()
         {
             try
@@ -248,6 +293,9 @@ namespace DalTest
             }
         }
 
+        /// <summary>
+        /// Interactive loop for courier operations using the CRUD submenu.
+        /// </summary>
         private static void CourierMenu()
         {
             bool exit = false;
@@ -277,10 +325,15 @@ namespace DalTest
         }
 
         // -------------------- ORDER MENU --------------------
+
+        /// <summary>
+        /// Prompt user and create a new order.
+        /// Minimal validation; intended for manual testing.
+        /// </summary>
         private static void CreateOrder()
         {
             try
-            { 
+            {
 
                 Console.Write("Enter Type of Order (SingleOrder/OtherType...): ");
                 TypeOfOrder type = Enum.Parse<TypeOfOrder>(Console.ReadLine()!);
@@ -312,6 +365,9 @@ namespace DalTest
             }
         }
 
+        /// <summary>
+        /// Read and display an order by id.
+        /// </summary>
         private static void ReadOrder()
         {
             try
@@ -331,6 +387,9 @@ namespace DalTest
             }
         }
 
+        /// <summary>
+        /// Display all orders from the DAL.
+        /// </summary>
         private static void ReadAllOrders()
         {
             try
@@ -344,6 +403,9 @@ namespace DalTest
             }
         }
 
+        /// <summary>
+        /// Update an order interactively. Empty input preserves current values.
+        /// </summary>
         private static void UpdateOrder()
         {
             try
@@ -385,7 +447,7 @@ namespace DalTest
                 string? desc = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(desc)) desc = existingOrder.VerbalDescription;
 
-                var updatedOrder = new Order(id, type, address,0,0, customerName, customerPhone, weight, existingOrder.OrderInitiation, desc);
+                var updatedOrder = new Order(id, type, address, 0, 0, customerName, customerPhone, weight, existingOrder.OrderInitiation, desc);
 
                 s_dalOrder.Update(updatedOrder);
             }
@@ -395,6 +457,9 @@ namespace DalTest
             }
         }
 
+        /// <summary>
+        /// Delete an order by id.
+        /// </summary>
         private static void DeleteOrder()
         {
             try
@@ -411,6 +476,9 @@ namespace DalTest
             }
         }
 
+        /// <summary>
+        /// Interactive loop for order CRUD operations.
+        /// </summary>
         private static void OrderMenu()
         {
             bool exit = false;
@@ -441,6 +509,11 @@ namespace DalTest
 
 
         // -------------------- DELIVERY MENU --------------------
+
+        /// <summary>
+        /// Create a delivery by prompting for order id, courier id, shipment type and distance.
+        /// TimeBegin is set to now. End and completion details are optional.
+        /// </summary>
         private static void CreateDelivery()
         {
             try
@@ -469,6 +542,9 @@ namespace DalTest
             }
         }
 
+        /// <summary>
+        /// Read and display a delivery by id.
+        /// </summary>
         private static void ReadDelivery()
         {
             try
@@ -488,6 +564,9 @@ namespace DalTest
             }
         }
 
+        /// <summary>
+        /// Show all deliveries from the DAL.
+        /// </summary>
         private static void ReadAllDeliveries()
         {
             try
@@ -501,6 +580,9 @@ namespace DalTest
             }
         }
 
+        /// <summary>
+        /// Delete a delivery by id. Prompts the user and delegates to the DAL.
+        /// </summary>
         private static void DeleteDelivery()
         {
             try
@@ -517,6 +599,10 @@ namespace DalTest
             }
         }
 
+        /// <summary>
+        /// Interactive loop for delivery CRUD. Update is intentionally not implemented.
+        /// Closed deliveries should include end time and completion type in a fuller implementation.
+        /// </summary>
         private static void DeliveryMenu()
         {
             bool exit = false;
@@ -558,6 +644,10 @@ namespace DalTest
         }
 
         // -------------------- CONFIGURATION MENU --------------------
+
+        /// <summary>
+        /// Manage simple configuration actions: advance clock, set values and reset config.
+        /// </summary>
         private static void ConfigurationMenu()
         {
             bool exit = false;
@@ -595,6 +685,9 @@ namespace DalTest
             }
         }
 
+        /// <summary>
+        /// Print a selected configuration value to the console.
+        /// </summary>
         private static void ShowConfigValue()
         {
             try
@@ -643,6 +736,9 @@ namespace DalTest
             }
         }
 
+        /// <summary>
+        /// Prompt the user to set a configuration value. Inputs are parsed and assigned to the config instance.
+        /// </summary>
         private static void SetConfigValue()
         {
             try
@@ -726,6 +822,11 @@ namespace DalTest
         }
 
         // -------------------- SHOW ALL DATA --------------------
+
+        /// <summary>
+        /// Dump all entities to the console for inspection.
+        /// Useful after initialization to verify the seeded data.
+        /// </summary>
         private static void ShowAllData()
         {
             try
@@ -742,6 +843,11 @@ namespace DalTest
         }
 
         // -------------------- RESET DATABASE --------------------
+
+        /// <summary>
+        /// Reset the in-memory data store by deleting all entities and resetting configuration.
+        /// Intended for test/demo convenience.
+        /// </summary>
         private static void ResetDatabase()
         {
             try

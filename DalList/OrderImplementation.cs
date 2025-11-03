@@ -8,25 +8,31 @@ using System;
 
 namespace Dal
 {
+    // Simple in-memory CRUD repository for Order entities.
+    // Operates on DataSource.Orders and used for demo/testing.
     public class OrderImplementation : IOrder
     {
+        // Create: assign a generated OrderId and add a copy to the store.
         public void Create(Order item)
         {
-            int newId = Config.NextOrderId;
-            Order copy = item with { OrderId = newId };
+            int newId = Config.NextOrderId;                    // get unique id
+            Order copy = item with { OrderId = newId };       // create copy with new id
             DataSource.Orders.Add(copy);
         }
 
+        // Read: find an order by its OrderId or return null.
         public Order? Read(int id)
         {
             return DataSource.Orders.Find(o => o.OrderId == id)!;
         }
 
+        // ReadAll: return a snapshot copy of all orders.
         public List<Order> ReadAll()
         {
             return new List<Order>(DataSource.Orders);
         }
 
+        // Update: replace an existing order matched by OrderId; throw if not found.
         public void Update(Order item)
         {
             if (Read(item.OrderId) is null)
@@ -36,6 +42,7 @@ namespace Dal
             DataSource.Orders.Add(item);
         }
 
+        // Delete: remove an order by OrderId; throw if not found.
         public void Delete(int id)
         {
             if (Read(id) is null)
@@ -44,6 +51,7 @@ namespace Dal
             DataSource.Orders.RemoveAll(o => o.OrderId == id);
         }
 
+        // DeleteAll: clear all orders from the in-memory store.
         public void DeleteAll()
         {
             DataSource.Orders.Clear();

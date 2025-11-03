@@ -1,11 +1,13 @@
-﻿
-namespace Dal;
+﻿namespace Dal;
 using DalApi;
 using DO;
 using System.Collections.Generic;
 
+// Simple in-memory CRUD repository for Courier entities.
+// Operates on the shared DataSource.Couriers list and is intended for demo/tests.
 public class CourierImplementation : ICourier
 {
+    // Create: add a new courier if the id is not already present.
     public void Create(Courier item)
     {
         // Check if an object with the same ID already exists
@@ -16,6 +18,7 @@ public class CourierImplementation : ICourier
         DataSource.Couriers.Add(item);
     }
 
+    // Read: return the courier with the given id or null if not found.
     public Courier? Read(int id)
     {
         // Search for the object by ID
@@ -28,12 +31,14 @@ public class CourierImplementation : ICourier
         return null;
     }
 
+    // ReadAll: return a snapshot copy of all couriers (prevents external mutation).
     public List<Courier> ReadAll()
     {
         // Return a copy of the list
         return new List<Courier>(DataSource.Couriers);
     }
 
+    // Update: replace an existing courier matched by id; throws if not found.
     public void Update(Courier item)
     {
         var existing = Read(item.Id);
@@ -45,6 +50,7 @@ public class CourierImplementation : ICourier
         DataSource.Couriers.Add(item);
     }
 
+    // Delete: remove a courier by id; throws if the courier does not exist.
     public void Delete(int id)
     {
         var existing = Read(id);
@@ -55,6 +61,7 @@ public class CourierImplementation : ICourier
         DataSource.Couriers.Remove(existing);
     }
 
+    // DeleteAll: clear all courier records (used for reset/testing).
     public void DeleteAll()
     {
         // Clear the entire list
