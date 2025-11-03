@@ -2,6 +2,15 @@
 using DalApi;
 using DO;
 
+/// <summary>
+/// Test-data initializer that populates the DAL with configuration, couriers, orders and deliveries.
+/// </summary>
+/// <remarks>
+/// - Intended for testing, demos and local initialization only (not production). 
+/// - Uses a pseudo-random generator to create varied sample data; results will differ between runs.
+/// - Courier Ids are generated to avoid collisions by checking the DAL.
+/// - Distances are computed with the Haversine formula using the embedded sample addresses around Israel.
+/// </remarks>
 public static class Initialization
 {
     private static ICourier? s_dalCourier;
@@ -28,6 +37,13 @@ public static class Initialization
         ("9 Jerusalem Blvd, Beersheba", 31.25693, 34.79332)
     };
 
+    /// <summary>
+    /// Configure default application settings in the provided <see cref="IConfig"/> instance.
+    /// </summary>
+    /// <remarks>
+    /// - Sets manager credentials, company address, speed/range defaults and clock.
+    /// - Intended as sensible defaults for the demo dataset.
+    /// </remarks>
     private static void createConfig()
     {
         s_dalConfig!.ManagerId = 123456789;
@@ -44,6 +60,14 @@ public static class Initialization
         s_dalConfig.Clock = DateTime.Now;
     }
 
+    /// <summary>
+    /// Create a set of sample couriers and add them to the DAL.
+    /// </summary>
+    /// <remarks>
+    /// - Generates randomized but realistic contact details and availability.
+    /// - Ensures generated courier Ids do not collide with existing DAL entries by calling <see cref="ICourier.Read(int)"/>.
+    /// - Distance values represent an approximate personal maximum travel distance (kilometers).
+    /// </remarks>
     private static void createCouriers()
     {
         string[] names = { "David", "Sarah", "Michael", "Leah", "Yossi", "Rina", "Eli", "Tamar", "Noam", "Shira",
@@ -86,6 +110,13 @@ public static class Initialization
         }
     }
 
+    /// <summary>
+    /// Create a set of sample orders and add them to the DAL.
+    /// </summary>
+    /// <remarks>
+    /// - Randomizes customer, address, weight and optional verbal description.
+    /// - Order timestamps are set relative to <see cref="IConfig.Clock"/>.
+    /// </remarks>
     private static void createOrders()
     {
         string[] customerNames = { "David Cohen", "Sarah Levy", "Michael Gold", "Leah Stern", "Yossi Azulay",
@@ -124,6 +155,14 @@ public static class Initialization
         }
     }
 
+    /// <summary>
+    /// Match available orders to couriers and create delivery records.
+    /// </summary>
+    /// <remarks>
+    /// - Chooses the first active courier whose configured distance can reach the order location.
+    /// - Randomly sets delivery completion and status for some deliveries to simulate finished and in-progress deliveries.
+    /// - Removes orders from the available pool when they are considered assigned or finished.
+    /// </remarks>
     private static void createDeliveries()
     {
         
@@ -187,9 +226,12 @@ public static class Initialization
                 availableOrders.Remove(order);
         }
     }
-
-
-
+    /// <summary>
+    /// Calculate the great-circle distance (in kilometers) between the company and the order using the Haversine formula.
+    /// </summary>
+    /// <param name="c">The courier (used only for context in this implementation).</param>
+    /// <param name="o">The order location.</param>
+    /// <returns>Approximate distance in kilometers.</returns>
     private static double CalculateDistance(Courier c, Order o)
     {
         double R = 6371;
@@ -202,6 +244,14 @@ public static class Initialization
         return R * cAngle;
     }
 
+    /// <summary>
+    /// Entry point to initialize the DAL. Resets storage and populates demo data.
+    /// </summary>
+    /// <param name="dalCourier">ICourier implementation used to persist couriers (required).</param>
+    /// <param name="dalOrder">IOrder implementation used to persist orders (required).</param>
+    /// <param name="dalDelivery">IDelivery implementation used to persist deliveries (required).</param>
+    /// <param name="dalConfig">IConfig implementation used to persist configuration (required).</param>
+    /// <exception cref="NullReferenceException">Thrown when any provided DAL interface is null.</exception>
     public static void Do(ICourier? dalCourier, IOrder? dalOrder, IDelivery? dalDelivery, IConfig? dalConfig)
     {
         s_dalCourier = dalCourier ?? throw new NullReferenceException("DAL object can not be null!");
