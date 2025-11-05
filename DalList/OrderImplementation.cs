@@ -35,7 +35,7 @@ namespace Dal
         public void Update(Order item)
         {
             if (Read(item.OrderId) is null)
-                throw new Exception($"Order with ID={item.OrderId} does NOT exist (cannot update).");
+                throw new DalDoesNotExistException($"Order with ID={item.OrderId} does NOT exist (cannot update).");
 
             DataSource.Orders.RemoveAll(o => o.OrderId == item.OrderId);
             DataSource.Orders.Add(item);
@@ -45,7 +45,7 @@ namespace Dal
         public void Delete(int id)
         {
             if (Read(id) is null)
-                throw new Exception($"Order with ID={id} does NOT exist (cannot delete).");
+                throw new DalDoesNotExistException($"Order with ID={id} does NOT exist (cannot delete).");
 
             DataSource.Orders.RemoveAll(o => o.OrderId == id);
         }

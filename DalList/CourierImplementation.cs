@@ -12,7 +12,7 @@ internal class CourierImplementation : ICourier
     {
         // Check if an object with the same ID already exists
         if (Read(item.Id) != null)
-            throw new Exception($"Courier with ID={item.Id} already exists");
+            throw new DalAlreadyExistsException($"Courier with ID={item.Id} already exists");
 
         // Add to the list
         DataSource.Couriers.Add(item);
@@ -35,7 +35,7 @@ internal class CourierImplementation : ICourier
     {
         var existing = Read(item.Id);
         if (existing == null)
-            throw new Exception($"Courier with ID={item.Id} does not exist");
+            throw new DalDoesNotExistException($"Courier with ID={item.Id} does not exist");
 
         // Remove the existing object and add the updated one
         DataSource.Couriers.Remove(existing);
@@ -47,7 +47,7 @@ internal class CourierImplementation : ICourier
     {
         var existing = Read(id);
         if (existing == null)
-            throw new Exception($"Courier with ID={id} does not exist");
+            throw new DalDoesNotExistException($"Courier with ID={id} does not exist");
 
         // Remove the object from the list
         DataSource.Couriers.Remove(existing);

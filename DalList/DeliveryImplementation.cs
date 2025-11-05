@@ -33,7 +33,7 @@ namespace Dal
         public void Update(Delivery item)
         {
             if (Read(item.Id) is null)
-                throw new Exception($"Delivery with ID={item.Id} does NOT exist.");
+                throw new DalDoesNotExistException($"Delivery with ID={item.Id} does NOT exist.");
 
             DataSource.Deliveries.RemoveAll(d => d.Id == item.Id);
             DataSource.Deliveries.Add(item);
@@ -43,7 +43,7 @@ namespace Dal
         public void Delete(int id)
         {
             if (Read(id) is null)
-                throw new Exception($"Delivery with ID={id} does NOT exist.");
+                throw new DalDoesNotExistException($"Delivery with ID={id} does NOT exist.");
 
             DataSource.Deliveries.RemoveAll(d => d.Id == id);
         }
