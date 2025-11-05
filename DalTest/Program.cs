@@ -173,7 +173,7 @@ namespace DalTest
 
                 s_dal!.Courier.Create(newCourier);
             }
-            catch (Exception ex)
+            catch (DalAlreadyExistsException ex)
             {
                 Console.WriteLine($"Exception caught: {ex.Message}");
             }
@@ -183,9 +183,7 @@ namespace DalTest
         /// Read and display a courier by id.
         /// </summary>
         private static void ReadCourier()
-        {
-            try
-            {
+        { 
                 Console.Write("Enter ID: ");
                 int id = int.Parse(Console.ReadLine()!);
 
@@ -194,11 +192,6 @@ namespace DalTest
                     Console.WriteLine(courier);
                 else
                     Console.WriteLine("Courier not found.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception caught: {ex.Message}");
-            }
         }
 
         /// <summary>
@@ -206,15 +199,8 @@ namespace DalTest
         /// </summary>
         private static void ReadAllCouriers()
         {
-            try
-            {
-                foreach (var c in s_dal!.Courier.ReadAll())
-                    Console.WriteLine(c);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception caught: {ex.Message}");
-            }
+            foreach (var c in s_dal!.Courier.ReadAll())
+                Console.WriteLine(c);
         }
 
         /// <summary>
@@ -222,8 +208,7 @@ namespace DalTest
         /// </summary>
         private static void UpdateCourier()
         {
-            try
-            {
+           
                 Console.Write("Enter ID of courier to update: ");
                 int id = int.Parse(Console.ReadLine()!);
 
@@ -268,11 +253,6 @@ namespace DalTest
                 var updatedCourier = new Courier(id, name, phone, email, code, active, existingCourier.TimeBegin, type, distance);
 
                 s_dal!.Courier.Update(updatedCourier);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception caught: {ex.Message}");
-            }
         }
 
         /// <summary>
@@ -287,7 +267,7 @@ namespace DalTest
 
                 s_dal!.Courier.Delete(id);
             }
-            catch (Exception ex)
+            catch (DalDoesNotExistException ex)
             {
                 Console.WriteLine($"Exception caught: {ex.Message}");
             }
@@ -303,24 +283,17 @@ namespace DalTest
             {
                 ShowCrudMenu("Courier");
                 if (!int.TryParse(Console.ReadLine(), out int choice)) continue;
-
-                try
+                switch ((CrudOption)choice)
                 {
-                    switch ((CrudOption)choice)
-                    {
-                        case CrudOption.Exit: exit = true; break;
-                        case CrudOption.Create: CreateCourier(); break;
-                        case CrudOption.Read: ReadCourier(); break;
-                        case CrudOption.ReadAll: ReadAllCouriers(); break;
-                        case CrudOption.Update: UpdateCourier(); break;
-                        case CrudOption.Delete: DeleteCourier(); break;
-                        case CrudOption.DeleteAll: s_dal!.Courier.DeleteAll(); break;
-                    }
+                    case CrudOption.Exit: exit = true; break;
+                    case CrudOption.Create: CreateCourier(); break;
+                    case CrudOption.Read: ReadCourier(); break;
+                    case CrudOption.ReadAll: ReadAllCouriers(); break;
+                    case CrudOption.Update: UpdateCourier(); break;
+                    case CrudOption.Delete: DeleteCourier(); break;
+                    case CrudOption.DeleteAll: s_dal!.Courier.DeleteAll(); break;
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Exception caught: {ex.Message}");
-                }
+              
             }
         }
 
@@ -332,9 +305,6 @@ namespace DalTest
         /// </summary>
         private static void CreateOrder()
         {
-            try
-            {
-
                 Console.Write("Enter Type of Order (SingleOrder/OtherType...): ");
                 TypeOfOrder type = Enum.Parse<TypeOfOrder>(Console.ReadLine()!);
 
@@ -358,11 +328,6 @@ namespace DalTest
 
                 s_dal!.Order.Create(newOrder);
                 Console.WriteLine("Order created successfully.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception caught: {ex.Message}");
-            }
         }
 
         /// <summary>
@@ -370,21 +335,15 @@ namespace DalTest
         /// </summary>
         private static void ReadOrder()
         {
-            try
-            {
+            
                 Console.Write("Enter Order ID: ");
                 int id = int.Parse(Console.ReadLine()!);
 
                 var order = s_dal!.Order.Read(id);
-                if (order != null)
-                    Console.WriteLine(order);
-                else
-                    Console.WriteLine("Order not found.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception caught: {ex.Message}");
-            }
+            if (order != null)
+                Console.WriteLine(order);
+            else
+                Console.WriteLine("Order not found.");
         }
 
         /// <summary>
@@ -392,15 +351,10 @@ namespace DalTest
         /// </summary>
         private static void ReadAllOrders()
         {
-            try
-            {
+           
                 foreach (var o in s_dal!.Order.ReadAll())
                     Console.WriteLine(o);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception caught: {ex.Message}");
-            }
+            
         }
 
         /// <summary>
@@ -408,8 +362,6 @@ namespace DalTest
         /// </summary>
         private static void UpdateOrder()
         {
-            try
-            {
                 Console.Write("Enter ID of order to update: ");
                 int id = int.Parse(Console.ReadLine()!);
 
@@ -450,11 +402,6 @@ namespace DalTest
                 var updatedOrder = new Order(id, type, address, 0, 0, customerName, customerPhone, weight, existingOrder.OrderInitiation, desc);
 
                 s_dal!.Order.Update(updatedOrder);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception caught: {ex.Message}");
-            }
         }
 
         /// <summary>
@@ -470,7 +417,7 @@ namespace DalTest
                 s_dal!.Order.Delete(id);
                 Console.WriteLine("Order deleted successfully.");
             }
-            catch (Exception ex)
+            catch (DalDoesNotExistException ex)
             {
                 Console.WriteLine($"Exception caught: {ex.Message}");
             }
@@ -486,9 +433,6 @@ namespace DalTest
             {
                 ShowCrudMenu("Order");
                 if (!int.TryParse(Console.ReadLine(), out int choice)) continue;
-
-                try
-                {
                     switch ((CrudOption)choice)
                     {
                         case CrudOption.Exit: exit = true; break;
@@ -499,12 +443,8 @@ namespace DalTest
                         case CrudOption.Delete: DeleteOrder(); break;
                         case CrudOption.DeleteAll: s_dal!.Order.DeleteAll(); break;
                     }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Exception caught: {ex.Message}");
-                }
             }
+          
         }
 
 
@@ -516,8 +456,6 @@ namespace DalTest
         /// </summary>
         private static void CreateDelivery()
         {
-            try
-            {
                 Console.Write("Enter Order ID: ");
                 int orderId = int.Parse(Console.ReadLine()!);
 
@@ -535,11 +473,6 @@ namespace DalTest
 
                 s_dal!.Delivery.Create(newDelivery);
                 Console.WriteLine("Delivery created successfully.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception caught: {ex.Message}");
-            }
         }
 
         /// <summary>
@@ -547,8 +480,7 @@ namespace DalTest
         /// </summary>
         private static void ReadDelivery()
         {
-            try
-            {
+            
                 Console.Write("Enter Delivery ID: ");
                 int id = int.Parse(Console.ReadLine()!);
 
@@ -557,11 +489,7 @@ namespace DalTest
                     Console.WriteLine(delivery);
                 else
                     Console.WriteLine("Delivery not found.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception caught: {ex.Message}");
-            }
+         
         }
 
         /// <summary>
@@ -569,16 +497,11 @@ namespace DalTest
         /// </summary>
         private static void ReadAllDeliveries()
         {
-            try
-            {
+            
                 foreach (var d in s_dal!.Delivery.ReadAll())
                     Console.WriteLine(d);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception caught: {ex.Message}");
-            }
         }
+          
 
         /// <summary>
         /// Delete a delivery by id. Prompts the user and delegates to the DAL.
@@ -593,7 +516,7 @@ namespace DalTest
                 s_dal!.Delivery.Delete(id);
                 Console.WriteLine("Delivery deleted successfully.");
             }
-            catch (Exception ex)
+            catch (DalDoesNotExistException ex)
             {
                 Console.WriteLine($"Exception caught: {ex.Message}");
             }
@@ -610,35 +533,27 @@ namespace DalTest
             {
                 ShowCrudMenu("Delivery");
                 if (!int.TryParse(Console.ReadLine(), out int choice)) continue;
-
-                try
+                switch ((CrudOption)choice)
                 {
-                    switch ((CrudOption)choice)
-                    {
-                        case CrudOption.Exit: exit = true; break;
-                        case CrudOption.Create:
-                            CreateDelivery();
-                            break;
-                        case CrudOption.Read:
-                            ReadDelivery();
-                            break;
-                        case CrudOption.ReadAll:
-                            ReadAllDeliveries();
-                            break;
-                        case CrudOption.Update:
-                            Console.WriteLine("Update operation is not implemented for Delivery.");
-                            break;
-                        case CrudOption.Delete:
-                            DeleteDelivery();
-                            break;
-                        case CrudOption.DeleteAll:
-                            s_dal!.Delivery.DeleteAll();
-                            break;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Exception caught: {ex.Message}");
+                    case CrudOption.Exit: exit = true; break;
+                    case CrudOption.Create:
+                        CreateDelivery();
+                        break;
+                    case CrudOption.Read:
+                        ReadDelivery();
+                        break;
+                    case CrudOption.ReadAll:
+                        ReadAllDeliveries();
+                        break;
+                    case CrudOption.Update:
+                        Console.WriteLine("Update operation is not implemented for Delivery.");
+                        break;
+                    case CrudOption.Delete:
+                        DeleteDelivery();
+                        break;
+                    case CrudOption.DeleteAll:
+                        s_dal!.Delivery.DeleteAll();
+                        break;
                 }
             }
         }
@@ -653,8 +568,6 @@ namespace DalTest
             bool exit = false;
             while (!exit)
             {
-                try
-                {
                     Console.WriteLine("\n--- Configuration Menu ---");
                     Console.WriteLine("0. Exit");
                     Console.WriteLine("1. Increment Minute");
@@ -677,12 +590,8 @@ namespace DalTest
                         case ConfigOption.ShowConfigValues: ShowConfigValue(); break;
                         case ConfigOption.ResetConfig: s_dal!.Config.Reset(); break;
                     }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Exception caught: {ex.Message}");
-                }
             }
+          
         }
 
         /// <summary>
@@ -690,8 +599,7 @@ namespace DalTest
         /// </summary>
         private static void ShowConfigValue()
         {
-            try
-            {
+            
                 Console.WriteLine("\nWhich configuration value do you want to view?");
                 Console.WriteLine("1. Manager ID");
                 Console.WriteLine("2. Manager Password");
@@ -729,11 +637,7 @@ namespace DalTest
                     case 14: Console.WriteLine($"Clock: {s_dal!.Config.Clock}"); break;
                     default: Console.WriteLine("Invalid choice."); break;
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception caught: {ex.Message}");
-            }
+          
         }
 
         /// <summary>
@@ -741,8 +645,7 @@ namespace DalTest
         /// </summary>
         private static void SetConfigValue()
         {
-            try
-            {
+          
                 Console.WriteLine("\nWhich configuration value do you want to set?");
                 Console.WriteLine("1. Manager ID");
                 Console.WriteLine("2. Manager Password");
@@ -814,11 +717,7 @@ namespace DalTest
                         Console.WriteLine("Invalid choice.");
                         break;
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception caught: {ex.Message}");
-            }
+            
         }
 
         // -------------------- SHOW ALL DATA --------------------
@@ -829,17 +728,11 @@ namespace DalTest
         /// </summary>
         private static void ShowAllData()
         {
-            try
-            {
-                Console.WriteLine("\n--- All Data ---");
+              Console.WriteLine("\n--- All Data ---");
                 foreach (var c in s_dal!.Courier.ReadAll()) Console.WriteLine(c);
                 foreach (var o in s_dal!.Order.ReadAll()) Console.WriteLine(o);
                 foreach (var d in s_dal!.Delivery.ReadAll()) Console.WriteLine(d);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception caught: {ex.Message}");
-            }
+          
         }
 
         // -------------------- RESET DATABASE --------------------
@@ -850,18 +743,8 @@ namespace DalTest
         /// </summary>
         private static void ResetDatabase()
         {
-            try
-            {
-                s_dal!.Courier.DeleteAll();
-                s_dal!.Order.DeleteAll();
-                s_dal!.Delivery.DeleteAll();
-                s_dal!.Config.Reset();
+                s_dal.ResetDB();    
                 Console.WriteLine("Database reset completed.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception caught: {ex.Message}");
-            }
         }
 
     }
