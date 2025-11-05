@@ -22,21 +22,13 @@ internal class CourierImplementation : ICourier
     public Courier? Read(int id)
     {
         // Search for the object by ID
-        foreach (var c in DataSource.Couriers)
-        {
-            if (c.Id == id)
-                return c;
-        }
-        // Return null if not found
-        return null;
+        return DataSource.Couriers.FirstOrDefault(o => o.Id == id)!;
     }
 
     // ReadAll: return a snapshot copy of all couriers (prevents external mutation).
-    public List<Courier> ReadAll()
-    {
-        // Return a copy of the list
-        return new List<Courier>(DataSource.Couriers);
-    }
+    public IEnumerable<Courier> ReadAll(Func<Courier, bool>? filter = null) => filter == null
+         ? DataSource.Couriers.Select(item => item)
+            :DataSource.Couriers.Where(filter);  
 
     // Update: replace an existing courier matched by id; throws if not found.
     public void Update(Courier item)
@@ -67,4 +59,7 @@ internal class CourierImplementation : ICourier
         // Clear the entire list
         DataSource.Couriers.Clear();
     }
+
+    public Courier? Read(Func<Courier, bool> filter)=> DataSource.Couriers.FirstOrDefault(filter);
+   
 }

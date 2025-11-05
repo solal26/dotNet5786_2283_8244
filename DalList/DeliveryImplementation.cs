@@ -1,7 +1,8 @@
-﻿using DalApi;
-using DO;
+﻿using System;
 using System.Collections.Generic;
-using System;
+using System.Linq;
+using DalApi;
+using DO;
 
 namespace Dal
 {
@@ -20,14 +21,13 @@ namespace Dal
         // Read: return the delivery with the given id or null if not found.
         public Delivery? Read(int id)
         {
-            return DataSource.Deliveries.Find(d => d.Id == id);
+            return DataSource.Deliveries.FirstOrDefault(d => d.Id == id);
         }
 
         // ReadAll: return a snapshot copy of all deliveries.
-        public List<Delivery> ReadAll()
-        {
-            return new List<Delivery>(DataSource.Deliveries);
-        }
+        public IEnumerable<Delivery> ReadAll(Func<Delivery, bool>? filter = null) => filter == null
+      ? DataSource.Deliveries.Select(item => item)
+         : DataSource.Deliveries.Where(filter);
 
         // Update: replace an existing delivery matched by id; throws if not present.
         public void Update(Delivery item)
@@ -53,5 +53,8 @@ namespace Dal
         {
             DataSource.Deliveries.Clear();
         }
+
+        public Delivery? Read(Func<Delivery, bool> filter) => DataSource.Deliveries.FirstOrDefault(filter);
+      
     }
 }

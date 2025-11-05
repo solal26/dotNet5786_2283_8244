@@ -23,14 +23,13 @@ namespace Dal
         // Read: find an order by its OrderId or return null.
         public Order? Read(int id)
         {
-            return DataSource.Orders.Find(o => o.OrderId == id)!;
+            return DataSource.Orders.FirstOrDefault(o => o.OrderId == id)!;
         }
 
         // ReadAll: return a snapshot copy of all orders.
-        public List<Order> ReadAll()
-        {
-            return new List<Order>(DataSource.Orders);
-        }
+        public IEnumerable<Order> ReadAll(Func<Order, bool>? filter = null) => filter == null
+         ? DataSource.Orders.Select(item => item)
+            : DataSource.Orders.Where(filter);
 
         // Update: replace an existing order matched by OrderId; throw if not found.
         public void Update(Order item)
@@ -56,5 +55,8 @@ namespace Dal
         {
             DataSource.Orders.Clear();
         }
+
+        public Order? Read(Func<Order, bool> filter) => DataSource.Orders.FirstOrDefault(filter);
+
     }
 }
