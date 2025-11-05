@@ -13,10 +13,7 @@ using DO;
 /// </remarks>
 public static class Initialization
 {
-    private static ICourier? s_dalCourier;
-    private static IOrder? s_dalOrder;
-    private static IDelivery? s_dalDelivery;
-    private static IConfig? s_dalConfig;
+    private static IDal? s_dal;
     private static readonly Random s_rand = new();
 
     private static readonly (string Address, double Lat, double Lon) companyAddress =
@@ -46,18 +43,18 @@ public static class Initialization
     /// </remarks>
     private static void createConfig()
     {
-        s_dalConfig!.ManagerId = 123456789;
-        s_dalConfig.ManagerPassword = "admin123";
-        s_dalConfig.CompanyAddress = companyAddress.Address;
-        s_dalConfig.MaxRange = 30; 
-        s_dalConfig.AvgCarSpeed = 60.0;
-        s_dalConfig.AvgMotorbikeSpeed = 45.0;
-        s_dalConfig.AvgBicycleSpeed = 15.0;
-        s_dalConfig.AvgWalkingSpeed = 5.0;
-        s_dalConfig.MaxDeliveryTime = TimeSpan.FromHours(3);
-        s_dalConfig.RiskRange = TimeSpan.FromMinutes(30);
-        s_dalConfig.InactivityRange = TimeSpan.FromMinutes(15);
-        s_dalConfig.Clock = DateTime.Now;
+        s_dal!.Config.ManagerId = 123456789;
+        s_dal!.Config.ManagerPassword = "admin123";
+        s_dal!.Config.CompanyAddress = companyAddress.Address;
+        s_dal!.Config.MaxRange = 30;
+        s_dal!.Config.AvgCarSpeed = 60.0;
+        s_dal!.Config.AvgMotorbikeSpeed = 45.0;
+        s_dal!.Config.AvgBicycleSpeed = 15.0;
+        s_dal!.Config.AvgWalkingSpeed = 5.0;
+        s_dal!.Config.MaxDeliveryTime = TimeSpan.FromHours(3);
+        s_dal!.Config.RiskRange = TimeSpan.FromMinutes(30);
+        s_dal!.Config.InactivityRange = TimeSpan.FromMinutes(15);
+        s_dal!.Config.Clock = DateTime.Now;
     }
 
     /// <summary>
@@ -90,13 +87,13 @@ public static class Initialization
                 TypeOfShipment.OnFoot => s_rand.Next(1, 10),
                 _ => 10
             };
-            DateTime startTime = s_dalConfig!.Clock.AddMinutes(-s_rand.Next(0, 120));
+            DateTime startTime = s_dal!.Config.Clock.AddMinutes(-s_rand.Next(0, 120));
 
             int id;
             do { id = s_rand.Next(200000000, 400000000); }
-            while (s_dalCourier!.Read(id) != null);
+            while (s_dal!.Courier.Read(id) != null);
 
-            s_dalCourier.Create(new Courier(
+            s_dal!.Courier.Create(new Courier(
                 Id: id,
                 Name: name,
                 PhoneNumber: phone,
@@ -137,10 +134,10 @@ public static class Initialization
 
             TypeOfOrder type = orderTypes[s_rand.Next(orderTypes.Length)];
             double weight = Math.Round(s_rand.NextDouble() * 20 + 1, 2);
-            DateTime orderTime = s_dalConfig!.Clock.AddMinutes(-s_rand.Next(0, 720));
+            DateTime orderTime = s_dal!.Config.Clock.AddMinutes(-s_rand.Next(0, 720));
             string? verbalDesc = s_rand.NextDouble() > 0.5 ? "Fragile, handle with care" : null;
 
-            s_dalOrder!.Create(new Order(
+            s_dal!.Order.Create(new Order(
                 OrderId: 0,
                 typeOfOrder: type,
                 ShippingAddress: address,
@@ -166,8 +163,8 @@ public static class Initialization
     private static void createDeliveries()
     {
         
-        List<Order> allOrders = s_dalOrder!.ReadAll().ToList();
-        List<Courier> allCouriers = s_dalCourier!.ReadAll().ToList();
+        List<Order> allOrders = s_dal!.Order.ReadAll().ToList();
+        List<Courier> allCouriers = s_dal!.Courier.ReadAll().ToList();
         List<Order> availableOrders = new List<Order>(allOrders); 
 
         foreach (Order order in allOrders)
@@ -219,7 +216,7 @@ public static class Initialization
                 Distance: distance
             );
 
-            s_dalDelivery!.Create(newDelivery);
+            s_dal!.Delivery.Create(newDelivery);
 
             
             if (isFinished || s_rand.NextDouble() > 0.5)
@@ -252,18 +249,11 @@ public static class Initialization
     /// <param name="dalDelivery">IDelivery implementation used to persist deliveries (required).</param>
     /// <param name="dalConfig">IConfig implementation used to persist configuration (required).</param>
     /// <exception cref="NullReferenceException">Thrown when any provided DAL interface is null.</exception>
-    public static void Do(ICourier? dalCourier, IOrder? dalOrder, IDelivery? dalDelivery, IConfig? dalConfig)
+    public static void Do(IDal dal)
     {
-        s_dalCourier = dalCourier ?? throw new NullReferenceException("DAL object can not be null!");
-        s_dalOrder = dalOrder ?? throw new NullReferenceException("DAL object can not be null!");
-        s_dalDelivery = dalDelivery ?? throw new NullReferenceException("DAL object can not be null!");
-        s_dalConfig = dalConfig ?? throw new NullReferenceException("DAL object can not be null!");
-
+        s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!");
         Console.WriteLine("Reset Configuration values and List values...");
-        s_dalConfig.Reset();
-        s_dalCourier.DeleteAll();
-        s_dalOrder.DeleteAll();
-        s_dalDelivery.DeleteAll();
+        s_dal.ResetDB();
 
         Console.WriteLine("Initializing system data ...");
         createConfig();

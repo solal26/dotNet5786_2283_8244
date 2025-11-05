@@ -1,8 +1,9 @@
 ﻿using DalApi;
 
+
 namespace Dal;
 
-sealed public class DalList : IDal
+ public sealed class DalList : IDal
 {
     public ICourier Courier { get; } = new CourierImplementation();
     public IOrder Order { get; } = new OrderImplementation();
