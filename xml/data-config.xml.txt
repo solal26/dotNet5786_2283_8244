@@ -1,3 +1,22 @@
+
+
 <?xml version="1.0" encoding="utf-8"?>
 <config>
+  <NextOrderId>1000</NextOrderId>
+  <NextDeliveryId>5000</NexDeliveryId>
+  <Clock>41</Clock>
+  <ManagerId>0</ManagerId>
+  <ManagerPassword>1234</ManagerPassWord>
+ <CompanyAddress>null</CompanyAddress>
+ <Latitude>null</Latitude>
+ <Longitude>null</Longitude>
+  <MaxRange>4</MaxRange>
+  <AvgCarSpeed>50</AvgCarSpeed>
+  <AvgMotorBikeSpeed>40</MotorBikeSpeed>
+  <AvgBicycleSpeed>15</AvgBicycleSpeed>
+  <AvgWalkingSpeed>5</AvgWalkingSpeed>
+  <MaxDeliveryTime>4</MaxDeliveryTime>
+  <RiskRange>1</RiskRange>
+  <InactivityRange>2</InactivityRange>
 </config>
+

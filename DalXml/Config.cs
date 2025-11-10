@@ -8,15 +8,15 @@ internal static class Config
     internal const string s_couriers_xml = "couriers.xml";
     internal const string s_deliveries_xml = "deliveries.xml";
     internal const string s_orders_xml = "orders.xml";
-    internal static int nextOrderId
+    internal static int NextOrderId
     {
-        get => XMLTools.GetAndIncreaseConfigIntVal(s_data_config_xml, "nextOrderId");
-        private set => XMLTools.SetConfigIntVal(s_data_config_xml, "nextOrderId", value);
+        get => XMLTools.GetAndIncreaseConfigIntVal(s_data_config_xml, "NextOrderId");
+        private set => XMLTools.SetConfigIntVal(s_data_config_xml, "NextOrderId", value);
     }
-    internal static int nextDeliveryId
+    internal static int NextDeliveryId
     {
-        get => XMLTools.GetAndIncreaseConfigIntVal(s_data_config_xml, "nextDeliveryId");
-        private set => XMLTools.SetConfigIntVal(s_data_config_xml, "nextDeliveryId", value);
+        get => XMLTools.GetAndIncreaseConfigIntVal(s_data_config_xml, "NextDeliveryId");
+        private set => XMLTools.SetConfigIntVal(s_data_config_xml, "NextDeliveryId", value);
     }	
 
     internal static DateTime Clock
@@ -90,19 +90,10 @@ internal static class Config
         set => XMLTools.SetConfigSpanVal(s_data_config_xml, "InactivityRange", value);
     }
 
-
-
-
-
-
-
-
-
-
     internal static void Reset()
     {
-        nextOrderId = 1000;
-        nextDeliveryId = 5000;  
+        NextOrderId = 1000;
+        NextDeliveryId = 5000;  
         //...
         Clock = DateTime.Now;
         //...
