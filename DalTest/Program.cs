@@ -58,7 +58,10 @@ namespace DalTest
 
         // Static DAL instances used by the console app to delegate persistence operations.
         // These are concrete implementations used for testing and manual interaction.
-        private static readonly IDal s_dal = new Dal.DalList(); //stage 2
+        
+        
+        //private static readonly IDal s_dal = new Dal.DalList(); //stage 2
+        static readonly IDal s_dal =  new Dal.DalXml(); //stage 3
 
 
 
