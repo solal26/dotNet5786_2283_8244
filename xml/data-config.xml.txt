@@ -7,9 +7,9 @@
   <Clock>41</Clock>
   <ManagerId>0</ManagerId>
   <ManagerPassword>1234</ManagerPassWord>
- <CompanyAddress>null</CompanyAddress>
- <Latitude>null</Latitude>
- <Longitude>null</Longitude>
+ <CompanyAddress>Tel Aviv, Israel</CompanyAddress>
+ <Latitude>32.08088</Latitude>
+ <Longitude>34.78902</Longitude>
   <MaxRange>4</MaxRange>
   <AvgCarSpeed>50</AvgCarSpeed>
   <AvgMotorBikeSpeed>40</MotorBikeSpeed>
