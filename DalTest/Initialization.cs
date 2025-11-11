@@ -18,11 +18,11 @@ public static class Initialization
 
     private static readonly (string Address, double Lat, double Lon) companyAddress =
         ("Tel Aviv, Israel", 32.08088, 34.78902);
+   
 
-    
     private static readonly (string Address, double Lat, double Lon)[] addresses =
     {
-        ("132 Begin Road, Tel Aviv", 32.08088, 34.78902),
+        
         ("14 Rothschild Blvd, Tel Aviv", 32.06672, 34.77403),
         ("59 Ibn Gabirol St, Tel Aviv", 32.07206, 34.78138),
         ("34 David HaMelech St, Tel Aviv", 32.06999, 34.77224),
@@ -46,6 +46,8 @@ public static class Initialization
         s_dal!.Config.ManagerId = 123456789;
         s_dal!.Config.ManagerPassword = "admin123";
         s_dal!.Config.CompanyAddress = companyAddress.Address;
+        s_dal!.Config.Latitude = companyAddress.Lat;
+        s_dal!.Config.Longitude = companyAddress.Lon;
         s_dal!.Config.MaxRange = 30;
         s_dal!.Config.AvgCarSpeed = 60.0;
         s_dal!.Config.AvgMotorbikeSpeed = 45.0;
