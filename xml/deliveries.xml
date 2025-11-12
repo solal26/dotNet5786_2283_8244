@@ -1,2 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ArrayOfDelivery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+<ArrayOfDelivery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Delivery>
+    <Id>5000</Id>
+    <OrderId>1001</OrderId>
+    <CourierId>232802038</CourierId>
+    <typeofshipment>Scooter</typeofshipment>
+    <TimeBegin>2025-11-11T18:27:00</TimeBegin>
+    <endcour>Canceled</endcour>
+    <TimeEnd>2025-11-11T18:40:00</TimeEnd>
+    <Distance>2.1151787922544156</Distance>
+  </Delivery>
+  <Delivery>
+    <Id>5001</Id>
+    <OrderId>1005</OrderId>
+    <CourierId>232802038</CourierId>
+    <typeofshipment>Scooter</typeofshipment>
+    <TimeBegin>2025-11-11T13:58:00</TimeBegin>
+    <endcour xsi:nil="true" />
+    <TimeEnd xsi:nil="true" />
+    <Distance>1.2165604625005542</Distance>
+  </Delivery>
+  <Delivery>
+    <Id>5002</Id>
+    <OrderId>1007</OrderId>
+    <CourierId>232802038</CourierId>
+    <typeofshipment>Scooter</typeofshipment>
+    <TimeBegin>2025-11-11T16:54:00</TimeBegin>
+    <endcour>NotHere</endcour>
+    <TimeEnd>2025-11-11T17:55:00</TimeEnd>
+    <Distance>1.9914717201010803</Distance>
+  </Delivery>
+  <Delivery>
+    <Id>5003</Id>
+    <OrderId>1008</OrderId>
+    <CourierId>232802038</CourierId>
+    <typeofshipment>Scooter</typeofshipment>
+    <TimeBegin>2025-11-11T17:19:00</TimeBegin>
+    <endcour xsi:nil="true" />
+    <TimeEnd xsi:nil="true" />
+    <Distance>1.2165604625005542</Distance>
+  </Delivery>
+  <Delivery>
+    <Id>5004</Id>
+    <OrderId>1012</OrderId>
+    <CourierId>232802038</CourierId>
+    <typeofshipment>Scooter</typeofshipment>
+    <TimeBegin>2025-11-11T15:37:00</TimeBegin>
+    <endcour>Delivered</endcour>
+    <TimeEnd>2025-11-11T16:18:00</TimeEnd>
+    <Distance>1.2165604625005542</Distance>
+  </Delivery>
+  <Delivery>
+    <Id>5005</Id>
+    <OrderId>1013</OrderId>
+    <CourierId>232802038</CourierId>
+    <typeofshipment>Scooter</typeofshipment>
+    <TimeBegin>2025-11-11T13:08:00</TimeBegin>
+    <endcour>NotHere</endcour>
+    <TimeEnd>2025-11-11T14:03:00</TimeEnd>
+    <Distance>1.2165604625005542</Distance>
+  </Delivery>
+  <Delivery>
+    <Id>5006</Id>
+    <OrderId>1021</OrderId>
+    <CourierId>232802038</CourierId>
+    <typeofshipment>Scooter</typeofshipment>
+    <TimeBegin>2025-11-11T11:21:00</TimeBegin>
+    <endcour>Canceled</endcour>
+    <TimeEnd>2025-11-11T11:51:00</TimeEnd>
+    <Distance>1.2165604625005542</Distance>
+  </Delivery>
+  <Delivery>
+    <Id>5007</Id>
+    <OrderId>1026</OrderId>
+    <CourierId>232802038</CourierId>
+    <typeofshipment>Scooter</typeofshipment>
+    <TimeBegin>2025-11-11T14:52:00</TimeBegin>
+    <endcour xsi:nil="true" />
+    <TimeEnd xsi:nil="true" />
+    <Distance>2.1151787922544156</Distance>
+  </Delivery>
+  <Delivery>
+    <Id>5008</Id>
+    <OrderId>1032</OrderId>
+    <CourierId>232802038</CourierId>
+    <typeofshipment>Scooter</typeofshipment>
+    <TimeBegin>2025-11-11T17:38:00</TimeBegin>
+    <endcour xsi:nil="true" />
+    <TimeEnd xsi:nil="true" />
+    <Distance>2.1151787922544156</Distance>
+  </Delivery>
+  <Delivery>
+    <Id>5009</Id>
+    <OrderId>1035</OrderId>
+    <CourierId>232802038</CourierId>
+    <typeofshipment>Scooter</typeofshipment>
+    <TimeBegin>2025-11-11T12:35:00</TimeBegin>
+    <endcour>Refused</endcour>
+    <TimeEnd>2025-11-11T13:51:00</TimeEnd>
+    <Distance>2.1151787922544156</Distance>
+  </Delivery>
+  <Delivery>
+    <Id>5010</Id>
+    <OrderId>1039</OrderId>
+    <CourierId>232802038</CourierId>
+    <typeofshipment>Scooter</typeofshipment>
+    <TimeBegin>2025-11-11T18:45:00</TimeBegin>
+    <endcour xsi:nil="true" />
+    <TimeEnd xsi:nil="true" />
+    <Distance>1.2165604625005542</Distance>
+  </Delivery>
+  <Delivery>
+    <Id>5011</Id>
+    <OrderId>1040</OrderId>
+    <CourierId>232802038</CourierId>
+    <typeofshipment>Scooter</typeofshipment>
+    <TimeBegin>2025-11-11T11:33:00</TimeBegin>
+    <endcour>Delivered</endcour>
+    <TimeEnd>2025-11-11T12:00:00</TimeEnd>
+    <Distance>1.9914717201010803</Distance>
+  </Delivery>
+  <Delivery>
+    <Id>5012</Id>
+    <OrderId>1043</OrderId>
+    <CourierId>232802038</CourierId>
+    <typeofshipment>Scooter</typeofshipment>
+    <TimeBegin>2025-11-11T20:39:00</TimeBegin>
+    <endcour>Refused</endcour>
+    <TimeEnd>2025-11-11T21:45:00</TimeEnd>
+    <Distance>1.9914717201010803</Distance>
+  </Delivery>
+  <Delivery>
+    <Id>5013</Id>
+    <OrderId>1047</OrderId>
+    <CourierId>232802038</CourierId>
+    <typeofshipment>Scooter</typeofshipment>
+    <TimeBegin>2025-11-11T11:47:00</TimeBegin>
+    <endcour xsi:nil="true" />
+    <TimeEnd xsi:nil="true" />
+    <Distance>1.2165604625005542</Distance>
+  </Delivery>
+</ArrayOfDelivery>
