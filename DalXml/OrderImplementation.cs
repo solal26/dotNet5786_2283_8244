@@ -21,7 +21,7 @@ namespace Dal
             // Map XML element children to the Order record properties.
             return new DO.Order()
             {
-                OrderId = s.ToIntNullable("OrderId") ?? throw new FormatException("can't convert id"),
+                OrderId = (int?)s.ToIntNullable("OrderId") ?? 125,
                 CustomerName = (string?)s.Element("CustomerName") ?? "",
                 typeOfOrder = s.ToEnumNullable<TypeOfOrder>("typeOfOrder") ?? TypeOfOrder.SingleOrder,
                 ShippingAddress = (string?)s.Element("ShippingAddress") ?? "",
@@ -33,7 +33,7 @@ namespace Dal
                 VerbalDescription = (string?)s.Element("VerbalDescription"),
             };
         }
-
+        //throw new FormatException("can't convert id"),
         /// <summary>
         /// Read a single order by id from the orders XML.
         /// Returns null if not found.
@@ -54,7 +54,7 @@ namespace Dal
             XElement ordersRootElem = XMLTools.LoadListFromXMLElement(Config.s_orders_xml);
             // Assign unique OrderId from Config, create a copy (records are immutable-ish) and persist as XML.
             item = item with { OrderId = Config.NextOrderId };
-            ordersRootElem.Add(new XElement("Order", createOrderElement(item)));
+            ordersRootElem.Add(new XElement(createOrderElement(item)));
             XMLTools.SaveListToXMLElement(ordersRootElem, Config.s_orders_xml);
         }
 
@@ -96,7 +96,10 @@ namespace Dal
         /// </summary>
         public IEnumerable<Order> ReadAll(Func<Order, bool>? filter = null)
         {
-            throw new NotImplementedException();
+            XElement ordersRootElem = XMLTools.LoadListFromXMLElement(Config.s_orders_xml);
+            IEnumerable<Order> orders = ordersRootElem.Elements().Select(s => getOrder(s));
+            return filter is null ? orders : orders.Where(filter);
+
         }
 
         /// <summary>

@@ -24,8 +24,8 @@ internal class DeliveryImplementation : IDelivery
     public void Create(Delivery item)
     {
         List<Delivery> deliveries = XMLTools.LoadListFromXMLSerializer<Delivery>(Config.s_deliveries_xml);
-        item = item with { Id = Config.NextDeliveryId };
-        deliveries.Add(item);
+        Delivery copy = item with { Id = Config.NextDeliveryId };
+        deliveries.Add(copy);
         XMLTools.SaveListToXMLSerializer(deliveries, Config.s_deliveries_xml);
     }
 

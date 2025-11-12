@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<config>
+  <NextOrderId>1050</NextOrderId>
+  <NextDeliveryId>5014</NextDeliveryId>
+  <Clock>11/11/2025 22:25:00</Clock>
+  <ManagerId>123456789</ManagerId>
+  <ManagerPassword>admin123</ManagerPassword>
+  <CompanyAddress>Tel Aviv, Israel</CompanyAddress>
+  <Latitude>32.08088</Latitude>
+  <Longitude>34.78902</Longitude>
+  <MaxRange>30</MaxRange>
+  <AvgCarSpeed>60</AvgCarSpeed>
+  <AvgMotorBikeSpeed>40</AvgMotorBikeSpeed>
+  <AvgBicycleSpeed>15</AvgBicycleSpeed>
+  <AvgWalkingSpeed>5</AvgWalkingSpeed>
+  <MaxDeliveryTime>03:00:00</MaxDeliveryTime>
+  <RiskRange>00:30:00</RiskRange>
+  <InactivityRange>00:15:00</InactivityRange>
+</config>
