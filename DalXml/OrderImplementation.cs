@@ -21,7 +21,7 @@ namespace Dal
             // Map XML element children to the Order record properties.
             return new DO.Order()
             {
-                OrderId = (int?)s.ToIntNullable("OrderId") ?? 125,
+                OrderId = (int?)s.ToIntNullable("OrderId") ?? throw new FormatException("can't convert id"),
                 CustomerName = (string?)s.Element("CustomerName") ?? "",
                 typeOfOrder = s.ToEnumNullable<TypeOfOrder>("typeOfOrder") ?? TypeOfOrder.SingleOrder,
                 ShippingAddress = (string?)s.Element("ShippingAddress") ?? "",

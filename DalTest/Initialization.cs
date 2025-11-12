@@ -224,7 +224,7 @@ public static class Initialization
             if (isFinished || s_rand.NextDouble() > 0.5)
                 availableOrders.Remove(order);
         }
-        Console.WriteLine($"[INIT] Deliveries after init: {s_dal.Delivery.ReadAll().Count()}");
+       
     }
     /// <summary>
     /// Calculate the great-circle distance (in kilometers) between the company and the order using the Haversine formula.
