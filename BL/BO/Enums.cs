@@ -2,30 +2,43 @@
 
 public enum OrderType
 {
-    //Standard,
-    //Express,
-    //Priority
+    SingleOrder,
+    BulkOrder,
+    ExpressOrder,
+    InternalTransfer
 }
 
 public enum OrderStatus
 {
-    //Created,
-    //Shipped,
-    //InTransit,
-    //Delivered,
-    //Cancelled
+    Open,
+    InProgress,
+    Delivered,
+    Refused,
+    Cancelled
+    
 }
 
 public enum ScheduleStatus
 {
-    //OnTime,
-    //Delayed,
-    //MissedDeadline
+    OnTime,
+    InRisk,
+    Late
 }
 
-public enum DeliveryType { }
+public enum DeliveryType {
+Car,
+Scooter,
+Bike,
+OnFoot
+}
 
-public enum DeliveryEndType { }
+public enum DeliveryEndType { 
+    Delivered,
+    Refused,
+    Cancelled,
+    NotHere,
+    Failed
+}
 
 
 
