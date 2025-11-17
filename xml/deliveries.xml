@@ -2,152 +2,192 @@
 <ArrayOfDelivery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Delivery>
     <Id>5000</Id>
-    <OrderId>1004</OrderId>
-    <CourierId>258699026</CourierId>
-    <typeofshipment>Bike</typeofshipment>
-    <TimeBegin>2025-11-12T03:57:05</TimeBegin>
+    <OrderId>1001</OrderId>
+    <CourierId>394261217</CourierId>
+    <typeofshipment>OnFoot</typeofshipment>
+    <TimeBegin>2025-11-17T09:56:47</TimeBegin>
     <endcour xsi:nil="true" />
     <TimeEnd xsi:nil="true" />
     <Distance>1.2165604625005542</Distance>
   </Delivery>
   <Delivery>
     <Id>5001</Id>
-    <OrderId>1006</OrderId>
-    <CourierId>258699026</CourierId>
-    <typeofshipment>Bike</typeofshipment>
-    <TimeBegin>2025-11-12T10:51:05</TimeBegin>
-    <endcour>Failed</endcour>
-    <TimeEnd>2025-11-12T11:17:05</TimeEnd>
+    <OrderId>1009</OrderId>
+    <CourierId>394261217</CourierId>
+    <typeofshipment>OnFoot</typeofshipment>
+    <TimeBegin>2025-11-17T14:09:47</TimeBegin>
+    <endcour>Canceled</endcour>
+    <TimeEnd>2025-11-17T14:30:47</TimeEnd>
     <Distance>1.9914717201010803</Distance>
   </Delivery>
   <Delivery>
     <Id>5002</Id>
-    <OrderId>1012</OrderId>
-    <CourierId>258699026</CourierId>
-    <typeofshipment>Bike</typeofshipment>
-    <TimeBegin>2025-11-12T09:23:05</TimeBegin>
-    <endcour>Canceled</endcour>
-    <TimeEnd>2025-11-12T10:28:05</TimeEnd>
-    <Distance>1.9914717201010803</Distance>
+    <OrderId>1013</OrderId>
+    <CourierId>394261217</CourierId>
+    <typeofshipment>OnFoot</typeofshipment>
+    <TimeBegin>2025-11-17T13:19:47</TimeBegin>
+    <endcour xsi:nil="true" />
+    <TimeEnd xsi:nil="true" />
+    <Distance>2.1151787922544156</Distance>
   </Delivery>
   <Delivery>
     <Id>5003</Id>
-    <OrderId>1016</OrderId>
-    <CourierId>258699026</CourierId>
-    <typeofshipment>Bike</typeofshipment>
-    <TimeBegin>2025-11-12T04:18:05</TimeBegin>
-    <endcour>Delivered</endcour>
-    <TimeEnd>2025-11-12T04:44:05</TimeEnd>
-    <Distance>2.1151787922544156</Distance>
+    <OrderId>1015</OrderId>
+    <CourierId>394261217</CourierId>
+    <typeofshipment>OnFoot</typeofshipment>
+    <TimeBegin>2025-11-17T10:44:47</TimeBegin>
+    <endcour xsi:nil="true" />
+    <TimeEnd xsi:nil="true" />
+    <Distance>1.2165604625005542</Distance>
   </Delivery>
   <Delivery>
     <Id>5004</Id>
     <OrderId>1017</OrderId>
-    <CourierId>258699026</CourierId>
-    <typeofshipment>Bike</typeofshipment>
-    <TimeBegin>2025-11-12T06:52:05</TimeBegin>
-    <endcour>Failed</endcour>
-    <TimeEnd>2025-11-12T07:36:05</TimeEnd>
+    <CourierId>394261217</CourierId>
+    <typeofshipment>OnFoot</typeofshipment>
+    <TimeBegin>2025-11-17T17:00:47</TimeBegin>
+    <endcour xsi:nil="true" />
+    <TimeEnd xsi:nil="true" />
     <Distance>2.1151787922544156</Distance>
   </Delivery>
   <Delivery>
     <Id>5005</Id>
     <OrderId>1019</OrderId>
-    <CourierId>258699026</CourierId>
-    <typeofshipment>Bike</typeofshipment>
-    <TimeBegin>2025-11-12T12:41:05</TimeBegin>
-    <endcour>Canceled</endcour>
-    <TimeEnd>2025-11-12T13:19:05</TimeEnd>
-    <Distance>2.1151787922544156</Distance>
+    <CourierId>394261217</CourierId>
+    <typeofshipment>OnFoot</typeofshipment>
+    <TimeBegin>2025-11-17T09:15:47</TimeBegin>
+    <endcour xsi:nil="true" />
+    <TimeEnd xsi:nil="true" />
+    <Distance>1.2165604625005542</Distance>
   </Delivery>
   <Delivery>
     <Id>5006</Id>
-    <OrderId>1021</OrderId>
-    <CourierId>258699026</CourierId>
-    <typeofshipment>Bike</typeofshipment>
-    <TimeBegin>2025-11-12T06:12:05</TimeBegin>
-    <endcour>Delivered</endcour>
-    <TimeEnd>2025-11-12T07:32:05</TimeEnd>
-    <Distance>1.9914717201010803</Distance>
+    <OrderId>1023</OrderId>
+    <CourierId>394261217</CourierId>
+    <typeofshipment>OnFoot</typeofshipment>
+    <TimeBegin>2025-11-17T15:25:47</TimeBegin>
+    <endcour xsi:nil="true" />
+    <TimeEnd xsi:nil="true" />
+    <Distance>2.1151787922544156</Distance>
   </Delivery>
   <Delivery>
     <Id>5007</Id>
-    <OrderId>1022</OrderId>
-    <CourierId>258699026</CourierId>
-    <typeofshipment>Bike</typeofshipment>
-    <TimeBegin>2025-11-12T12:01:05</TimeBegin>
+    <OrderId>1024</OrderId>
+    <CourierId>394261217</CourierId>
+    <typeofshipment>OnFoot</typeofshipment>
+    <TimeBegin>2025-11-17T07:33:47</TimeBegin>
     <endcour xsi:nil="true" />
     <TimeEnd xsi:nil="true" />
     <Distance>1.9914717201010803</Distance>
   </Delivery>
   <Delivery>
     <Id>5008</Id>
-    <OrderId>1024</OrderId>
-    <CourierId>258699026</CourierId>
-    <typeofshipment>Bike</typeofshipment>
-    <TimeBegin>2025-11-12T11:33:05</TimeBegin>
-    <endcour>Delivered</endcour>
-    <TimeEnd>2025-11-12T12:37:05</TimeEnd>
-    <Distance>1.2165604625005542</Distance>
+    <OrderId>1028</OrderId>
+    <CourierId>394261217</CourierId>
+    <typeofshipment>OnFoot</typeofshipment>
+    <TimeBegin>2025-11-17T14:06:47</TimeBegin>
+    <endcour xsi:nil="true" />
+    <TimeEnd xsi:nil="true" />
+    <Distance>1.9914717201010803</Distance>
   </Delivery>
   <Delivery>
     <Id>5009</Id>
-    <OrderId>1027</OrderId>
-    <CourierId>258699026</CourierId>
-    <typeofshipment>Bike</typeofshipment>
-    <TimeBegin>2025-11-12T05:54:05</TimeBegin>
-    <endcour>Delivered</endcour>
-    <TimeEnd>2025-11-12T06:06:05</TimeEnd>
+    <OrderId>1033</OrderId>
+    <CourierId>394261217</CourierId>
+    <typeofshipment>OnFoot</typeofshipment>
+    <TimeBegin>2025-11-17T07:14:47</TimeBegin>
+    <endcour>Refused</endcour>
+    <TimeEnd>2025-11-17T07:43:47</TimeEnd>
     <Distance>1.9914717201010803</Distance>
   </Delivery>
   <Delivery>
     <Id>5010</Id>
-    <OrderId>1031</OrderId>
-    <CourierId>258699026</CourierId>
-    <typeofshipment>Bike</typeofshipment>
-    <TimeBegin>2025-11-12T05:51:05</TimeBegin>
+    <OrderId>1034</OrderId>
+    <CourierId>394261217</CourierId>
+    <typeofshipment>OnFoot</typeofshipment>
+    <TimeBegin>2025-11-17T13:42:47</TimeBegin>
     <endcour xsi:nil="true" />
     <TimeEnd xsi:nil="true" />
-    <Distance>2.1151787922544156</Distance>
+    <Distance>1.9914717201010803</Distance>
   </Delivery>
   <Delivery>
     <Id>5011</Id>
-    <OrderId>1032</OrderId>
-    <CourierId>258699026</CourierId>
-    <typeofshipment>Bike</typeofshipment>
-    <TimeBegin>2025-11-12T12:37:05</TimeBegin>
+    <OrderId>1035</OrderId>
+    <CourierId>394261217</CourierId>
+    <typeofshipment>OnFoot</typeofshipment>
+    <TimeBegin>2025-11-17T15:05:47</TimeBegin>
     <endcour>Failed</endcour>
-    <TimeEnd>2025-11-12T13:16:05</TimeEnd>
+    <TimeEnd>2025-11-17T16:18:47</TimeEnd>
     <Distance>1.9914717201010803</Distance>
   </Delivery>
   <Delivery>
     <Id>5012</Id>
-    <OrderId>1041</OrderId>
-    <CourierId>258699026</CourierId>
-    <typeofshipment>Bike</typeofshipment>
-    <TimeBegin>2025-11-12T09:13:05</TimeBegin>
-    <endcour>Failed</endcour>
-    <TimeEnd>2025-11-12T10:29:05</TimeEnd>
+    <OrderId>1036</OrderId>
+    <CourierId>394261217</CourierId>
+    <typeofshipment>OnFoot</typeofshipment>
+    <TimeBegin>2025-11-17T12:27:47</TimeBegin>
+    <endcour>Delivered</endcour>
+    <TimeEnd>2025-11-17T13:00:47</TimeEnd>
     <Distance>2.1151787922544156</Distance>
   </Delivery>
   <Delivery>
     <Id>5013</Id>
-    <OrderId>1048</OrderId>
-    <CourierId>258699026</CourierId>
-    <typeofshipment>Bike</typeofshipment>
-    <TimeBegin>2025-11-12T11:41:05</TimeBegin>
-    <endcour xsi:nil="true" />
-    <TimeEnd xsi:nil="true" />
-    <Distance>1.9914717201010803</Distance>
+    <OrderId>1037</OrderId>
+    <CourierId>394261217</CourierId>
+    <typeofshipment>OnFoot</typeofshipment>
+    <TimeBegin>2025-11-17T09:42:47</TimeBegin>
+    <endcour>Failed</endcour>
+    <TimeEnd>2025-11-17T10:41:47</TimeEnd>
+    <Distance>2.1151787922544156</Distance>
   </Delivery>
   <Delivery>
     <Id>5014</Id>
-    <OrderId>1049</OrderId>
-    <CourierId>258699026</CourierId>
-    <typeofshipment>Bike</typeofshipment>
-    <TimeBegin>2025-11-12T08:53:05</TimeBegin>
+    <OrderId>1038</OrderId>
+    <CourierId>394261217</CourierId>
+    <typeofshipment>OnFoot</typeofshipment>
+    <TimeBegin>2025-11-17T13:39:47</TimeBegin>
     <endcour xsi:nil="true" />
     <TimeEnd xsi:nil="true" />
-    <Distance>2.1151787922544156</Distance>
+    <Distance>1.2165604625005542</Distance>
+  </Delivery>
+  <Delivery>
+    <Id>5015</Id>
+    <OrderId>1039</OrderId>
+    <CourierId>394261217</CourierId>
+    <typeofshipment>OnFoot</typeofshipment>
+    <TimeBegin>2025-11-17T13:01:47</TimeBegin>
+    <endcour xsi:nil="true" />
+    <TimeEnd xsi:nil="true" />
+    <Distance>1.2165604625005542</Distance>
+  </Delivery>
+  <Delivery>
+    <Id>5016</Id>
+    <OrderId>1045</OrderId>
+    <CourierId>394261217</CourierId>
+    <typeofshipment>OnFoot</typeofshipment>
+    <TimeBegin>2025-11-17T07:27:47</TimeBegin>
+    <endcour xsi:nil="true" />
+    <TimeEnd xsi:nil="true" />
+    <Distance>1.2165604625005542</Distance>
+  </Delivery>
+  <Delivery>
+    <Id>5017</Id>
+    <OrderId>1047</OrderId>
+    <CourierId>394261217</CourierId>
+    <typeofshipment>OnFoot</typeofshipment>
+    <TimeBegin>2025-11-17T17:36:47</TimeBegin>
+    <endcour>Failed</endcour>
+    <TimeEnd>2025-11-17T17:54:47</TimeEnd>
+    <Distance>1.9914717201010803</Distance>
+  </Delivery>
+  <Delivery>
+    <Id>5018</Id>
+    <OrderId>1048</OrderId>
+    <CourierId>394261217</CourierId>
+    <typeofshipment>OnFoot</typeofshipment>
+    <TimeBegin>2025-11-17T17:11:47</TimeBegin>
+    <endcour>Delivered</endcour>
+    <TimeEnd>2025-11-17T17:46:47</TimeEnd>
+    <Distance>1.9914717201010803</Distance>
   </Delivery>
 </ArrayOfDelivery>

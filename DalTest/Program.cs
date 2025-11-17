@@ -61,7 +61,8 @@ namespace DalTest
         
         
         //private static readonly IDal s_dal = new Dal.DalList(); //stage 2
-        static readonly IDal s_dal =  new Dal.DalXml(); //stage 3
+        //static readonly IDal s_dal =  new Dal.DalXml(); //stage 3
+        static readonly IDal s_dal = Factory.Get; //stage 4
 
 
 
@@ -106,7 +107,7 @@ namespace DalTest
                         case MainMenuOption.Couriers: CourierMenu(); break;
                         case MainMenuOption.Orders: OrderMenu(); break;
                         case MainMenuOption.Deliveries: DeliveryMenu(); break;
-                        case MainMenuOption.InitializeData: Initialization.Do(s_dal); break;
+                        case MainMenuOption.InitializeData: Initialization.Do(); break;
                         case MainMenuOption.ShowAllData: ShowAllData(); break;
                         case MainMenuOption.Configuration: ConfigurationMenu(); break;
                         case MainMenuOption.ResetDatabase: ResetDatabase(); break;

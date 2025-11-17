@@ -252,9 +252,10 @@ public static class Initialization
     /// <param name="dalDelivery">IDelivery implementation used to persist deliveries (required).</param>
     /// <param name="dalConfig">IConfig implementation used to persist configuration (required).</param>
     /// <exception cref="NullReferenceException">Thrown when any provided DAL interface is null.</exception>
-    public static void Do(IDal dal)
+    public static void Do()
     {
-        s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!");
+        //s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!");
+        s_dal = DalApi.Factory.Get;
         Console.WriteLine("Reset Configuration values and List values...");
         s_dal.ResetDB();
 
