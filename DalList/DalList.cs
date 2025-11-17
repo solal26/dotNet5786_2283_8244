@@ -3,8 +3,10 @@
 
 namespace Dal;
 
- public sealed class DalList : IDal
+internal sealed class DalList : IDal
 {
+    public static IDal Instance { get; } = new DalList();
+    private DalList() { }   
     public ICourier Courier { get; } = new CourierImplementation();
     public IOrder Order { get; } = new OrderImplementation();
     public IDelivery Delivery { get; } = new DeliveryImplementation();
@@ -19,6 +21,8 @@ namespace Dal;
         Delivery.DeleteAll();
 
     }
+
+
 
 
 }
