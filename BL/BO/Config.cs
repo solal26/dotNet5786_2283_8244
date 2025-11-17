@@ -4,33 +4,31 @@ using System;
 
 public class Config
 {
-    DateTime Clock { get; set; }
+    public DateTime Clock { get; set; }
 
-    int ManagerId { get; set; }
+    public int ManagerId { get; set; }
 
-    string ManagerPassword { get; set; }
+    public string ManagerPassword { get; set; }
 
-    string? CompanyAddress { get; set; }
+    public string? CompanyAddress { get; set; }
 
-    double? Latitude { get; set; }
+    public double? Latitude { get; set; }
 
-    double? Longitude { get; set; }
+    public double? Longitude { get; set; }
 
-    int MaxRange { get; set; }
+    public int MaxRange { get; set; }
 
-    double AvgCarSpeed { get; set; }
+    public double AvgCarSpeed { get; set; }
 
-    double AvgMotorbikeSpeed { get; set; }
+    public double AvgMotorbikeSpeed { get; set; }
 
-    double AvgBicycleSpeed { get; set; }
+    public double AvgBicycleSpeed { get; set; }
 
-    double AvgWalkingSpeed { get; set; }
+    public double AvgWalkingSpeed { get; set; }
 
-    TimeSpan MaxDeliveryTime { get; set; }
+    public TimeSpan MaxDeliveryTime { get; set; }
 
-    TimeSpan RiskRange { get; set; }
+    public TimeSpan RiskRange { get; set; }
 
-    TimeSpan InactivityRange { get; set; }
-
-    
+    public TimeSpan InactivityRange { get; set; }
 }
