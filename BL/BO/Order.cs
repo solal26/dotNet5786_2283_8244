@@ -30,17 +30,17 @@ public class Order
 
     public DateTime OpenTime { get; init; }
 
-    public DateTime ExpectedDeliveryTime { get; set; }
+    public DateTime ExpectedDeliveryTime { get;init; }
 
-    public DateTime MaxDeliveryTime { get; set; }
+    public DateTime MaxDeliveryTime { get; init; }
 
-    public OrderStatus OrderStatus { get; set; }
+    public OrderStatus OrderStatus { get; init; }
 
-    public ScheduleStatus ScheduleStatus { get; set; }
+    public ScheduleStatus ScheduleStatus { get; init; }
 
-    public TimeSpan TimeRemaining { get; set; }
+    public TimeSpan TimeRemaining { get; init; }
 
-    public List<DeliveryPerOrderInList> Deliveries { get; set; }
+    public List<DeliveryPerOrderInList> Deliveries { get; init; }
 
     public override string ToString()
     {

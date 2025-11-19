@@ -90,9 +90,73 @@ internal static class AdminManager //stage 4
             s_dal.Config.MaxRange = configuration.MaxRange;
             configChanged = true;
         }
-        //TO_DO: //stage 4
-        //add a condition+assignment for each configuration property
-        //...
+
+        if(s_dal.Config.Clock != configuration.Clock) //stage 4
+        {
+            s_dal.Config.Clock = configuration.Clock;
+            configChanged = true;
+        }
+
+        if (s_dal.Config.ManagerId != configuration.ManagerId) //stage 4
+        {
+            s_dal.Config.ManagerId = configuration.ManagerId;
+            configChanged = true;
+        }
+        if (s_dal.Config.ManagerPassword != configuration.ManagerPassword) //stage 4
+        {
+            s_dal.Config.ManagerPassword = configuration.ManagerPassword;
+            configChanged = true;
+        }
+        if (s_dal.Config.CompanyAddress != configuration.CompanyAddress) //stage 4
+        {
+            s_dal.Config.CompanyAddress = configuration.CompanyAddress;
+            configChanged = true;
+        }
+        if (s_dal.Config.Latitude != configuration.Latitude) //stage 4
+        {
+            s_dal.Config.Latitude = configuration.Latitude;
+            configChanged = true;
+        }
+        if (s_dal.Config.Longitude != configuration.Longitude) //stage 4
+        {
+            s_dal.Config.Longitude = configuration.Longitude;
+            configChanged = true;
+        }
+        if (s_dal.Config.AvgCarSpeed != configuration.AvgCarSpeed) //stage 4
+        {
+            s_dal.Config.AvgCarSpeed = configuration.AvgCarSpeed;
+            configChanged = true;
+        }
+        if (s_dal.Config.AvgMotorbikeSpeed != configuration.AvgMotorbikeSpeed) //stage 4
+        {
+            s_dal.Config.AvgMotorbikeSpeed = configuration.AvgMotorbikeSpeed;
+            configChanged = true;
+        }
+        if (s_dal.Config.AvgBicycleSpeed != configuration.AvgBicycleSpeed) //stage 4
+        {
+            s_dal.Config.AvgBicycleSpeed = configuration.AvgBicycleSpeed;
+            configChanged = true;
+        }
+        if (s_dal.Config.AvgWalkingSpeed != configuration.AvgWalkingSpeed) //stage 4
+        {
+            s_dal.Config.AvgWalkingSpeed = configuration.AvgWalkingSpeed;
+            configChanged = true;
+        }
+        if (s_dal.Config.MaxDeliveryTime != configuration.MaxDeliveryTime) //stage 4
+        {
+            s_dal.Config.MaxDeliveryTime = configuration.MaxDeliveryTime;
+            configChanged = true;
+        }
+        if (s_dal.Config.RiskRange != configuration.RiskRange) //stage 4
+        {
+            s_dal.Config.RiskRange = configuration.RiskRange;
+            configChanged = true;
+        }
+        if(s_dal.Config.InactivityRange != configuration.InactivityRange) //stage 4
+        {
+            s_dal.Config.InactivityRange = configuration.InactivityRange;
+            configChanged = true;
+        }
 
         //Calling all the observers of configuration update
         if (configChanged) // stage 5

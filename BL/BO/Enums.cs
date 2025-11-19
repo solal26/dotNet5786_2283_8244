@@ -40,5 +40,76 @@ public enum DeliveryEndType {
     Failed
 }
 
+public enum TimeUnit
+{
+    Minute,
+    Hour,
+    Day,
+    Month,
+    Year
+}
+
+public enum CourierSortBy
+{
+    Id,
+    FullName,
+    Active,
+    MaxDeliveryDistance,
+    DeliveryType,
+    StartDate,
+    DeliveredOnTime,
+    DeliveredLate
+}
+
+
+public enum OrderInListFilter{ 
+    Type,
+    OrderStatus,
+    ScheduleStatus
+}
+
+public enum OrderInListSort 
+{
+    OrderId,
+    AirDistance,
+    TimeRemaining,
+    TotalCompletionTime,
+    TotalDeliveries
+}
+
+public enum OpenOrderInListFilter
+{
+    Type,
+    ScheduleStatus
+}
+
+public enum OpenOrderInListSort
+{
+    OrderId,
+    Volume,
+    Weight,
+    AirDistance,
+    ActualDistance,
+    EstimatedActualTime,
+    TimeRemaining,
+    MaxDeliveryTime
+}
+
+public enum ClosedDeliveryInListFilter 
+{
+    OrderType,
+    DeliveryType,
+    EndType
+}
+
+public enum ClosedDeliveryInListSort 
+{
+    DeliveryId,
+    OrderId,
+    ActualDistance,
+    CompletionTime
+}
+
+
 
 

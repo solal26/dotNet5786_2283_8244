@@ -11,8 +11,8 @@ public class Courier
     public double? MaxDeliveryDistance { get; set; }
     public DeliveryType DeliveryType { get; set; }
     public DateTime StartDate { get; init; }
-    public int DeliveredOnTime { get; set; }
-    public int DeliveredLate { get; set; }
+    public int DeliveredOnTime { get; init; }
+    public int DeliveredLate { get; init; }
     public OrderInProgress CurrentOrder { get; set; }
 
     public override string ToString() => this.ToStringProperty();

@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="BIApi\" />
     <Folder Include="BIImplementation\" />
   </ItemGroup>
 
