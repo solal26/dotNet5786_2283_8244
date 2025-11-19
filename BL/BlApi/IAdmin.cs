@@ -1,6 +1,6 @@
 ﻿
 
-namespace BIApi;
+namespace BlApi;
 
 public interface IAdmin
 {
