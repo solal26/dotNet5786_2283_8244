@@ -1,7 +1,7 @@
 ﻿namespace BlImplementation;
 using BO;
 using BlApi;
-
+using Helpers;
 
 internal class CourierImplementation : ICourier
 {
@@ -15,10 +15,18 @@ internal class CourierImplementation : ICourier
         throw new NotImplementedException();
     }
 
-    public Courier GetCourier(int requesterId, int courierId)
+    public BO.Courier GetCourier(int requesterId, int courierId)
     {
-        throw new NotImplementedException();
+        bool permission = CourierManager.HasPermission(requesterId, courierId);
+        if (!permission)
+        {
+            throw new UnauthorizedAccessException("Requester does not have permission to access this courier's information.");
+        }
+        
+
+
     }
+   
 
     public IEnumerable<CourierInList> GetList(string requesterId, bool? isActive = null, CourierSortBy? sortBy = null)
     {

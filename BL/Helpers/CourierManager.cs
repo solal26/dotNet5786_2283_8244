@@ -9,26 +9,37 @@ namespace Helpers;
 internal static class CourierManager
 {
     private static IDal s_dal = Factory.Get;
-
-    internal static void PeriodicCouriersUpdates(DateTime oldClock, DateTime newClock)
+    internal static bool HasPermission(int requesterId, int courierId)
     {
+        
+       if (s_dal.Config.ManagerId == requesterId)
+            return true;    
+        if (requesterId == courierId)
+            return true;
+        return false;
+    }
+   
+    internal static void PeriodicCouriersUpdates()
+    {
+        DateTime newClock = s_dal.Config.Clock;
         var doCouriers = s_dal.Courier.ReadAll();
-        var allDeliveries = s_dal.Delivery.ReadAll();
-        var allOrders = s_dal.Order.ReadAll();
-
+    
         foreach (var doCourier in doCouriers)
         {
-            var boCourier = ConvertToBO(doCourier, allDeliveries, allOrders, newClock);
 
-            // כאן אפשר לעדכן את ה-BO ברשימה פנימית או לשלוח לממשק שמציג נתונים
-            // לדוגמה: UpdateInternalBOList(boCourier);
+            var boCourier = ConvertToBO(doCourier.Id);
+          
         }
     }
 
-    internal static BO.Courier ConvertToBO(DO.Courier doCourier, IEnumerable<DO.Delivery> allDeliveries, IEnumerable<DO.Order> allOrders, DateTime currentClock)
+    internal static BO.Courier ConvertToBO(int id)
     {
+
+        var doCourier = s_dal.Courier.Read(id);
         if (doCourier == null)
-            throw new DalDoesNotExistException("Courier does not exist in the system.");
+            throw new KeyNotFoundException($"Courier with ID {id} not found.");
+
+        var allDeliveries = s_dal.Delivery.ReadAll();
 
         return new BO.Courier
         {
@@ -36,49 +47,38 @@ internal static class CourierManager
             FullName = doCourier.Name,
             Phone = doCourier.PhoneNumber,
             Email = doCourier.Email,
-            Active = IsCourierActive(doCourier.Id, allDeliveries, currentClock),
+            Active =doCourier.Active,
             MaxDeliveryDistance = doCourier.Distance,
             DeliveryType = (DeliveryType)doCourier.typeofshipment,
             StartDate = doCourier.TimeBegin,
-            DeliveredOnTime = CalculateDeliveredOnTime(doCourier.Id, allDeliveries, currentClock),
-            DeliveredLate = CalculateDeliveredLate(doCourier.Id, allDeliveries, currentClock),
-            CurrentOrder = GetCurrentOrder(doCourier.Id, allDeliveries.ToList(), allOrders.ToList(), currentClock)
+            DeliveredOnTime = CalculateDeliveredOnTime(doCourier.Id, allDeliveries),
+            DeliveredLate = CalculateDeliveredLate(doCourier.Id, allDeliveries),
+            CurrentOrder = GetCurrentOrder(doCourier.Id, allDeliveries.ToList())
         };
     }
-
-    private static bool IsCourierActive(int courierId, IEnumerable<DO.Delivery> allDeliveries, DateTime currentClock)
-    {
-        return allDeliveries.Any(d => d.CourierId == courierId && d.TimeBegin <= currentClock && d.TimeEnd == null);
-    }
-
-    internal static int CalculateDeliveredOnTime(int courierId, IEnumerable<DO.Delivery> deliveries, DateTime maxDeliveryTime)
+    internal static int CalculateDeliveredOnTime(int courierId, IEnumerable<DO.Delivery> deliveries)
     {
         return deliveries
-            .Where(d => d.CourierId == courierId && d.endcour == Endofcourier.Delivered && d.TimeEnd.HasValue && d.TimeEnd.Value <= maxDeliveryTime)
+            .Where(d => d.CourierId == courierId && d.endcour == Endofcourier.Delivered && d.TimeEnd.HasValue && d.TimeEnd.Value - d.TimeBegin <= s_dal.Config.MaxDeliveryTime)
             .Count();
     }
-
-    internal static int CalculateDeliveredLate(int courierId, IEnumerable<DO.Delivery> deliveries, DateTime maxDeliveryTime)
+    internal static int CalculateDeliveredLate(int courierId, IEnumerable<DO.Delivery> deliveries)
     {
         return deliveries
-            .Where(d => d.CourierId == courierId && d.endcour == Endofcourier.Delivered && d.TimeEnd.HasValue && d.TimeEnd.Value > maxDeliveryTime)
+            .Where(d => d.CourierId == courierId && d.endcour == Endofcourier.Delivered && d.TimeEnd.HasValue && d.TimeEnd.Value - d.TimeBegin > s_dal.Config.MaxDeliveryTime)
             .Count();
+            
     }
 
-    internal static BO.OrderInProgress? GetCurrentOrder(int courierId, List<DO.Delivery> allDeliveries, List<DO.Order> allOrders, DO.Courier doCourier, DateTime currentClock)
+    internal static BO.OrderInProgress? GetCurrentOrder(int courierId, List<DO.Delivery> allDeliveries)
     {
-        var delivery = allDeliveries
-            .Where(d => d.CourierId == courierId && d.TimeBegin <= currentClock && d.TimeEnd == null)
-            .OrderBy(d => d.TimeBegin)
-            .FirstOrDefault();
+        var doCourier = s_dal.Courier.Read(courierId);
+        if (doCourier == null)
+            throw new KeyNotFoundException($"Courier with ID {courierId} not found.");
+        var allOrders = s_dal.Order.ReadAll().ToList();
+        DateTime currentClock = s_dal.Config.Clock;
+    
 
-        if (delivery == null) return null;
-
-        var order = allOrders.FirstOrDefault(o => o.OrderId == delivery.OrderId);
-        if (order == null) return null;
-
-        DateTime expectedDelivery = delivery.TimeBegin.AddHours(1);
-        DateTime maxDelivery = delivery.TimeBegin.AddHours(2);
 
         double airDistance = CalculateAirDistance(
             doCourier.Latitude ?? 0, // אם אין ערך, נניח 0
