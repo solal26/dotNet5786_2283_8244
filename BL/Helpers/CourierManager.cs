@@ -54,6 +54,23 @@ internal static class CourierManager
             return true;
         return false;
     }
+    internal static IEnumerable<BO.CourierInList> GetAllCouriersInList()
+    {
+        var allDoCouriers = s_dal.Courier.ReadAll(); 
+
+        return allDoCouriers.Select(c => new BO.CourierInList
+        {
+            Id = c.Id,
+            FullName = c.Name,
+            Active = c.Active,
+            DeliveryType = (DeliveryType)c.typeofshipment,
+            StartDate = c.TimeBegin,
+            DeliveredOnTime = CalculateDeliveredOnTime(c.Id),
+            DeliveredLate = CalculateDeliveredLate(c.Id),
+            CurrentOrderId = GetCurrentOrder(c.Id)?.OrderId
+        });
+    }
+
 
     internal static void PeriodicCouriersUpdates()
     {
@@ -149,13 +166,8 @@ internal static class CourierManager
         if (order == null)
             return null;
 
-        //DateTime expectedDelivery = delivery.TimeBegin.AddHours(1);
-        //DateTime maxDelivery = delivery.TimeBegin.AddHours(2);
-
-        double airDistance = CalculateAirDistance(
-            32.0853, 34.7818,  // קואורדינטות החברה (לדוגמה)
-            order.Latitude, order.Longitude
-        );
+        DateTime maxDelivery = CalculateMaxDeliveryTime(order.OrderInitiation);
+        double Airdistance = CalculateAirDistance(order.Latitude, order.Longitude);
 
         return new BO.OrderInProgress
         {
@@ -164,28 +176,95 @@ internal static class CourierManager
             Type = (OrderType)(order.typeOfOrder),
             Description = order.VerbalDescription ?? "",
             FullAddress = order.ShippingAddress ?? "",
-            AirDistance = airDistance,
+            AirDistance = Airdistance,
             ActualDistance = delivery.Distance,
             CustomerName = order.CustomerName ?? "",
             CustomerPhone = order.CustomerPhone ?? "",
             OpenTime = delivery.TimeBegin,
             StartTime = currentClock,
-            ExpectedDeliveryTime = expectedDelivery,
+            ExpectedDeliveryTime = CalculateExpectedDeliveryTime(delivery.typeofshipment, Airdistance),
             MaxDeliveryTime = maxDelivery,
-            OrderStatus = BO.OrderStatus.InProgress,
-            ScheduleStatus = BO.ScheduleStatus.OnTime,
+            OrderStatus = CalculateOrderStatus(order.OrderId),
+            ScheduleStatus = CalculateScheduleStatus(order.OrderId),
             TimeRemaining = maxDelivery - currentClock
         };
     }
-
-
-
-
-
-
-    private static double CalculateAirDistance(double lat1, double lon1, double lat2, double lon2)
+    internal static BO.OrderStatus CalculateOrderStatus(int orderId)
     {
-        double R = 6371; // רדיוס כדור הארץ בקילומטרים
+        var order = s_dal.Order.Read(orderId);
+        if (order == null)
+            throw new KeyNotFoundException($"Order with ID {orderId} not found.");
+
+      
+        var deliveries = s_dal.Delivery.ReadAll()
+                            .Where(d => d.OrderId == orderId)
+                            .OrderByDescending(d => d.TimeBegin)
+                            .ToList();
+
+        if (!deliveries.Any())
+            return BO.OrderStatus.Open; 
+
+        var activeDelivery = deliveries.FirstOrDefault(d => d.TimeEnd == null);
+        if (activeDelivery != null)
+            return BO.OrderStatus.InProgress; 
+
+        var lastDelivery = deliveries.First(); 
+        return lastDelivery.endcour switch
+        {
+            Endofcourier.Delivered => BO.OrderStatus.Delivered,          
+            Endofcourier.Refused => BO.OrderStatus.Refused,
+            Endofcourier.Canceled => BO.OrderStatus.Cancelled,           
+            _ => BO.OrderStatus.Open 
+        };
+    }
+    internal static BO.ScheduleStatus CalculateScheduleStatus(int orderId)
+    {
+        var order = s_dal.Order.Read(orderId);
+        if (order == null)
+            throw new KeyNotFoundException($"Order with ID {orderId} not found.");
+
+        DateTime maxDeliveryTime = order.OrderInitiation.Add(s_dal.Config.MaxDeliveryTime);
+        TimeSpan timeRemaining = maxDeliveryTime - s_dal.Config.Clock;
+
+        if (timeRemaining > s_dal.Config.RiskRange)
+            return BO.ScheduleStatus.OnTime;
+        else if (timeRemaining > TimeSpan.Zero)
+            return BO.ScheduleStatus.InRisk;
+        else
+            return BO.ScheduleStatus.Late;
+    }
+
+    internal static DateTime CalculateExpectedDeliveryTime(TypeOfShipment t, double distanceKm)
+    {
+        double speedKmh = t switch
+        {
+           TypeOfShipment.Car => s_dal.Config.AvgCarSpeed,
+           TypeOfShipment.Bike => s_dal.Config.AvgBicycleSpeed,
+           TypeOfShipment.OnFoot => s_dal.Config.AvgWalkingSpeed,
+           TypeOfShipment.Scooter => s_dal.Config.AvgMotorbikeSpeed,
+            _ => s_dal.Config.AvgCarSpeed
+        };
+
+        double hours = distanceKm / speedKmh;
+        return s_dal.Config.Clock.AddHours(hours);
+    }
+
+    internal static DateTime CalculateMaxDeliveryTime(DateTime Open)
+    {
+        return Open.Add(s_dal.Config.MaxDeliveryTime);
+    }
+
+    private static double CalculateAirDistance(double destLat, double destLon)
+    {
+        if (!s_dal.Config.Latitude.HasValue || !s_dal.Config.Longitude.HasValue)
+            throw new InvalidOperationException("Company coordinates are not set in Config.");
+
+        double lat1 = s_dal.Config.Latitude.Value;
+        double lon1 = s_dal.Config.Longitude.Value;
+        double lat2 = destLat;
+        double lon2 = destLon;
+
+        double R = 6371; 
         double dLat = ToRadians(lat2 - lat1);
         double dLon = ToRadians(lon2 - lon1);
         double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
