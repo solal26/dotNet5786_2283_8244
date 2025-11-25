@@ -44,6 +44,7 @@ internal static class CourierManager
         if (distance.HasValue && distance < 0)
             throw new ArgumentException("Distance cannot be negative.");
     }
+
     internal static bool HasPermission(int requesterId, int courierId)
     {
         
@@ -98,8 +99,6 @@ internal static class CourierManager
         if (doCourier == null)
             throw new KeyNotFoundException($"Courier with ID {id} not found.");
 
-        var allDeliveries = s_dal.Delivery.ReadAll();
-
         return new BO.Courier
         {
             Id = doCourier.Id,
@@ -110,37 +109,39 @@ internal static class CourierManager
             MaxDeliveryDistance = doCourier.Distance,
             DeliveryType = (DeliveryType)doCourier.typeofshipment,
             StartDate = doCourier.TimeBegin,
-            DeliveredOnTime = CalculateDeliveredOnTime(doCourier.Id, allDeliveries),
-            DeliveredLate = CalculateDeliveredLate(doCourier.Id, allDeliveries),
+            DeliveredOnTime = CalculateDeliveredOnTime(doCourier.Id),
+            DeliveredLate = CalculateDeliveredLate(doCourier.Id),
             CurrentOrder = GetCurrentOrder(doCourier.Id)!
         };
     }
-    internal static int CalculateDeliveredOnTime(int courierId, IEnumerable<DO.Delivery> deliveries)
+    internal static int CalculateDeliveredOnTime(int courierId)
     {
+        var deliveries = s_dal.Delivery.ReadAll();
         return deliveries
             .Where(d => d.CourierId == courierId && d.endcour == Endofcourier.Delivered && d.TimeEnd.HasValue && d.TimeEnd.Value - d.TimeBegin <= s_dal.Config.MaxDeliveryTime)
             .Count();
     }
-    internal static int CalculateDeliveredLate(int courierId, IEnumerable<DO.Delivery> deliveries)
+    internal static int CalculateDeliveredLate(int courierId)
     {
+        var deliveries = s_dal.Delivery.ReadAll();
         return deliveries
             .Where(d => d.CourierId == courierId && d.endcour == Endofcourier.Delivered && d.TimeEnd.HasValue && d.TimeEnd.Value - d.TimeBegin > s_dal.Config.MaxDeliveryTime)
             .Count();
             
     }
 
+
+
     internal static BO.OrderInProgress? GetCurrentOrder(int courierId)
     {
         DateTime currentClock = s_dal.Config.Clock;
-        var allDeliveries = s_dal.Delivery.ReadAll(); // מחזירה List<DO.Delivery>
-        var allOrders = s_dal.Order.ReadAll();         // מחזירה List<DO.Order>
+        var allDeliveries = s_dal.Delivery.ReadAll();
+        var allOrders = s_dal.Order.ReadAll();        
 
-        // בודקים אם יש משלוח פעיל
+       
         var delivery = allDeliveries
-            .Where(d => d.CourierId == courierId && d.TimeBegin <= currentClock && d.TimeEnd == null)
-            .OrderBy(d => d.TimeBegin)
-            .FirstOrDefault();
-
+           .FirstOrDefault(d => d.CourierId == courierId && d.TimeBegin <= currentClock && d.TimeEnd == null);
+          
         if (delivery == null)
             return null;
 
@@ -160,7 +161,7 @@ internal static class CourierManager
         {
             DeliveryId = delivery.Id,
             OrderId = delivery.OrderId,
-            Type = MapOrderType(order.typeOfOrder),
+            Type = (OrderType)(order.typeOfOrder),
             Description = order.VerbalDescription ?? "",
             FullAddress = order.ShippingAddress ?? "",
             AirDistance = airDistance,
@@ -178,7 +179,10 @@ internal static class CourierManager
     }
 
 
-    // חישוב מרחק אווירי לפי קואורדינטות
+
+
+
+
     private static double CalculateAirDistance(double lat1, double lon1, double lat2, double lon2)
     {
         double R = 6371; // רדיוס כדור הארץ בקילומטרים
@@ -192,20 +196,6 @@ internal static class CourierManager
     }
 
     private static double ToRadians(double angle) => angle * Math.PI / 180.0;
-
-
-    internal static BO.OrderType MapOrderType(TypeOfOrder typeOfOrder)
-    {
-        return typeOfOrder switch
-        {
-            TypeOfOrder.ExpressOrder => BO.OrderType.ExpressOrder,
-            TypeOfOrder.InternalTransfer => BO.OrderType.InternalTransfer,
-            TypeOfOrder.SingleOrder => BO.OrderType.SingleOrder,
-            TypeOfOrder.BulkOrder => BO.OrderType.BulkOrder,
-
-            _ => BO.OrderType.SingleOrder
-        };
-    }
 
 }
 
