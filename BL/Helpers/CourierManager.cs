@@ -9,6 +9,41 @@ namespace Helpers;
 internal static class CourierManager
 {
     private static IDal s_dal = Factory.Get;
+    internal static void ValidateId(int id)
+    {
+        if (id <= 0)
+            throw new ArgumentException("Id must be positive.");
+    }
+
+    internal static void ValidateName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name) || name.Length < 2)
+            throw new ArgumentException("Name must be at least 2 characters.");
+    }
+
+    internal static void ValidatePhone(string phone)
+    {
+        if (phone == null || phone.Length != 10 || !phone.StartsWith("0") || !long.TryParse(phone, out _))
+            throw new ArgumentException("Phone must be 10 digits starting with 0.");
+    }
+
+    internal static void ValidateEmail(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email) || !email.Contains("@"))
+            throw new ArgumentException("Invalid email format.");
+    }
+
+    internal static void ValidateAddress(string address)
+    {
+        if (string.IsNullOrWhiteSpace(address))
+            throw new ArgumentException("Address cannot be empty.");
+    }
+
+    internal static void ValidateDistance(double? distance)
+    {
+        if (distance.HasValue && distance < 0)
+            throw new ArgumentException("Distance cannot be negative.");
+    }
     internal static bool HasPermission(int requesterId, int courierId)
     {
         
@@ -18,20 +53,44 @@ internal static class CourierManager
             return true;
         return false;
     }
-   
+
     internal static void PeriodicCouriersUpdates()
     {
-        DateTime newClock = s_dal.Config.Clock;
+        DateTime now = s_dal.Config.Clock;
+        TimeSpan inactivityLimit = s_dal.Config.InactivityRange;
+
         var doCouriers = s_dal.Courier.ReadAll();
-    
+        var allDeliveries = s_dal.Delivery.ReadAll();
+
         foreach (var doCourier in doCouriers)
         {
-
             var boCourier = ConvertToBO(doCourier.Id);
-          
+
+            if (boCourier.CurrentOrder != null)
+            {
+                if (!doCourier.Active)
+                {
+                    var updated = doCourier with { Active = true };
+                    s_dal.Courier.Update(updated);
+                }
+                continue;
+            }
+
+            var finishedDeliveries = allDeliveries
+                .Where(d => d.CourierId == doCourier.Id && d.TimeEnd.HasValue)
+                .ToList();
+
+            DateTime? lastDeliveryTime = finishedDeliveries.Any()
+                ? finishedDeliveries.Max(d => d.TimeEnd.Value)
+                : doCourier.TimeBegin;
+
+            if (lastDeliveryTime + inactivityLimit <= now)
+            {
+                var updated = doCourier with { Active = false };
+                s_dal.Courier.Update(updated);
+            }
         }
     }
-
     internal static BO.Courier ConvertToBO(int id)
     {
 
@@ -53,7 +112,7 @@ internal static class CourierManager
             StartDate = doCourier.TimeBegin,
             DeliveredOnTime = CalculateDeliveredOnTime(doCourier.Id, allDeliveries),
             DeliveredLate = CalculateDeliveredLate(doCourier.Id, allDeliveries),
-            CurrentOrder = GetCurrentOrder(doCourier.Id, allDeliveries.ToList())
+            CurrentOrder = GetCurrentOrder(doCourier.Id)!
         };
     }
     internal static int CalculateDeliveredOnTime(int courierId, IEnumerable<DO.Delivery> deliveries)
@@ -70,28 +129,38 @@ internal static class CourierManager
             
     }
 
-    internal static BO.OrderInProgress? GetCurrentOrder(int courierId, List<DO.Delivery> allDeliveries)
+    internal static BO.OrderInProgress? GetCurrentOrder(int courierId)
     {
-        var doCourier = s_dal.Courier.Read(courierId);
-        if (doCourier == null)
-            throw new KeyNotFoundException($"Courier with ID {courierId} not found.");
-        var allOrders = s_dal.Order.ReadAll().ToList();
         DateTime currentClock = s_dal.Config.Clock;
-    
+        var allDeliveries = s_dal.Delivery.ReadAll(); // מחזירה List<DO.Delivery>
+        var allOrders = s_dal.Order.ReadAll();         // מחזירה List<DO.Order>
 
+        // בודקים אם יש משלוח פעיל
+        var delivery = allDeliveries
+            .Where(d => d.CourierId == courierId && d.TimeBegin <= currentClock && d.TimeEnd == null)
+            .OrderBy(d => d.TimeBegin)
+            .FirstOrDefault();
+
+        if (delivery == null)
+            return null;
+
+        var order = allOrders.FirstOrDefault(o => o.OrderId == delivery.OrderId);
+        if (order == null)
+            return null;
+
+        //DateTime expectedDelivery = delivery.TimeBegin.AddHours(1);
+        //DateTime maxDelivery = delivery.TimeBegin.AddHours(2);
 
         double airDistance = CalculateAirDistance(
-            doCourier.Latitude ?? 0, // אם אין ערך, נניח 0
-            doCourier.Longitude ?? 0,
-            order.Latitude,
-            order.Longitude
+            32.0853, 34.7818,  // קואורדינטות החברה (לדוגמה)
+            order.Latitude, order.Longitude
         );
 
-        return new BO.OrderInProgress()
+        return new BO.OrderInProgress
         {
             DeliveryId = delivery.Id,
             OrderId = delivery.OrderId,
-            Type = MapOrderType(delivery.typeofshipment),
+            Type = MapOrderType(order.typeOfOrder),
             Description = order.VerbalDescription ?? "",
             FullAddress = order.ShippingAddress ?? "",
             AirDistance = airDistance,
@@ -107,6 +176,7 @@ internal static class CourierManager
             TimeRemaining = maxDelivery - currentClock
         };
     }
+
 
     // חישוב מרחק אווירי לפי קואורדינטות
     private static double CalculateAirDistance(double lat1, double lon1, double lat2, double lon2)
@@ -124,16 +194,19 @@ internal static class CourierManager
     private static double ToRadians(double angle) => angle * Math.PI / 180.0;
 
 
-    private static BO.OrderType MapOrderType(TypeOfShipment typeOfShipment)
+    internal static BO.OrderType MapOrderType(TypeOfOrder typeOfOrder)
     {
-        return typeOfShipment switch
+        return typeOfOrder switch
         {
-            TypeOfShipment.Car => BO.OrderType.Car,
-            TypeOfShipment.Bike => BO.OrderType.Bike,
-            TypeOfShipment.Foot => BO.OrderType.Foot,
-            _ => BO.OrderType.Other
+            TypeOfOrder.ExpressOrder => BO.OrderType.ExpressOrder,
+            TypeOfOrder.InternalTransfer => BO.OrderType.InternalTransfer,
+            TypeOfOrder.SingleOrder => BO.OrderType.SingleOrder,
+            TypeOfOrder.BulkOrder => BO.OrderType.BulkOrder,
+
+            _ => BO.OrderType.SingleOrder
         };
     }
+
 }
 
 
