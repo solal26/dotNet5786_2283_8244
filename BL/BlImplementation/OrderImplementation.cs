@@ -12,7 +12,7 @@ internal class OrderImplementation : IOrder
     {
         bool permission = CourierManager.HasPermission(requesterId);
         if (!permission)
-            throw new UnauthorizedAccessException("Requester does not have permission to add this order.");
+            throw new BlUnauthorizedAccessException("Requester does not have permission to add this order.");
 
         OrderManager.AddOrdeDo(order);
 

@@ -8,9 +8,13 @@ internal class CourierImplementation : BlApi.ICourier
 {
     public void AddCourier(int requesterId, BO.Courier courier)
     {
-        throw new NotImplementedException();
-    }
+        bool permission = CourierManager.HasPermission(requesterId);
+        if (!permission)
+            throw new BlUnauthorizedAccessException("Requester does not have permission to add a courier.");
 
+        CourierManager.AddCourierDo(courier);
+
+    }
     public void DeleteCourier(int requesterId, int courierId)
     {
         throw new NotImplementedException();
@@ -21,7 +25,7 @@ internal class CourierImplementation : BlApi.ICourier
         
         bool permission = CourierManager.HasPermission(requesterId, courierId);
         if (!permission)
-            throw new UnauthorizedAccessException("Requester does not have permission to access this courier's information.");
+            throw new BlUnauthorizedAccessException("Requester does not have permission to access this courier's information.");
        
         var boCourier = CourierManager.ConvertToBO(courierId);
 

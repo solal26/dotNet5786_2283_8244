@@ -1,5 +1,6 @@
 ﻿
 
+using BlApi;
 using BO;
 using DalApi;
 using DO;
@@ -8,52 +9,114 @@ namespace Helpers;
 
 internal static class CourierManager
 {
-    private static IDal s_dal = Factory.Get;
+    private static IDal s_dal = DalApi.Factory.Get;
     internal static void ValidateId(int id)
     {
-        if (id <= 0)
-            throw new ArgumentException("Id must be positive.");
+        if (id <100000000||id>999999999)
+            throw new BlInvalidValueException("Id not valid.");
     }
-
     internal static void ValidateName(string name)
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length < 2)
-            throw new ArgumentException("Name must be at least 2 characters.");
+            throw new BlInvalidValueException("Name must be at least 2 characters.");
     }
-
     internal static void ValidatePhone(string phone)
     {
-        if (phone == null || phone.Length != 10 || !phone.StartsWith("0") || !long.TryParse(phone, out _))
-            throw new ArgumentException("Phone must be 10 digits starting with 0.");
-    }
+        if (string.IsNullOrWhiteSpace(phone))
+            throw new BlInvalidValueException("Phone number cannot be empty.");
 
+        if (phone.Length != 10)
+            throw new BlInvalidValueException("Phone number must be exactly 10 digits long.");
+
+        if (!phone.StartsWith("0"))
+            throw new BlInvalidValueException("Phone number must start with '0'.");
+
+        if (!long.TryParse(phone, out _))
+            throw new BlInvalidValueException("Phone number must contain only digits.");
+    }
     internal static void ValidateEmail(string email)
     {
-        if (string.IsNullOrWhiteSpace(email) || !email.Contains("@"))
-            throw new ArgumentException("Invalid email format.");
-    }
+        if (string.IsNullOrWhiteSpace(email))
+            throw new BlNullPropertyException("Email cannot be empty.");
 
-    internal static void ValidateAddress(string address)
-    {
-        if (string.IsNullOrWhiteSpace(address))
-            throw new ArgumentException("Address cannot be empty.");
-    }
+        int atCount = email.Count(c => c == '@');
+        if (atCount != 1)
+            throw new BlInvalidValueException("Email must contain exactly one '@'.");
 
+        int atIndex = email.IndexOf('@');
+        string localPart = email.Substring(0, atIndex);
+        string domainPart = email.Substring(atIndex + 1).ToLowerInvariant();
+
+        if (string.IsNullOrWhiteSpace(localPart))
+            throw new BlInvalidValueException("Email local part cannot be empty.");
+
+        string[] validDomains = { "gmail.com", "yahoo.com", "outlook.com", "hotmail.com", "icloud.com" };
+        if (!validDomains.Contains(domainPart))
+            throw new BlInvalidValueException($"Email domain must be one of: {string.Join(", ", validDomains)}");
+    }
     internal static void ValidateDistance(double? distance)
     {
         if (distance.HasValue && distance < 0)
-            throw new ArgumentException("Distance cannot be negative.");
+            throw new BlInvalidValueException("Distance cannot be negative.");
     }
-
-    internal static bool HasPermission(int requesterId, int courierId=0)
+    internal static void ValidateWeight(double Weight)
     {
-        
-       if (s_dal.Config.ManagerId == requesterId)
-            return true;    
-        if (requesterId == courierId)
+        if (Weight < 0)
+            throw new BlInvalidValueException("Weight cannot be negative.");
+    }
+    internal static bool HasPermission(int requesterId, int courierId = 0)
+    {
+      
+        if (s_dal.Config.ManagerId == requesterId)
+            return true;
+        if (requesterId == courierId && courierId != 0)
             return true;
         return false;
     }
+    internal static void ValidateStartDate(DateTime start)
+    {
+        if (start > s_dal.Config.Clock)
+            throw new BlInvalidDateException("Start date cannot be in the future.");
+    }
+    internal static void AddCourierDo(BO.Courier courier)
+    {
+        if (courier == null)
+            throw new BlNullPropertyException(nameof(courier));
+        ValidateId(courier.Id);
+        ValidateName(courier.FullName);
+        ValidatePhone(courier.Phone);
+        ValidateEmail(courier.Email);
+        ValidateDistance(courier.MaxDeliveryDistance);
+        ValidateStartDate(courier.StartDate);
+
+        
+        var doCourier = new DO.Courier
+        {
+            Id = courier.Id,
+            Name = courier.FullName,
+            PhoneNumber = courier.Phone,
+            Email = courier.Email,
+            Code = courier.Password,
+            Active = courier.Active,
+            Distance = courier.MaxDeliveryDistance,
+            typeofshipment = (DO.TypeOfShipment)courier.DeliveryType,
+            TimeBegin = courier.StartDate
+        };
+
+        try
+        {
+            s_dal.Courier.Create(doCourier);
+        }
+        catch (DalAlreadyExistsException ex)
+        {
+            throw new BlAlreadyExistsException("Courier with the same ID already exists.", ex);
+        }
+        catch (DalDoesNotExistException ex)
+        {
+            throw new BlDoesNotExistException("Related entity does not exist.", ex);
+        }
+    }
+
     internal static IEnumerable<BO.CourierInList> GetAllCouriersInList()
     {
         var allDoCouriers = s_dal.Courier.ReadAll(); 
@@ -70,7 +133,6 @@ internal static class CourierManager
             CurrentOrderId = GetCurrentOrder(c.Id)?.OrderId
         });
     }
-
 
     internal static void PeriodicCouriersUpdates()
     {
@@ -146,8 +208,6 @@ internal static class CourierManager
             .Count();
             
     }
-
-
 
     internal static BO.OrderInProgress? GetCurrentOrder(int courierId)
     {

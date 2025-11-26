@@ -28,10 +28,10 @@ public class BlInvalidValueException : Exception
 }
 
 [Serializable]
-public class BlInvalidDateOrderException : Exception
+public class BlInvalidDateException : Exception
 {
-    public BlInvalidDateOrderException(string? message) : base(message) { }
-    public BlInvalidDateOrderException(string message, Exception innerException)
+    public BlInvalidDateException(string? message) : base(message) { }
+    public BlInvalidDateException(string message, Exception innerException)
         : base(message, innerException) { }
 
 }
@@ -40,6 +40,9 @@ public class BlInvalidDateOrderException : Exception
 public class BlNullPropertyException : Exception
 {
     public BlNullPropertyException(string? message) : base(message) { }
+    public BlNullPropertyException(string message, Exception innerException)
+        : base(message, innerException) { }
+
 }
 
 [Serializable]
@@ -50,6 +53,14 @@ public class BlUnauthorizedAccessException : Exception
         : base(message, innerException) { }
 }
 
+[Serializable]
+public class BlInvalidAddressException : Exception
+{
+    public BlInvalidAddressException(string? message) : base(message) { }
+    public BlInvalidAddressException(string message, Exception innerException)
+        : base(message, innerException) { }
+
+}
 
 
 
