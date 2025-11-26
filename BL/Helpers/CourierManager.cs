@@ -45,7 +45,7 @@ internal static class CourierManager
             throw new ArgumentException("Distance cannot be negative.");
     }
 
-    internal static bool HasPermission(int requesterId, int courierId)
+    internal static bool HasPermission(int requesterId, int courierId=0)
     {
         
        if (s_dal.Config.ManagerId == requesterId)

@@ -6,7 +6,7 @@ using Helpers;
 
 internal class CourierImplementation : BlApi.ICourier
 {
-    public void AddCourier(int requesterId, Courier courier)
+    public void AddCourier(int requesterId, BO.Courier courier)
     {
         throw new NotImplementedException();
     }

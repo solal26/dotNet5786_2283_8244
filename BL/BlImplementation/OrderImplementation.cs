@@ -3,13 +3,19 @@ namespace BlImplementation;
 
 using System.Collections.Generic;
 using BlApi;
-using BO;   
+using BO;
+using Helpers;
 
 internal class OrderImplementation : IOrder
 {
-    public void AddOrder(int requesterId, Order order)
+    public void AddOrder(int requesterId, BO.Order order)
     {
-        throw new NotImplementedException();
+        bool permission = CourierManager.HasPermission(requesterId);
+        if (!permission)
+            throw new UnauthorizedAccessException("Requester does not have permission to add this order.");
+
+        OrderManager.AddOrdeDo(order);
+
     }
 
     public void CancelOrder(int requesterId, int orderId)
@@ -57,7 +63,7 @@ internal class OrderImplementation : IOrder
         throw new NotImplementedException();
     }
 
-    public void UpdateOrder(int requesterId, Order order)
+    public void UpdateOrder(int requesterId, BO.Order order)
     {
         throw new NotImplementedException();
     }
