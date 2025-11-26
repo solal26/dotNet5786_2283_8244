@@ -20,12 +20,19 @@ internal class OrderImplementation : IOrder
 
     public void CancelOrder(int requesterId, int orderId)
     {
-        throw new NotImplementedException();
-    }
+        bool permission = CourierManager.HasPermission(requesterId);
+        if (!permission)
+            throw new BlUnauthorizedAccessException("Requester does not have permission to add this order.");
 
+        OrderManager.CancelOrderDo(orderId);
+
+    }
     public void ChooseOrderForDelivery(int requesterId, int courierId, int orderId)
     {
-        throw new NotImplementedException();
+        if (!CourierManager.HasPermission(requesterId, courierId))
+            throw new BlUnauthorizedAccessException("Requester does not have permission to assign this order.");
+
+        OrderManager.ChooseOrderForDeliveryDo(courierId, orderId);
     }
 
     public void CompleteOrderDelivery(int requesterId, int courierId, int deliveryId)

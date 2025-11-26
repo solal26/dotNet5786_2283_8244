@@ -61,7 +61,21 @@ public class BlInvalidAddressException : Exception
         : base(message, innerException) { }
 
 }
+[Serializable]
+public class BlInvalidRequestException : Exception
+{
+    public BlInvalidRequestException(string? message) : base(message) { }
+    public BlInvalidRequestException(string message, Exception innerException)
+        : base(message, innerException) { }
+}
 
+[Serializable]
+public class BLTemporaryNotAvailableException : Exception
+{
+    public BLTemporaryNotAvailableException(string? message) : base(message) { }
+    public BLTemporaryNotAvailableException(string message, Exception innerException)
+        : base(message, innerException) { }
+}
 
 
 

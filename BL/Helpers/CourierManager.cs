@@ -133,7 +133,6 @@ internal static class CourierManager
             CurrentOrderId = GetCurrentOrder(c.Id)?.OrderId
         });
     }
-
     internal static void PeriodicCouriersUpdates()
     {
         DateTime now = s_dal.Config.Clock;
@@ -208,7 +207,6 @@ internal static class CourierManager
             .Count();
             
     }
-
     internal static BO.OrderInProgress? GetCurrentOrder(int courierId)
     {
         DateTime currentClock = s_dal.Config.Clock;
@@ -244,37 +242,9 @@ internal static class CourierManager
             StartTime = currentClock,
             ExpectedDeliveryTime = CalculateExpectedDeliveryTime(delivery.typeofshipment, Airdistance),
             MaxDeliveryTime = maxDelivery,
-            OrderStatus = CalculateOrderStatus(order.OrderId),
+            OrderStatus = OrderManager.CalculateOrderStatus(order.OrderId),
             ScheduleStatus = CalculateScheduleStatus(order.OrderId),
             TimeRemaining = maxDelivery - currentClock
-        };
-    }
-    internal static BO.OrderStatus CalculateOrderStatus(int orderId)
-    {
-        var order = s_dal.Order.Read(orderId);
-        if (order == null)
-            throw new KeyNotFoundException($"Order with ID {orderId} not found.");
-
-      
-        var deliveries = s_dal.Delivery.ReadAll()
-                            .Where(d => d.OrderId == orderId)
-                            .OrderByDescending(d => d.TimeBegin)
-                            .ToList();
-
-        if (!deliveries.Any())
-            return BO.OrderStatus.Open; 
-
-        var activeDelivery = deliveries.FirstOrDefault(d => d.TimeEnd == null);
-        if (activeDelivery != null)
-            return BO.OrderStatus.InProgress; 
-
-        var lastDelivery = deliveries.First(); 
-        return lastDelivery.endcour switch
-        {
-            Endofcourier.Delivered => BO.OrderStatus.Delivered,          
-            Endofcourier.Refused => BO.OrderStatus.Refused,
-            Endofcourier.Canceled => BO.OrderStatus.Cancelled,           
-            _ => BO.OrderStatus.Open 
         };
     }
     internal static BO.ScheduleStatus CalculateScheduleStatus(int orderId)
@@ -293,7 +263,6 @@ internal static class CourierManager
         else
             return BO.ScheduleStatus.Late;
     }
-
     internal static DateTime CalculateExpectedDeliveryTime(TypeOfShipment t, double distanceKm)
     {
         double speedKmh = t switch
@@ -308,12 +277,10 @@ internal static class CourierManager
         double hours = distanceKm / speedKmh;
         return s_dal.Config.Clock.AddHours(hours);
     }
-
     internal static DateTime CalculateMaxDeliveryTime(DateTime Open)
     {
         return Open.Add(s_dal.Config.MaxDeliveryTime);
     }
-
     private static double CalculateAirDistance(double destLat, double destLon)
     {
         if (!s_dal.Config.Latitude.HasValue || !s_dal.Config.Longitude.HasValue)
@@ -333,7 +300,6 @@ internal static class CourierManager
         double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
         return R * c;
     }
-
     private static double ToRadians(double angle) => angle * Math.PI / 180.0;
 
 }
