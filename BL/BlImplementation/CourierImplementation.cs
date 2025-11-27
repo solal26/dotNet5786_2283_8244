@@ -17,7 +17,7 @@ internal class CourierImplementation : BlApi.ICourier
     }
     public void DeleteCourier(int requesterId, int courierId)
     {
-        throw new NotImplementedException();
+        CourierManager.DeleteCourier(requesterId, courierId);
     }
 
     public BO.Courier GetCourier(int requesterId, int courierId)

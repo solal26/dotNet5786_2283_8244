@@ -117,6 +117,39 @@ internal static class CourierManager
         }
     }
 
+    internal static void DeleteCourier(int requesterId, int courierId)
+    {
+        if (!HasPermission(requesterId,courierId))
+        {
+            throw new BlUnauthorizedAccessException($"Requester ID={requesterId} is not authorized to delete a courier. Only the administrator is allowed.");
+        }
+
+        // Check if the courier is currently in delivery (DeliveryEndTime == null)
+        bool isInDelivery = s_dal.Delivery.ReadAll(d => d.CourierId == courierId && d.TimeEnd == null).Any();
+
+        if (isInDelivery)
+        {
+            throw new BlInvalidRequestException($"Courier ID={courierId} cannot be deleted because they are currently handling a delivery.");
+        }
+
+        // Check if the courier has any past delivery history (DeliveryEndTime != null)
+        bool hasPastDelivery = s_dal.Delivery.ReadAll(d => d.CourierId == courierId && d.TimeEnd != null).Any();
+
+        if (hasPastDelivery)
+        {
+            throw new BlInvalidRequestException($"Courier ID={courierId} cannot be deleted because they have a delivery history.");
+        }
+
+        try
+        {
+            s_dal.Courier.Delete(courierId);
+        }
+        catch (DalDoesNotExistException ex)
+        {
+            throw new BO.BlDoesNotExistException($"Courier ID={courierId} does not exist.", ex);
+        }
+    }
+
     internal static IEnumerable<BO.CourierInList> GetAllCouriersInList()
     {
         var allDoCouriers = s_dal.Courier.ReadAll(); 
