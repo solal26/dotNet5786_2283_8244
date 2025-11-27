@@ -2,6 +2,7 @@
 using BlApi;
 using BO;
 using DalApi;
+using DO;
 using Helpers;
 
 internal class CourierImplementation : BlApi.ICourier
@@ -58,8 +59,8 @@ internal class CourierImplementation : BlApi.ICourier
         throw new NotImplementedException();
     }
 
-    public void UpdateCourier(int requesterId, Courier courier)
+    public void UpdateCourier(int requesterId, BO.Courier boCourier)
     {
-        throw new NotImplementedException();
+        CourierManager.UpdateCourier(requesterId, boCourier);
     }
 }

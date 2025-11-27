@@ -4,6 +4,7 @@ using BlApi;
 using BO;
 using DalApi;
 using DO;
+using System.Diagnostics.Metrics;
 
 namespace Helpers;
 
@@ -148,6 +149,78 @@ internal static class CourierManager
         {
             throw new BO.BlDoesNotExistException($"Courier ID={courierId} does not exist.", ex);
         }
+    }
+
+    internal static void UpdateCourier(int requesterId, BO.Courier boCourier)
+    {
+        // 1. Permission Check
+        if (!HasPermission(requesterId, boCourier.Id))
+        {
+            // If the requester is neither the Admin nor the Courier himself.
+            throw new BlUnauthorizedAccessException($"Requester ID={requesterId} is not authorized to update Courier ID={boCourier.Id}.");
+        }
+
+        // 2. Existence Check and retrieving the existing DO object
+        DO.Courier doCourier;
+        try
+        {
+            doCourier = s_dal.Courier.Read(boCourier.Id) ?? throw new BO.BlDoesNotExistException($"Courier ID={boCourier.Id} does not exist.");
+        }
+        catch (DO.DalDoesNotExistException ex)
+        {
+            // If DAL throws the exception
+            throw new BO.BlDoesNotExistException($"Courier ID={boCourier.Id} does not exist.", ex);
+        }
+
+        // 3. Validation and Business Rules Checks
+
+        // a. General Validation (format and basic range checks)
+        ValidateId(boCourier.Id);
+        ValidateName(boCourier.FullName);
+        ValidatePhone(boCourier.Phone);
+        ValidateEmail(boCourier.Email);
+        ValidateDistance(boCourier.MaxDeliveryDistance);
+        ValidateStartDate(boCourier.StartDate);
+
+
+        // b. Business Rule: 'IsActive' status can only be changed by the Administrator
+        if (boCourier.Active != doCourier.Active && requesterId != s_dal.Config.ManagerId)
+        {
+            throw new BlUnauthorizedAccessException($"Only the administrator can change the active status of Courier ID={boCourier.Id}.");
+        }
+
+        // c. Business Rule: 'ShipmentType' can only be changed if the courier is NOT currently in delivery
+        if (boCourier.DeliveryType != (BO.DeliveryType)doCourier.typeofshipment)
+        {
+            bool isInDelivery = s_dal.Delivery.ReadAll(d => d.CourierId == boCourier.Id && d.TimeEnd == null).Any();
+            if (isInDelivery)
+            {
+                throw new BlInvalidRequestException($"Cannot change the shipment type for Courier ID={boCourier.Id} while they are currently handling a delivery.");
+            }
+        }
+
+        // d. Business Rule: 'MaxAirDistance' cannot exceed the company's maximum
+        if (boCourier.MaxDeliveryDistance > s_dal.Config.MaxRange)
+        {
+            throw new BlInvalidValueException($"The maximum air distance ({boCourier.MaxDeliveryDistance} km) cannot exceed the company's maximum ({s_dal.Config.MaxRange} km).");
+        }
+
+
+        // 4. Create the updated DO object (using 'with' if DO.Courier is a record)
+        DO.Courier updatedCourier = doCourier with
+        {
+            Name = boCourier.FullName,
+            PhoneNumber = boCourier.Phone,
+            Email = boCourier.Email,
+            Active = boCourier.Active,
+            Distance = boCourier.MaxDeliveryDistance,
+            typeofshipment = (DO.TypeOfShipment)boCourier.DeliveryType, // Type casting of ENUM
+
+            // Non-modifiable fields keep their original DO value
+        };
+
+        // 5. Call DAL for update
+        s_dal.Courier.Update(updatedCourier);
     }
 
     internal static IEnumerable<BO.CourierInList> GetAllCouriersInList()

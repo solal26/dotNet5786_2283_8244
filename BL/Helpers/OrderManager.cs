@@ -48,6 +48,68 @@ internal static class OrderManager
         
     }
 
+    // In Helpers/OrderManager.cs
+
+   
+
+    internal static void UpdateOrder(int requesterId, BO.Order boOrder)
+    {
+        // 1. Permission Check: Only the Manager can update an Order
+        if (requesterId != s_dal.Config.ManagerId)
+        {
+            throw new BlUnauthorizedAccessException($"Requester ID={requesterId} is not authorized to update Order ID={boOrder.Id}. Only the administrator is allowed.");
+        }
+
+        // 2. Existence Check and retrieving the existing DO object
+        DO.Order doOrder;
+        try
+        {
+            doOrder = s_dal.Order.Read(boOrder.Id) ?? throw new BO.BlDoesNotExistException($"Order ID={boOrder.Id} does not exist.");
+        }
+        catch (DO.DalDoesNotExistException ex)
+        {
+            throw new BO.BlDoesNotExistException($"Order ID={boOrder.Id} does not exist.", ex);
+        }
+
+        // 3. Status Check: Order must be 'Open' to be updated
+
+        // Check if the Order has any deliveries that resulted in a final closure
+        bool isClosed = s_dal.Delivery.ReadAll(d => d.OrderId == boOrder.Id && d.TimeEnd != null
+                                              && d.endcour != DO.Endofcourier.NotHere).Any();
+
+        if (isClosed)
+        {
+            throw new BO.BlInvalidRequestException($"Order ID={boOrder.Id} cannot be updated because it is closed.");
+        }
+
+        // 4. Validation (Format Check) and Address Logic
+
+        //ValidateOrderProperties(boOrder);
+        CourierManager.ValidateName(boOrder.CustomerName);
+        CourierManager.ValidateWeight(boOrder.Weight);
+        CourierManager.ValidatePhone(boOrder.CustomerPhone);
+        ValidateFullAddress(boOrder.FullAddress);//
+        ValidateAddress(boOrder.FullAddress);
+
+
+        // 5. Create the updated DO object
+        DO.Order updatedOrder = doOrder with
+        {
+            typeOfOrder = (DO.TypeOfOrder)boOrder.Type,
+            VerbalDescription = boOrder.Description,
+            ShippingAddress = boOrder.FullAddress,
+            Latitude = boOrder.Latitude,
+            Longitude = boOrder.Longitude,
+            CustomerName = boOrder.CustomerName,
+            CustomerPhone = boOrder.CustomerPhone,
+            // Map other BO fields to DO fields
+        };
+
+        // 6. Call DAL for update
+        s_dal.Order.Update(updatedOrder);
+    }
+
+
     private static readonly HttpClient client = new HttpClient();
     public static (double Latitude, double Longitude) ValidateAddress(string address)
     {

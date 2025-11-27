@@ -18,6 +18,8 @@ internal class OrderImplementation : IOrder
 
     }
 
+
+
     public void CancelOrder(int requesterId, int orderId)
     {
         bool permission = CourierManager.HasPermission(requesterId);
@@ -42,7 +44,8 @@ internal class OrderImplementation : IOrder
 
     public void DeleteOrder(int requesterId, int orderId)
     {
-        throw new NotImplementedException();
+        throw new BlInvalidRequestException($"Order ID={orderId} cannot be deleted from the system. Orders can only be cancelled or completed.");
+    
     }
 
     public IEnumerable<ClosedDeliveryInList> GetClosedDeliveries(int requesterId, int courierId, ClosedDeliveryInListFilter? filterType = null, ClosedDeliveryInListSort? sortBy = null)
@@ -72,6 +75,6 @@ internal class OrderImplementation : IOrder
 
     public void UpdateOrder(int requesterId, BO.Order order)
     {
-        throw new NotImplementedException();
+        OrderManager.UpdateOrder(requesterId, order);
     }
 }
