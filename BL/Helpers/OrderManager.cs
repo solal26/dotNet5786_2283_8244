@@ -415,39 +415,67 @@ internal static class OrderManager
 
         return orderedList;
     }
-
-        // 4. Sorting Logic (using your ClosedDeliveryInListSort enum)
-        IOrderedEnumerable<BO.ClosedDeliveryInList> orderedList;
-
-        if (sortBy == null)
+    internal static BO.Order convertToBO(int orderId)
+    {
+        try
         {
-            // Default sort: Sort by ScheduleStatus (most logical for performance history)
-            orderedList = listToFilter.OrderBy(bdl => bdl.ScheduleStatus);
-        }
-        else
-        {
-            // Sort by the specific property requested
-            switch (sortBy.Value)
+            var doOrder = s_dal.Order.Read(orderId);
+            var boOrder = new BO.Order
             {
-                case BO.ClosedDeliveryInListSort.DeliveryId:
-                    orderedList = listToFilter.OrderBy(bdl => bdl.Id);
-                    break;
-                case BO.ClosedDeliveryInListSort.OrderId:
-                    orderedList = listToFilter.OrderBy(bdl => bdl.OrderId);
-                    break;
-                case BO.ClosedDeliveryInListSort.ActualDistance:
-                    orderedList = listToFilter.OrderByDescending(bdl => bdl.ActualDistance);
-                    break;
-                case BO.ClosedDeliveryInListSort.CompletionTime:
-                    orderedList = listToFilter.OrderBy(bdl => bdl.FinishTime);
-                    break;
-                default:
-                    // Fallback to ScheduleStatus if the enum value is not handled
-                    orderedList = listToFilter.OrderBy(bdl => bdl.ScheduleStatus);
-                    break;
-            }
+                Id = doOrder.Id,
+                CustomerName = doOrder.CustomerName,
+                CustomerPhone = doOrder.CustomerPhone,
+                FullAddress = doOrder.FullAddress,
+                Weight = doOrder.Weight,
+                Description = doOrder.Description,
+                Type = (BO.OrderType)doOrder.Type,
+                OrderStatus = (BO.OrderStatus)doOrder.OrderStatus,
+                ScheduleStatus = (BO.ScheduleStatus)doOrder.ScheduleStatus,
+                PlacedTime = doOrder.PlacedTime,
+                AssignedTime = doOrder.AssignedTime,
+                PickedUpTime = doOrder.PickedUpTime,
+                DeliveredTime = doOrder.DeliveredTime
+            };
+            return boOrder;
         }
-
-        return orderedList;
+        catch (DO.DalDoesNotExistException ex)
+        {
+            throw new BlDoesNotExistException($"Order with ID={orderId} not found.", ex);
+        }
     }
-}
+
+//        // 4. Sorting Logic (using your ClosedDeliveryInListSort enum)
+//        IOrderedEnumerable<BO.ClosedDeliveryInList> orderedList
+
+//        if (sortBy == null)
+//        {
+//            // Default sort: Sort by ScheduleStatus (most logical for performance history)
+//            orderedList = listToFilter.OrderBy(bdl => bdl.ScheduleStatus);
+//        }
+//        else
+//        {
+//            // Sort by the specific property requested
+//            switch (sortBy.Value)
+//            {
+//                case BO.ClosedDeliveryInListSort.DeliveryId:
+//                    orderedList = listToFilter.OrderBy(bdl => bdl.Id);
+//                    break;
+//                case BO.ClosedDeliveryInListSort.OrderId:
+//                    orderedList = listToFilter.OrderBy(bdl => bdl.OrderId);
+//                    break;
+//                case BO.ClosedDeliveryInListSort.ActualDistance:
+//                    orderedList = listToFilter.OrderByDescending(bdl => bdl.ActualDistance);
+//                    break;
+//                case BO.ClosedDeliveryInListSort.CompletionTime:
+//                    orderedList = listToFilter.OrderBy(bdl => bdl.FinishTime);
+//                    break;
+//                default:
+//                    // Fallback to ScheduleStatus if the enum value is not handled
+//                    orderedList = listToFilter.OrderBy(bdl => bdl.ScheduleStatus);
+//                    break;
+//            }
+//        }
+
+//        return orderedList;
+//    }
+//}

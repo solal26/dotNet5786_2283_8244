@@ -4,6 +4,7 @@ namespace BlImplementation;
 using System.Collections.Generic;
 using BlApi;
 using BO;
+using DalApi;
 using Helpers;
 
 internal class OrderImplementation : IOrder
@@ -54,7 +55,7 @@ internal class OrderImplementation : IOrder
     public void DeleteOrder(int requesterId, int orderId)
     {
         throw new BlInvalidRequestException($"Order ID={orderId} cannot be deleted from the system. Orders can only be cancelled or completed.");
-    
+
     }
 
     public IEnumerable<ClosedDeliveryInList> GetClosedDeliveries(int requesterId, int courierId, ClosedDeliveryInListFilter? filterType = null, ClosedDeliveryInListSort? sortBy = null)
@@ -72,7 +73,10 @@ internal class OrderImplementation : IOrder
 
     public Order GetOrder(int requesterId, int orderId)
     {
-        throw new NotImplementedException();
+        bool permission = CourierManager.HasPermission(requesterId);
+        if (!permission)
+            throw new BlUnauthorizedAccessException("Requester does not have permission to add this order.");
+        return OrderManager.convertToBO(orderId);
     }
 
     public IEnumerable<OrderInList> GetOrdersList(int requesterId, OrderInListFilter? filterField = null, object? filterValue = null, OrderInListSort? sortBy = null)
@@ -84,6 +88,10 @@ internal class OrderImplementation : IOrder
     {
         throw new NotImplementedException();
     }
+}
 
   
-}
+
+
+
+   
