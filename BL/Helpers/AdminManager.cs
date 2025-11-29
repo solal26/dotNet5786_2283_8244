@@ -1,4 +1,5 @@
 ﻿//using BO;
+using System.Net;
 using System.Runtime.CompilerServices;
 
 namespace Helpers;
@@ -58,8 +59,8 @@ internal static class AdminManager //stage 4
         ManagerId = s_dal.Config.ManagerId,
         ManagerPassword = s_dal.Config.ManagerPassword,
         CompanyAddress = s_dal.Config.CompanyAddress,
-        Latitude = s_dal.Config.Latitude,
-        Longitude = s_dal.Config.Longitude,
+        Latitude = OrderManager.ValidateAddress(s_dal.Config.CompanyAddress).Latitude,
+        Longitude = OrderManager.ValidateAddress(s_dal.Config.CompanyAddress).Longitude,
         AvgCarSpeed = s_dal.Config.AvgCarSpeed,
         AvgMotorbikeSpeed = s_dal.Config.AvgMotorbikeSpeed,
         AvgBicycleSpeed = s_dal.Config.AvgBicycleSpeed,
