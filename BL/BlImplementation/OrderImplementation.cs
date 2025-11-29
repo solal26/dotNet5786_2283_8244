@@ -18,6 +18,11 @@ internal class OrderImplementation : IOrder
 
     }
 
+    public void UpdateOrder(int requesterId, BO.Order order)
+    {
+        OrderManager.UpdateOrder(requesterId, order);
+    }
+
 
 
     public void CancelOrder(int requesterId, int orderId)
@@ -39,7 +44,11 @@ internal class OrderImplementation : IOrder
 
     public void CompleteOrderDelivery(int requesterId, int courierId, int deliveryId)
     {
-        throw new NotImplementedException();
+        bool permission = CourierManager.HasPermission(requesterId);
+        if (!permission)
+            throw new BlUnauthorizedAccessException("Requester does not have permission to add this order.");
+        OrderManager.CompleteOrderDeliveryDo(courierId, deliveryId);
+
     }
 
     public void DeleteOrder(int requesterId, int orderId)
@@ -50,7 +59,10 @@ internal class OrderImplementation : IOrder
 
     public IEnumerable<ClosedDeliveryInList> GetClosedDeliveries(int requesterId, int courierId, ClosedDeliveryInListFilter? filterType = null, ClosedDeliveryInListSort? sortBy = null)
     {
-        throw new NotImplementedException();
+        bool permission = CourierManager.HasPermission(requesterId);
+        if (!permission)
+            throw new BlUnauthorizedAccessException("Requester does not have permission to add this order.");
+        return OrderManager.GetClosedDeliveriesForCourier(courierId, filterType, sortBy);
     }
 
     public IEnumerable<OpenOrderInList> GetOpenOrdersForCourier(int requesterId, int courierId, OpenOrderInListFilter? filterType = null, OpenOrderInListSort? sortBy = null)
@@ -73,8 +85,5 @@ internal class OrderImplementation : IOrder
         throw new NotImplementedException();
     }
 
-    public void UpdateOrder(int requesterId, BO.Order order)
-    {
-        OrderManager.UpdateOrder(requesterId, order);
-    }
+  
 }

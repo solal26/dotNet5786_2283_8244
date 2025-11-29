@@ -209,6 +209,50 @@ internal static class OrderManager
         }
     }
 
+    internal static void CompleteOrderDeliveryDo(int courierId,int  deliveryId)
+    {
+        //Read existing DO.Delivery object
+        DO.Delivery doDelivery;
+        try
+        {
+            doDelivery = s_dal.Delivery.Read(deliveryId)
+                         ?? throw new BO.BlDoesNotExistException($"Delivery ID={deliveryId} does not exist.");
+        }
+        catch (DO.DalDoesNotExistException ex)
+        {
+            throw new BO.BlDoesNotExistException($"Delivery ID={deliveryId} does not exist.", ex);
+        }
+
+        
+
+        // Ensure the delivery belongs to the requesting courier.
+        if (doDelivery.CourierId != courierId)
+        {
+            throw new BO.BlInvalidRequestException($"Delivery ID={deliveryId} is not assigned to Courier ID={courierId}.");
+        }
+
+        //Ensure the delivery is not already completed (DeliveryEndTime must be null).
+        if (doDelivery.endcour.HasValue)
+        {
+            throw new BO.BlInvalidRequestException($"Delivery ID={deliveryId} is already completed.");
+        }
+
+        // Update DO.Delivery fields
+
+        // Get the current system time
+        DateTime finishTime = AdminManager.Now;
+
+        DO.Delivery updatedDelivery = doDelivery with
+        {
+            endcour = DO.Endofcourier.Delivered, // Set the completion type to "Supplied"
+            TimeEnd = finishTime          // Update the completion time using system clock
+        };
+
+        
+        s_dal.Delivery.Update(updatedDelivery);
+
+    }
+
 
 
     internal static BO.OrderStatus CalculateOrderStatus(int orderId)
@@ -284,5 +328,108 @@ internal static class OrderManager
         {
             throw new BlAlreadyExistsException("Delivery for this order already exists.", ex);
         }
+    }
+
+    internal static IEnumerable<ClosedDeliveryInList> GetClosedDeliveriesForCourier(int courierId, ClosedDeliveryInListFilter? filterType, ClosedDeliveryInListSort? sortBy)
+    {
+        // 2. Read all closed deliveries (DeliveryEndTime.HasValue) and map to BO.
+        var listToFilter = s_dal.Delivery.ReadAll(d =>
+            d.CourierId == courierId && d.TimeEnd.HasValue)
+            .Select(doDelivery =>
+            {
+                // Read related DO.Order for enrichment.
+                DO.Order doOrder = s_dal.Order.Read(doDelivery.OrderId)
+                                   ?? throw new DalDoesNotExistException($"Order ID={doDelivery.OrderId} for Delivery ID={doDelivery.Id} not found.");
+
+                // Calculate Schedule Status (BL logic).
+                //BO.ScheduleStatus status = CalculateScheduleStatus(doDelivery, doOrder);
+
+                return new BO.ClosedDeliveryInList
+                {
+                    DeliveryId = doDelivery.Id,
+                    OrderId = doOrder.OrderId,
+                    //FinishTime = doDelivery.DeliveryEndTime!.Value,
+                    OrderType = (BO.OrderType)doOrder.typeOfOrder,
+                    DeliveryType = (BO.DeliveryType)doDelivery.typeofshipment,
+                    EndType = (BO.EndType)doDelivery.endcour!,
+                    //ScheduleStatus = status,
+                    ActualDistance = doDelivery.Distance!.Value
+                };
+            }).AsEnumerable();
+
+        // 3. Filtering Logic: Filter by OrderType (value of the 3rd parameter).
+        if (filterType.HasValue)
+        {
+            listToFilter = listToFilter.Where(bdl => bdl.OrderType == orderTypeFilter.Value);
+        }
+
+        // 4. Sorting Logic
+        IOrderedEnumerable<BO.ClosedDeliveryInList> orderedList;
+
+        if (sortBy == null)
+        {
+            // Default sort: Sort by ScheduleStatus.
+            orderedList = listToFilter.OrderBy(bdl => bdl.ScheduleStatus);
+        }
+        else
+        {
+            // Sort by the specific property requested.
+            switch (sortBy.Value)
+            {
+                case BO.ClosedDeliveryInListSort.DeliveryId:
+                    orderedList = listToFilter.OrderBy(bdl => bdl.Id);
+                    break;
+                case BO.ClosedDeliveryInListSort.OrderId:
+                    orderedList = listToFilter.OrderBy(bdl => bdl.OrderId);
+                    break;
+                case BO.ClosedDeliveryInListSort.ActualDistance:
+                    orderedList = listToFilter.OrderByDescending(bdl => bdl.ActualDistance);
+                    break;
+                case BO.ClosedDeliveryInListSort.CompletionTime:
+                    orderedList = listToFilter.OrderBy(bdl => bdl.FinishTime);
+                    break;
+                default:
+                    // Fallback sort
+                    orderedList = listToFilter.OrderBy(bdl => bdl.ScheduleStatus);
+                    break;
+            }
+        }
+
+        return orderedList;
+    }
+
+        // 4. Sorting Logic (using your ClosedDeliveryInListSort enum)
+        IOrderedEnumerable<BO.ClosedDeliveryInList> orderedList;
+
+        if (sortBy == null)
+        {
+            // Default sort: Sort by ScheduleStatus (most logical for performance history)
+            orderedList = listToFilter.OrderBy(bdl => bdl.ScheduleStatus);
+        }
+        else
+        {
+            // Sort by the specific property requested
+            switch (sortBy.Value)
+            {
+                case BO.ClosedDeliveryInListSort.DeliveryId:
+                    orderedList = listToFilter.OrderBy(bdl => bdl.Id);
+                    break;
+                case BO.ClosedDeliveryInListSort.OrderId:
+                    orderedList = listToFilter.OrderBy(bdl => bdl.OrderId);
+                    break;
+                case BO.ClosedDeliveryInListSort.ActualDistance:
+                    orderedList = listToFilter.OrderByDescending(bdl => bdl.ActualDistance);
+                    break;
+                case BO.ClosedDeliveryInListSort.CompletionTime:
+                    orderedList = listToFilter.OrderBy(bdl => bdl.FinishTime);
+                    break;
+                default:
+                    // Fallback to ScheduleStatus if the enum value is not handled
+                    orderedList = listToFilter.OrderBy(bdl => bdl.ScheduleStatus);
+                    break;
+            }
+        }
+
+        return orderedList;
     }
 }
