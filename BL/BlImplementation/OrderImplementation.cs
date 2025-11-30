@@ -71,7 +71,7 @@ internal class OrderImplementation : IOrder
         throw new NotImplementedException();
     }
 
-    public Order GetOrder(int requesterId, int orderId)
+    public BO.Order GetOrder(int requesterId, int orderId)
     {
         bool permission = CourierManager.HasPermission(requesterId);
         if (!permission)

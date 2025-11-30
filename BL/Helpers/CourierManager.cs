@@ -357,7 +357,7 @@ internal static class CourierManager
     {
         var order = s_dal.Order.Read(orderId);
         if (order == null)
-            throw new KeyNotFoundException($"Order with ID {orderId} not found.");
+            throw new BlDoesNotExistException($"Order with ID {orderId} not found.");
 
         DateTime maxDeliveryTime = order.OrderInitiation.Add(s_dal.Config.MaxDeliveryTime);
         TimeSpan timeRemaining = maxDeliveryTime - s_dal.Config.Clock;
@@ -387,7 +387,7 @@ internal static class CourierManager
     {
         return Open.Add(s_dal.Config.MaxDeliveryTime);
     }
-    private static double CalculateAirDistance(double destLat, double destLon)
+    internal static double CalculateAirDistance(double destLat, double destLon)
     {
         if (!s_dal.Config.Latitude.HasValue || !s_dal.Config.Longitude.HasValue)
             throw new InvalidOperationException("Company coordinates are not set in Config.");
