@@ -836,13 +836,13 @@ namespace BlTest
         }
         static void LoginCourier()
         {
-            Console.Write("Username: ");
-            string? username = Console.ReadLine();
+            Console.Write("IdUser: ");
+            int iduser = int.Parse(Console.ReadLine());
 
             Console.Write("Password: ");
             string? password = Console.ReadLine();
 
-            string result = s_bl.Courier.Login(username, password);
+            string result = s_bl.Courier.Login(iduser, password);
             Console.WriteLine(result);
         }
     }
