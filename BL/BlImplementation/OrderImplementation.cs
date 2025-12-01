@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using BlApi;
 using BO;
 using DalApi;
+using DO;
 using Helpers;
 
 internal class OrderImplementation : BlApi.IOrder
@@ -18,14 +19,10 @@ internal class OrderImplementation : BlApi.IOrder
         OrderManager.AddOrdeDo(order);
 
     }
-
     public void UpdateOrder(int requesterId, BO.Order order)
     {
         OrderManager.UpdateOrder(requesterId, order);
     }
-
-
-
     public void CancelOrder(int requesterId, int orderId)
     {
         bool permission = CourierManager.HasPermission(requesterId);
@@ -42,7 +39,6 @@ internal class OrderImplementation : BlApi.IOrder
 
         OrderManager.ChooseOrderForDeliveryDo(courierId, orderId);
     }
-
     public void CompleteOrderDelivery(int requesterId, int courierId, int deliveryId)
     {
         bool permission = CourierManager.HasPermission(requesterId);
@@ -51,13 +47,11 @@ internal class OrderImplementation : BlApi.IOrder
         OrderManager.CompleteOrderDeliveryDo(courierId, deliveryId);
 
     }
-
     public void DeleteOrder(int requesterId, int orderId)
     {
         throw new BlInvalidRequestException($"Order ID={orderId} cannot be deleted from the system. Orders can only be cancelled or completed.");
 
     }
-
     public IEnumerable<ClosedDeliveryInList> GetClosedDeliveries(int requesterId, int courierId, OrderType? filterType=null, ClosedDeliveryInListSort? sortBy = null)
     {
         bool permission = CourierManager.HasPermission(requesterId);
@@ -65,12 +59,20 @@ internal class OrderImplementation : BlApi.IOrder
             throw new BlUnauthorizedAccessException("Requester does not have permission to add this order.");
         return OrderManager.GetClosedDeliveriesForCourier(courierId, filterType, sortBy);
     }
-
-    public IEnumerable<OpenOrderInList> GetOpenOrdersForCourier(int requesterId, int courierId, OrderType? filterType = null, OpenOrderInListSort? sortBy = null)
+    public IEnumerable<OpenOrderInList> GetOpenOrdersForCourier(
+    int requesterId,
+    int courierId,
+    OrderType? filterType = null,
+    OpenOrderInListSort? sortBy = null)
     {
-        throw new NotImplementedException();
-    }
+        
+        bool permission = CourierManager.HasPermission(requesterId);
+        if (!permission)
+            throw new BlUnauthorizedAccessException("Requester does not have permission to view open orders.");
 
+       return OrderManager.GetOpenOrdersForACourier(courierId, filterType, sortBy);
+        
+    }
     public BO.Order GetOrder(int requesterId, int orderId)
     {
         bool permission = CourierManager.HasPermission(requesterId);
@@ -78,20 +80,24 @@ internal class OrderImplementation : BlApi.IOrder
             throw new BlUnauthorizedAccessException("Requester does not have permission to add this order.");
         return OrderManager.convertToBO(orderId);
     }
-
     public IEnumerable<OrderInList> GetOrdersList(int requesterId, OrderInListFilter? filterField = null, object? filterValue = null, OrderInListSort? sortBy = null)
     {
-        throw new NotImplementedException();
-    }
+        
+        if (!CourierManager.HasPermission(requesterId))
+            throw new BlUnauthorizedAccessException("Requester does not have permission to view orders.");
 
+       return OrderManager.GetordersList(filterField, filterValue, sortBy);
+    }
     public int[] GetOrdersSummary(int requesterId)
     {
-        throw new NotImplementedException();
+        bool permission = CourierManager.HasPermission(requesterId);
+        if (!permission)
+            throw new BlUnauthorizedAccessException("Requester does not have permission to add this order.");
+        return OrderManager.GetordersSummary();
     }
 }
 
-  
 
 
 
-   
+

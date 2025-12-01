@@ -14,7 +14,6 @@ public interface IOrder
              object? filterValue = null,
              OrderInListSort? sortBy = null);
 
-
     BO.Order GetOrder(int requesterId, int orderId);
 
     void UpdateOrder(int requesterId, BO.Order order);
@@ -32,12 +31,12 @@ public interface IOrder
     IEnumerable<BO.ClosedDeliveryInList> GetClosedDeliveries(
         int requesterId,
         int courierId,
-        ClosedDeliveryInListFilter? filterType = null,
+        OrderType? filterType = null,
         ClosedDeliveryInListSort? sortBy = null);
 
     IEnumerable<BO.OpenOrderInList> GetOpenOrdersForCourier(
         int requesterId,
         int courierId,
-        OpenOrderInListFilter? filterType = null,
+        OrderType? filterType = null,
         OpenOrderInListSort? sortBy = null);
 }

@@ -47,11 +47,6 @@ internal static class OrderManager
         }
 
     }
-
-    // In Helpers/OrderManager.cs
-
-
-
     internal static void UpdateOrder(int requesterId, BO.Order boOrder)
     {
         // 1. Permission Check: Only the Manager can update an Order
@@ -108,7 +103,6 @@ internal static class OrderManager
         // 6. Call DAL for update
         s_dal.Order.Update(updatedOrder);
     }
-
 
     private static readonly HttpClient client = new HttpClient();
     public static (double Latitude, double Longitude) ValidateAddress(string address)
@@ -208,7 +202,6 @@ internal static class OrderManager
 
         }
     }
-
     internal static void CompleteOrderDeliveryDo(int courierId, int deliveryId)
     {
         //Read existing DO.Delivery object
@@ -252,9 +245,38 @@ internal static class OrderManager
         s_dal.Delivery.Update(updatedDelivery);
 
     }
+    internal static int[] GetordersSummary()
+    {
+    
+        var allOrders = s_dal.Order.ReadAll(o => true);
 
+        int orderStatusCount = Enum.GetValues(typeof(BO.OrderStatus)).Length;
+        int scheduleStatusCount = Enum.GetValues(typeof(BO.ScheduleStatus)).Length;
 
+        int[] summaryArray = new int[orderStatusCount + scheduleStatusCount];
 
+        var orderStatusGroups = allOrders
+          .GroupBy(o => CalculateOrderStatus(o.OrderId))
+          .Select(g => new { Status = g.Key, Count = g.Count() });
+
+        foreach (var g in orderStatusGroups)
+        {
+            summaryArray[(int)g.Status] = g.Count;
+        }
+
+  
+        var scheduleStatusGroups = allOrders
+            .GroupBy(o => CalculateScheduleStatus(o.OrderId))
+            .Select(g => new { Schedule = g.Key, Count = g.Count() });
+
+        foreach (var g in scheduleStatusGroups)
+        {
+            summaryArray[orderStatusCount + (int)g.Schedule] = g.Count;
+        }
+
+        return summaryArray;
+
+    }
     internal static BO.OrderStatus CalculateOrderStatus(int orderId)
     {
 
@@ -288,6 +310,22 @@ internal static class OrderManager
             Endofcourier.Canceled => BO.OrderStatus.Cancelled,
             _ => BO.OrderStatus.Open
         };
+    }
+    internal static BO.ScheduleStatus CalculateScheduleStatus(int orderId)
+    {
+        var order = s_dal.Order.Read(orderId);
+        if (order == null)
+            throw new BlDoesNotExistException($"Order with ID {orderId} not found.");
+
+        DateTime maxDeliveryTime = order.OrderInitiation.Add(s_dal.Config.MaxDeliveryTime);
+        TimeSpan timeRemaining = maxDeliveryTime - s_dal.Config.Clock;
+
+        if (timeRemaining > s_dal.Config.RiskRange)
+            return BO.ScheduleStatus.OnTime;
+        else if (timeRemaining > TimeSpan.Zero)
+            return BO.ScheduleStatus.InRisk;
+        else
+            return BO.ScheduleStatus.Late;
     }
     internal static void ChooseOrderForDeliveryDo(int courierId, int orderId)
     {
@@ -329,8 +367,7 @@ internal static class OrderManager
             throw new BlAlreadyExistsException("Delivery for this order already exists.", ex);
         }
     }
-
-    internal static IEnumerable<ClosedDeliveryInList> GetClosedDeliveriesForCourier(int courierId, OrderType? filterType , ClosedDeliveryInListSort? sortBy)
+    internal static IEnumerable<ClosedDeliveryInList> GetClosedDeliveriesForCourier(int courierId, OrderType? filterType, ClosedDeliveryInListSort? sortBy)
     {
 
         var listToFilter = s_dal.Delivery.ReadAll(d =>
@@ -339,7 +376,7 @@ internal static class OrderManager
             {
 
                 DO.Order doOrder = s_dal.Order.Read(doDelivery.OrderId)
-                                   ?? throw new DalDoesNotExistException($"Order ID={doDelivery.OrderId} for Delivery ID={doDelivery.Id} not found.");
+                                   ?? throw new BlDoesNotExistException($"Order ID={doDelivery.OrderId} for Delivery ID={doDelivery.Id} not found.");
 
 
 
@@ -412,7 +449,7 @@ internal static class OrderManager
                 Description = doOrder.VerbalDescription,
                 Type = (BO.OrderType)doOrder.typeOfOrder,
                 OrderStatus = CalculateOrderStatus(doOrder.OrderId),
-                ScheduleStatus = CourierManager.CalculateScheduleStatus(doOrder.OrderId),
+                ScheduleStatus = CalculateScheduleStatus(doOrder.OrderId),
                 OpenTime = doOrder.OrderInitiation,
                 AirDistance = Airdistance,
                 ExpectedDeliveryTime = CourierManager.CalculateExpectedDeliveryTime(lastDelivery.typeofshipment, Airdistance),
@@ -431,7 +468,7 @@ internal static class OrderManager
                     EndTime = d.TimeEnd
                 })
                 .ToList(),
-           
+
 
             };
 
@@ -443,41 +480,136 @@ internal static class OrderManager
             throw new BlDoesNotExistException($"Order with ID={orderId} not found.", ex);
         }
     }
+    internal static IEnumerable<OpenOrderInList> GetOpenOrdersForACourier(int courierId, OrderType? filterType, OpenOrderInListSort? sortBy)
+    {
+        var doCourier = s_dal.Courier.Read(courierId);
+        var openOrders = s_dal.Order.ReadAll(o =>
+        {
+            bool hasDelivery = s_dal.Delivery.ReadAll(d => d.OrderId == o.OrderId).Any();
+            return !hasDelivery;
+        });
+
+
+        var openOrdersList = openOrders
+    .Select(o => new OpenOrderInList
+    {
+        CourierId = courierId,
+        OrderId = o.OrderId,
+        Type = (OrderType)o.typeOfOrder,
+        FullAddress = o.ShippingAddress,
+        Weight = o.weight,
+        AirDistance = CourierManager.CalculateAirDistance(o.Latitude, o.Longitude),
+        EstimatedActualTime = CourierManager.CalculateEstimatedActualTime(doCourier.typeofshipment, CourierManager.CalculateActualDistance(o.Latitude, o.Longitude, (DeliveryType)doCourier.typeofshipment)),
+        TimeRemaining = CourierManager.CalculateMaxDeliveryTime(o.OrderInitiation) - DateTime.Now,
+        MaxDeliveryTime = CourierManager.CalculateMaxDeliveryTime(o.OrderInitiation),
+        ScheduleStatus = CalculateScheduleStatus(o.OrderId),
+
+    })
+    .AsEnumerable();
+
+        if (filterType.HasValue)
+            openOrdersList = openOrdersList.Where(o => o.Type == filterType.Value);
+        if (!sortBy.HasValue)
+        {
+            openOrdersList = openOrdersList.OrderBy(d => d.ScheduleStatus);
+        }
+        else
+        {
+            openOrdersList = sortBy.Value switch
+            {
+                OpenOrderInListSort.Weight =>
+                    openOrdersList.OrderBy(d => d.Weight),
+
+                OpenOrderInListSort.OrderId =>
+                    openOrdersList.OrderBy(d => d.OrderId),
+
+                OpenOrderInListSort.ActualDistance =>
+                    openOrdersList.OrderBy(d => d.ActualDistance),
+
+                OpenOrderInListSort.AirDistance =>
+                    openOrdersList.OrderBy(d => d.AirDistance),
+
+                OpenOrderInListSort.EstimatedActualTime =>
+                    openOrdersList.OrderBy(d => d.EstimatedActualTime),
+
+                OpenOrderInListSort.TimeRemaining =>
+                    openOrdersList.OrderBy(d => d.TimeRemaining),
+
+                OpenOrderInListSort.MaxDeliveryTime =>
+                    openOrdersList.OrderBy(d => d.MaxDeliveryTime),
+
+                _ => openOrdersList.OrderBy(d => d.OrderId)
+            };
+        }
+
+        return openOrdersList;
+    }
+    internal static IEnumerable<OrderInList> GetordersList(OrderInListFilter? filterField, object? filterValue, OrderInListSort? sortBy)
+    {
+        var allOrders = s_dal.Order.ReadAll(o => true);
+        var allDeliveries = s_dal.Delivery.ReadAll(d => true);
+
+        var ordersWithLastDelivery = allOrders.Select(o =>
+        {
+            var deliveriesOfOrder = allDeliveries.Where(d => d.OrderId == o.OrderId).ToList();
+            var lastDelivery = deliveriesOfOrder
+                .OrderByDescending(d => d.TimeEnd ?? DateTime.MinValue)
+                .FirstOrDefault();
+
+            int totalDeliveries = deliveriesOfOrder.Count;
+
+            TimeSpan totalCompletion = lastDelivery != null && lastDelivery.TimeEnd.HasValue
+                ? lastDelivery.TimeEnd.Value - o.OrderInitiation
+                : TimeSpan.Zero;
+
+            bool isClosed = lastDelivery?.endcour.HasValue ?? false;
+
+            TimeSpan timeRemaining = !isClosed
+                ? o.OrderInitiation.Add(s_dal.Config.MaxDeliveryTime) - DateTime.Now
+                : TimeSpan.Zero;
+
+            double airDistance = CourierManager.CalculateAirDistance(o.Latitude, o.Longitude);
+
+            return new OrderInList
+            {
+                DeliveryId = lastDelivery?.Id,
+                OrderId = o.OrderId,
+                Type = (OrderType)o.typeOfOrder,
+                AirDistance = airDistance,
+                OrderStatus = CalculateOrderStatus(o.OrderId),
+                ScheduleStatus = CalculateScheduleStatus(o.OrderId),
+                TimeRemaining = timeRemaining > TimeSpan.Zero ? timeRemaining : TimeSpan.Zero,
+                TotalCompletionTime = totalCompletion > TimeSpan.Zero ? totalCompletion : TimeSpan.Zero,
+                TotalDeliveries = totalDeliveries
+            };
+        });
+
+     
+        if (filterField.HasValue && filterValue != null)
+        {
+            ordersWithLastDelivery = filterField.Value switch
+            {
+                OrderInListFilter.Type => ordersWithLastDelivery.Where(o => o.Type.Equals((OrderType)filterValue)),
+                OrderInListFilter.OrderStatus => ordersWithLastDelivery.Where(o => o.OrderStatus.Equals((OrderStatus)filterValue)),
+                OrderInListFilter.ScheduleStatus => ordersWithLastDelivery.Where(o => o.ScheduleStatus.Equals((ScheduleStatus)filterValue)),
+                _ => ordersWithLastDelivery
+            };
+        }
+
+        
+        ordersWithLastDelivery = sortBy switch
+        {
+            OrderInListSort.OrderId => ordersWithLastDelivery.OrderBy(o => o.OrderId),
+            OrderInListSort.AirDistance => ordersWithLastDelivery.OrderBy(o => o.AirDistance),
+            OrderInListSort.TimeRemaining => ordersWithLastDelivery.OrderBy(o => o.TimeRemaining),
+            OrderInListSort.TotalCompletionTime => ordersWithLastDelivery.OrderBy(o => o.TotalCompletionTime),
+            OrderInListSort.TotalDeliveries => ordersWithLastDelivery.OrderBy(o => o.TotalDeliveries),
+            _ => ordersWithLastDelivery.OrderBy(o => o.OrderStatus)
+        };
+
+        return ordersWithLastDelivery.AsEnumerable();
+    }
 }
-    
 
-//        // 4. Sorting Logic (using your ClosedDeliveryInListSort enum)
-//        IOrderedEnumerable<BO.ClosedDeliveryInList> orderedList
 
-//        if (sortBy == null)
-//        {
-//            // Default sort: Sort by ScheduleStatus (most logical for performance history)
-//            orderedList = listToFilter.OrderBy(bdl => bdl.ScheduleStatus);
-//        }
-//        else
-//        {
-//            // Sort by the specific property requested
-//            switch (sortBy.Value)
-//            {
-//                case BO.ClosedDeliveryInListSort.DeliveryId:
-//                    orderedList = listToFilter.OrderBy(bdl => bdl.Id);
-//                    break;
-//                case BO.ClosedDeliveryInListSort.OrderId:
-//                    orderedList = listToFilter.OrderBy(bdl => bdl.OrderId);
-//                    break;
-//                case BO.ClosedDeliveryInListSort.ActualDistance:
-//                    orderedList = listToFilter.OrderByDescending(bdl => bdl.ActualDistance);
-//                    break;
-//                case BO.ClosedDeliveryInListSort.CompletionTime:
-//                    orderedList = listToFilter.OrderBy(bdl => bdl.FinishTime);
-//                    break;
-//                default:
-//                    // Fallback to ScheduleStatus if the enum value is not handled
-//                    orderedList = listToFilter.OrderBy(bdl => bdl.ScheduleStatus);
-//                    break;
-//            }
-//        }
 
-//        return orderedList;
-//    }
-//}

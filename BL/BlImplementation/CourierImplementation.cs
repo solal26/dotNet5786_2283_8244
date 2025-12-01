@@ -20,7 +20,6 @@ internal class CourierImplementation : BlApi.ICourier
     {
         CourierManager.DeleteCourier(requesterId, courierId);
     }
-
     public BO.Courier GetCourier(int requesterId, int courierId)
     {
         
@@ -32,7 +31,6 @@ internal class CourierImplementation : BlApi.ICourier
 
         return boCourier;
     }
-
     public IEnumerable<BO.CourierInList> GetList(string requesterId, bool? isActive = null, BO.CourierSortBy? sortBy = null)
     {
         var list = CourierManager.GetAllCouriersInList();
@@ -53,12 +51,10 @@ internal class CourierImplementation : BlApi.ICourier
 
         return list;
     }
-
-    public string Login(string username, string password)
+    public string Login(int iduser, string password)
     {
-        throw new NotImplementedException();
+        return CourierManager.Login(iduser, password);
     }
-
     public void UpdateCourier(int requesterId, BO.Courier boCourier)
     {
         CourierManager.UpdateCourier(requesterId, boCourier);

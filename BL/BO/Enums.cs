@@ -77,29 +77,15 @@ public enum OrderInListSort
     TotalDeliveries
 }
 
-public enum OpenOrderInListFilter
-{
-    Type,
-    ScheduleStatus
-}
-
 public enum OpenOrderInListSort
 {
     OrderId,
-    Volume,
     Weight,
     AirDistance,
     ActualDistance,
     EstimatedActualTime,
     TimeRemaining,
     MaxDeliveryTime
-}
-
-public enum ClosedDeliveryInListFilter 
-{
-    OrderType,
-    DeliveryType,
-    EndType
 }
 
 public enum ClosedDeliveryInListSort 

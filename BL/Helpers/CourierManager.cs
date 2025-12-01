@@ -117,7 +117,6 @@ internal static class CourierManager
             throw new BlDoesNotExistException("Related entity does not exist.", ex);
         }
     }
-
     internal static void DeleteCourier(int requesterId, int courierId)
     {
         if (!HasPermission(requesterId,courierId))
@@ -150,7 +149,6 @@ internal static class CourierManager
             throw new BO.BlDoesNotExistException($"Courier ID={courierId} does not exist.", ex);
         }
     }
-
     internal static void UpdateCourier(int requesterId, BO.Courier boCourier)
     {
         // 1. Permission Check
@@ -222,7 +220,6 @@ internal static class CourierManager
         // 5. Call DAL for update
         s_dal.Courier.Update(updatedCourier);
     }
-
     internal static IEnumerable<BO.CourierInList> GetAllCouriersInList()
     {
         var allDoCouriers = s_dal.Courier.ReadAll(); 
@@ -349,25 +346,9 @@ internal static class CourierManager
             ExpectedDeliveryTime = CalculateExpectedDeliveryTime(delivery.typeofshipment, Airdistance),
             MaxDeliveryTime = maxDelivery,
             OrderStatus = OrderManager.CalculateOrderStatus(order.OrderId),
-            ScheduleStatus = CalculateScheduleStatus(order.OrderId),
+            ScheduleStatus = OrderManager.CalculateScheduleStatus(order.OrderId),
             TimeRemaining = maxDelivery - currentClock
         };
-    }
-    internal static BO.ScheduleStatus CalculateScheduleStatus(int orderId)
-    {
-        var order = s_dal.Order.Read(orderId);
-        if (order == null)
-            throw new BlDoesNotExistException($"Order with ID {orderId} not found.");
-
-        DateTime maxDeliveryTime = order.OrderInitiation.Add(s_dal.Config.MaxDeliveryTime);
-        TimeSpan timeRemaining = maxDeliveryTime - s_dal.Config.Clock;
-
-        if (timeRemaining > s_dal.Config.RiskRange)
-            return BO.ScheduleStatus.OnTime;
-        else if (timeRemaining > TimeSpan.Zero)
-            return BO.ScheduleStatus.InRisk;
-        else
-            return BO.ScheduleStatus.Late;
     }
     internal static DateTime CalculateExpectedDeliveryTime(TypeOfShipment t, double distanceKm)
     {
@@ -407,8 +388,49 @@ internal static class CourierManager
         return R * c;
     }
     private static double ToRadians(double angle) => angle * Math.PI / 180.0;
+    internal static double CalculateActualDistance(double destLat, double destLon, DeliveryType type)
+    {
+        if (!s_dal.Config.Latitude.HasValue || !s_dal.Config.Longitude.HasValue)
+            throw new InvalidOperationException("Company coordinates are not set in Config.");
 
+        double baseDistance = CalculateAirDistance(destLat, destLon);
+        return type switch
+        {
+            DeliveryType.Car => baseDistance * 1.5,       
+            DeliveryType.Scooter => baseDistance * 1.5, 
+            DeliveryType.Bike => baseDistance * 2.0, 
+            DeliveryType.OnFoot => baseDistance * 2.0,   
+            _ => baseDistance
+        };
+    }
+    internal static TimeSpan CalculateEstimatedActualTime(TypeOfShipment t, double distanceKm)
+    {
+        double speedKmh = t switch
+        {
+            TypeOfShipment.Car => s_dal.Config.AvgCarSpeed,
+            TypeOfShipment.Bike => s_dal.Config.AvgBicycleSpeed,
+            TypeOfShipment.OnFoot => s_dal.Config.AvgWalkingSpeed,
+            TypeOfShipment.Scooter => s_dal.Config.AvgMotorbikeSpeed,
+            _ => s_dal.Config.AvgCarSpeed
+        };
+
+        double hours = distanceKm / speedKmh;
+        return TimeSpan.FromHours(hours);
+    }
+    internal static string Login(int iduser, string password)
+    {
+        if (iduser == s_dal.Config.ManagerId && password == s_dal.Config.ManagerPassword)
+            return "Admin";
+
+        var courier = s_dal.Courier.Read(c => c.Id == iduser && c.Code == password);
+        if (courier != null)
+            return "Courier";
+
+        throw new UnauthorizedAccessException("Username or password is incorrect.");
+    }
 }
+
+
 
 
 
