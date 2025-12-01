@@ -148,7 +148,7 @@ internal static class OrderManager
 
         var order = s_dal.Order.Read(orderId);
         if (order == null)
-            throw new KeyNotFoundException($"Order with ID {orderId} not found.");
+            throw new BlDoesNotExistException($"Order with ID {orderId} not found.");
 
 
         var status = CalculateOrderStatus(orderId);
@@ -330,7 +330,7 @@ internal static class OrderManager
         }
     }
 
-    internal static IEnumerable<ClosedDeliveryInList> GetClosedDeliveriesForCourier(int courierId, ClosedDeliveryInListFilter? filterType, ClosedDeliveryInListSort? sortBy)
+    internal static IEnumerable<ClosedDeliveryInList> GetClosedDeliveriesForCourier(int courierId, OrderType? filterType , ClosedDeliveryInListSort? sortBy)
     {
 
         var listToFilter = s_dal.Delivery.ReadAll(d =>
@@ -359,19 +359,7 @@ internal static class OrderManager
 
         if (filterType.HasValue)
         {
-            listToFilter = filterType.Value switch
-            {
-                ClosedDeliveryInListFilter.OrderType =>
-                    listToFilter.Where(d => d.OrderType == d.OrderType),
-
-                ClosedDeliveryInListFilter.DeliveryType =>
-                    listToFilter.Where(d => d.DeliveryType == d.DeliveryType),
-
-                ClosedDeliveryInListFilter.EndType =>
-                    listToFilter.Where(d => d.EndType == d.EndType),
-
-                _ => listToFilter
-            };
+            listToFilter = listToFilter.Where(d => d.OrderType == filterType.Value);
         }
 
 

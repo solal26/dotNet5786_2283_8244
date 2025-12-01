@@ -7,7 +7,7 @@ using BO;
 using DalApi;
 using Helpers;
 
-internal class OrderImplementation : IOrder
+internal class OrderImplementation : BlApi.IOrder
 {
     public void AddOrder(int requesterId, BO.Order order)
     {
@@ -58,7 +58,7 @@ internal class OrderImplementation : IOrder
 
     }
 
-    public IEnumerable<ClosedDeliveryInList> GetClosedDeliveries(int requesterId, int courierId, ClosedDeliveryInListFilter? filterType = null, ClosedDeliveryInListSort? sortBy = null)
+    public IEnumerable<ClosedDeliveryInList> GetClosedDeliveries(int requesterId, int courierId, OrderType? filterType=null, ClosedDeliveryInListSort? sortBy = null)
     {
         bool permission = CourierManager.HasPermission(requesterId);
         if (!permission)
@@ -66,7 +66,7 @@ internal class OrderImplementation : IOrder
         return OrderManager.GetClosedDeliveriesForCourier(courierId, filterType, sortBy);
     }
 
-    public IEnumerable<OpenOrderInList> GetOpenOrdersForCourier(int requesterId, int courierId, OpenOrderInListFilter? filterType = null, OpenOrderInListSort? sortBy = null)
+    public IEnumerable<OpenOrderInList> GetOpenOrdersForCourier(int requesterId, int courierId, OrderType? filterType = null, OpenOrderInListSort? sortBy = null)
     {
         throw new NotImplementedException();
     }
