@@ -24,7 +24,7 @@ public class Order
 
     public string CustomerPhone { get; set; }
 
-    public double Volume { get; set; }
+    
 
     public double Weight { get; set; }
 
