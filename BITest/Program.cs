@@ -417,7 +417,7 @@ namespace BlTest
             Console.Write("Customer Phone: ");
             string customerPhone = Console.ReadLine() ?? "";
 
-            Console.Write(" Address: ");
+            Console.Write("Address: ");
             string Address = Console.ReadLine() ?? "";
 
             Console.Write("OrderType: ");
