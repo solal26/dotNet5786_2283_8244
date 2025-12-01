@@ -1,26 +1,48 @@
-﻿
-
-using BlApi;
+﻿using BlApi;
 using BO;
 using DalApi;
 using DO;
+using System;
+using System.Linq;
 using System.Diagnostics.Metrics;
 
 namespace Helpers;
 
+/// <summary>
+/// Business-layer helper that implements courier-related validation, permission checks,
+/// DO↔BO mapping and orchestration of DAL operations for courier flows.
+/// </summary>
+/// <remarks>
+/// - Internal to the BL assembly; not exposed as a public service interface.
+/// - Centralizes rules for add/update/delete and small utility calculations used across BL.
+/// - Keep methods small and side-effect free where possible; DAL IO is performed via <see cref="s_dal"/>.
+/// </remarks>
 internal static class CourierManager
 {
     private static IDal s_dal = DalApi.Factory.Get;
+
+    /// <summary>
+    /// Validates a national id number format used for couriers.
+    /// </summary>
+    /// <exception cref="BlInvalidValueException">Thrown when the id is outside allowed range.</exception>
     internal static void ValidateId(int id)
     {
         if (id <100000000||id>999999999)
             throw new BlInvalidValueException("Id not valid.");
     }
+
+    /// <summary>
+    /// Validates courier full name (non-empty and minimum length).
+    /// </summary>
     internal static void ValidateName(string name)
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length < 2)
             throw new BlInvalidValueException("Name must be at least 2 characters.");
     }
+
+    /// <summary>
+    /// Validates phone number format (exactly 10 digits, starts with '0').
+    /// </summary>
     internal static void ValidatePhone(string phone)
     {
         if (string.IsNullOrWhiteSpace(phone))
@@ -35,6 +57,10 @@ internal static class CourierManager
         if (!long.TryParse(phone, out _))
             throw new BlInvalidValueException("Phone number must contain only digits.");
     }
+
+    /// <summary>
+    /// Validates email structure and restricts domains to a small allowed list.
+    /// </summary>
     internal static void ValidateEmail(string email)
     {
         if (string.IsNullOrWhiteSpace(email))
@@ -55,30 +81,50 @@ internal static class CourierManager
         if (!validDomains.Contains(domainPart))
             throw new BlInvalidValueException($"Email domain must be one of: {string.Join(", ", validDomains)}");
     }
+
+    /// <summary>
+    /// Validates optional maximum delivery distance (non-negative).
+    /// </summary>
     internal static void ValidateDistance(double? distance)
     {
         if (distance.HasValue && distance < 0)
             throw new BlInvalidValueException("Distance cannot be negative.");
     }
+
+    /// <summary>
+    /// Validates weight (non-negative).
+    /// </summary>
     internal static void ValidateWeight(double Weight)
     {
         if (Weight < 0)
             throw new BlInvalidValueException("Weight cannot be negative.");
     }
+
+    /// <summary>
+    /// Checks whether the requester has permission to operate on a courier (manager or courier themself).
+    /// </summary>
     internal static bool HasPermission(int requesterId, int courierId = 0)
     {
-      
         if (s_dal.Config.ManagerId == requesterId)
             return true;
         if (requesterId == courierId && courierId != 0)
             return true;
         return false;
     }
+
+    /// <summary>
+    /// Validates that the courier start date is not in the future relative to the system clock.
+    /// </summary>
     internal static void ValidateStartDate(DateTime start)
     {
         if (start > s_dal.Config.Clock)
             throw new BlInvalidDateException("Start date cannot be in the future.");
     }
+
+    /// <summary>
+    /// Adds a courier to the DAL after validation and DO mapping.
+    /// </summary>
+    /// <exception cref="BlAlreadyExistsException">When DAL reports a duplicate id.</exception>
     internal static void AddCourierDo(BO.Courier courier)
     {
         if (courier == null)
@@ -90,7 +136,6 @@ internal static class CourierManager
         ValidateDistance(courier.MaxDeliveryDistance);
         ValidateStartDate(courier.StartDate);
 
-        
         var doCourier = new DO.Courier
         {
             Id = courier.Id,
@@ -117,6 +162,10 @@ internal static class CourierManager
             throw new BlDoesNotExistException("Related entity does not exist.", ex);
         }
     }
+
+    /// <summary>
+    /// Deletes a courier after permission and delivery-history checks.
+    /// </summary>
     internal static void DeleteCourier(int requesterId, int courierId)
     {
         if (!HasPermission(requesterId,courierId))
@@ -149,6 +198,10 @@ internal static class CourierManager
             throw new BO.BlDoesNotExistException($"Courier ID={courierId} does not exist.", ex);
         }
     }
+
+    /// <summary>
+    /// Updates a courier after permission, validation and business-rule checks.
+    /// </summary>
     internal static void UpdateCourier(int requesterId, BO.Courier boCourier)
     {
         // 1. Permission Check
@@ -220,6 +273,10 @@ internal static class CourierManager
         // 5. Call DAL for update
         s_dal.Courier.Update(updatedCourier);
     }
+
+    /// <summary>
+    /// Returns a list projection of all couriers for listing UI.
+    /// </summary>
     internal static IEnumerable<BO.CourierInList> GetAllCouriersInList()
     {
         var allDoCouriers = s_dal.Courier.ReadAll(); 
@@ -236,6 +293,10 @@ internal static class CourierManager
             CurrentOrderId = GetCurrentOrder(c.Id)?.OrderId
         });
     }
+
+    /// <summary>
+    /// Periodic update toggling couriers active/inactive according to inactivity rules and current deliveries.
+    /// </summary>
     internal static void PeriodicCouriersUpdates()
     {
         DateTime now = s_dal.Config.Clock;
@@ -273,6 +334,10 @@ internal static class CourierManager
             }
         }
     }
+
+    /// <summary>
+    /// Converts a DO courier to a BO courier including computed metrics.
+    /// </summary>
     internal static BO.Courier ConvertToBO(int id)
     {
 
@@ -295,6 +360,10 @@ internal static class CourierManager
             CurrentOrder = GetCurrentOrder(doCourier.Id)!
         };
     }
+
+    /// <summary>
+    /// Returns count of deliveries delivered on time by courier.
+    /// </summary>
     internal static int CalculateDeliveredOnTime(int courierId)
     {
         var deliveries = s_dal.Delivery.ReadAll();
@@ -302,24 +371,30 @@ internal static class CourierManager
             .Where(d => d.CourierId == courierId && d.endcour == Endofcourier.Delivered && d.TimeEnd.HasValue && d.TimeEnd.Value - d.TimeBegin <= s_dal.Config.MaxDeliveryTime)
             .Count();
     }
+
+    /// <summary>
+    /// Returns count of deliveries delivered late by courier.
+    /// </summary>
     internal static int CalculateDeliveredLate(int courierId)
     {
         var deliveries = s_dal.Delivery.ReadAll();
         return deliveries
             .Where(d => d.CourierId == courierId && d.endcour == Endofcourier.Delivered && d.TimeEnd.HasValue && d.TimeEnd.Value - d.TimeBegin > s_dal.Config.MaxDeliveryTime)
             .Count();
-            
     }
+
+    /// <summary>
+    /// Builds and returns the current order in progress for the specified courier, or null if none.
+    /// </summary>
     internal static BO.OrderInProgress? GetCurrentOrder(int courierId)
     {
         DateTime currentClock = s_dal.Config.Clock;
         var allDeliveries = s_dal.Delivery.ReadAll();
         var allOrders = s_dal.Order.ReadAll();        
 
-       
         var delivery = allDeliveries
            .FirstOrDefault(d => d.CourierId == courierId && d.TimeBegin <= currentClock && d.TimeEnd == null);
-          
+
         if (delivery == null)
             return null;
 
@@ -350,6 +425,10 @@ internal static class CourierManager
             TimeRemaining = maxDelivery - currentClock
         };
     }
+
+    /// <summary>
+    /// Calculates expected delivery time using configured average speeds.
+    /// </summary>
     internal static DateTime CalculateExpectedDeliveryTime(TypeOfShipment t, double distanceKm)
     {
         double speedKmh = t switch
@@ -364,10 +443,18 @@ internal static class CourierManager
         double hours = distanceKm / speedKmh;
         return s_dal.Config.Clock.AddHours(hours);
     }
+
+    /// <summary>
+    /// Calculates maximum allowed delivery datetime from open time.
+    /// </summary>
     internal static DateTime CalculateMaxDeliveryTime(DateTime Open)
     {
         return Open.Add(s_dal.Config.MaxDeliveryTime);
     }
+
+    /// <summary>
+    /// Calculates great-circle (air) distance from company to destination in kilometers.
+    /// </summary>
     internal static double CalculateAirDistance(double destLat, double destLon)
     {
         if (!s_dal.Config.Latitude.HasValue || !s_dal.Config.Longitude.HasValue)
@@ -388,6 +475,10 @@ internal static class CourierManager
         return R * c;
     }
     private static double ToRadians(double angle) => angle * Math.PI / 180.0;
+
+    /// <summary>
+    /// Calculates an estimated actual driving/walking distance multiplier by delivery type.
+    /// </summary>
     internal static double CalculateActualDistance(double destLat, double destLon, DeliveryType type)
     {
         if (!s_dal.Config.Latitude.HasValue || !s_dal.Config.Longitude.HasValue)
@@ -403,6 +494,10 @@ internal static class CourierManager
             _ => baseDistance
         };
     }
+
+    /// <summary>
+    /// Calculates estimated travel time based on configured speeds.
+    /// </summary>
     internal static TimeSpan CalculateEstimatedActualTime(TypeOfShipment t, double distanceKm)
     {
         double speedKmh = t switch
@@ -417,6 +512,11 @@ internal static class CourierManager
         double hours = distanceKm / speedKmh;
         return TimeSpan.FromHours(hours);
     }
+
+    /// <summary>
+    /// Authenticates a user as Admin or Courier.
+    /// </summary>
+    /// <returns>"Admin" or "Courier"; throws on failure.</returns>
     internal static string Login(int iduser, string password)
     {
         if (iduser == s_dal.Config.ManagerId && password == s_dal.Config.ManagerPassword)

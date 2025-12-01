@@ -1,17 +1,31 @@
-﻿
-
-using System;
+﻿using System;
 using System.Net;
 using System.Text.Json;
+using System.Linq;
 using BO;
 using DalApi;
 using DO;
 
 namespace Helpers;
 
+/// <summary>
+/// Business-layer helper for order workflows: validation, DO↔BO mapping and orchestration of DAL calls.
+/// </summary>
+/// <remarks>
+/// - Performs creation, update, cancellation and completion of orders and deliveries.
+/// - Uses <see cref="s_dal"/> for persistence and <see cref="CourierManager"/> for shared validation logic.
+/// - Note: <see cref="ValidateAddress(string)"/> is synchronous and calls an external geocoding service; consider making it async in production.
+/// </remarks>
 internal static class OrderManager
 {
     private static IDal s_dal = Factory.Get;
+
+    /// <summary>
+    /// Validates the BO order, maps to DO and persists a new order.
+    /// </summary>
+    /// <param name="boOrder">Business-layer order to add.</param>
+    /// <exception cref="ArgumentNullException">When <paramref name="boOrder"/> is null.</exception>
+    /// <exception cref="BlAlreadyExistsException">When DAL reports duplicate id.</exception>
     internal static void AddOrdeDo(BO.Order boOrder)
     {
         if (boOrder == null)
@@ -47,6 +61,12 @@ internal static class OrderManager
         }
 
     }
+
+    /// <summary>
+    /// Updates an existing order after permission, validation and status checks.
+    /// </summary>
+    /// <param name="requesterId">Id of the user attempting the update (must be manager).</param>
+    /// <param name="boOrder">Updated business order data.</param>
     internal static void UpdateOrder(int requesterId, BO.Order boOrder)
     {
         // 1. Permission Check: Only the Manager can update an Order
@@ -105,6 +125,16 @@ internal static class OrderManager
     }
 
     private static readonly HttpClient client = new HttpClient();
+
+    /// <summary>
+    /// Geocodes an address using Nominatim and returns the first result coordinates.
+    /// </summary>
+    /// <param name="address">Address string to geocode.</param>
+    /// <returns>Latitude and Longitude tuple.</returns>
+    /// <remarks>
+    /// - Synchronous call that blocks the calling thread. Consider converting to async/await and adding User-Agent and retries.
+    /// - Throws <see cref="BlInvalidAddressException"/> when no results are returned.
+    /// </remarks>
     public static (double Latitude, double Longitude) ValidateAddress(string address)
     {
         if (string.IsNullOrWhiteSpace(address))
@@ -125,6 +155,11 @@ internal static class OrderManager
 
         return (lat, lon);
     }
+
+    /// <summary>
+    /// Validates address format (street, number, city, country) and country suffix 'ישראל'.
+    /// </summary>
+    /// <param name="address">Full address string.</param>
     internal static void ValidateFullAddress(string address)
     {
         if (string.IsNullOrWhiteSpace(address))
@@ -137,6 +172,11 @@ internal static class OrderManager
         if (!parts.Last().Equals("ישראל", StringComparison.OrdinalIgnoreCase))
             throw new BlInvalidValueException("Address must end with 'ישראל'.");
     }
+
+    /// <summary>
+    /// Cancels an order according to its current state (Open or InProgress).
+    /// </summary>
+    /// <param name="orderId">Order identifier to cancel.</param>
     internal static void CancelOrderDo(int orderId)
     {
 
@@ -202,6 +242,10 @@ internal static class OrderManager
 
         }
     }
+
+    /// <summary>
+    /// Completes a delivery: marks it delivered and sets TimeEnd.
+    /// </summary>
     internal static void CompleteOrderDeliveryDo(int courierId, int deliveryId)
     {
         //Read existing DO.Delivery object
@@ -245,9 +289,13 @@ internal static class OrderManager
         s_dal.Delivery.Update(updatedDelivery);
 
     }
+
+    /// <summary>
+    /// Returns an array summary counts for order statuses and schedule statuses.
+    /// </summary>
     internal static int[] GetordersSummary()
     {
-    
+
         var allOrders = s_dal.Order.ReadAll(o => true);
 
         int orderStatusCount = Enum.GetValues(typeof(BO.OrderStatus)).Length;
@@ -264,7 +312,7 @@ internal static class OrderManager
             summaryArray[(int)g.Status] = g.Count;
         }
 
-  
+
         var scheduleStatusGroups = allOrders
             .GroupBy(o => CalculateScheduleStatus(o.OrderId))
             .Select(g => new { Schedule = g.Key, Count = g.Count() });
@@ -277,6 +325,10 @@ internal static class OrderManager
         return summaryArray;
 
     }
+
+    /// <summary>
+    /// Calculates the logical status of an order (Open, InProgress, Delivered, Refused, Cancelled).
+    /// </summary>
     internal static BO.OrderStatus CalculateOrderStatus(int orderId)
     {
 
@@ -311,6 +363,10 @@ internal static class OrderManager
             _ => BO.OrderStatus.Open
         };
     }
+
+    /// <summary>
+    /// Calculates schedule status (OnTime, InRisk, Late) based on order initiation and config time windows.
+    /// </summary>
     internal static BO.ScheduleStatus CalculateScheduleStatus(int orderId)
     {
         var order = s_dal.Order.Read(orderId);
@@ -327,6 +383,10 @@ internal static class OrderManager
         else
             return BO.ScheduleStatus.Late;
     }
+
+    /// <summary>
+    /// Assigns an open order to a courier and creates a delivery record.
+    /// </summary>
     internal static void ChooseOrderForDeliveryDo(int courierId, int orderId)
     {
         var docourier = s_dal.Courier.Read(courierId);
@@ -367,6 +427,10 @@ internal static class OrderManager
             throw new BlAlreadyExistsException("Delivery for this order already exists.", ex);
         }
     }
+
+    /// <summary>
+    /// Returns closed deliveries for a courier, optionally filtered and sorted.
+    /// </summary>
     internal static IEnumerable<ClosedDeliveryInList> GetClosedDeliveriesForCourier(int courierId, OrderType? filterType, ClosedDeliveryInListSort? sortBy)
     {
 
@@ -426,6 +490,10 @@ internal static class OrderManager
 
         return listToFilter;
     }
+
+    /// <summary>
+    /// Converts a DO order to BO order including computed metrics.
+    /// </summary>
     internal static BO.Order convertToBO(int orderId)
     {
         try
@@ -480,6 +548,10 @@ internal static class OrderManager
             throw new BlDoesNotExistException($"Order with ID={orderId} not found.", ex);
         }
     }
+
+    /// <summary>
+    /// Returns open orders suitable for a courier (no existing deliveries), with optional filters and sorting.
+    /// </summary>
     internal static IEnumerable<OpenOrderInList> GetOpenOrdersForACourier(int courierId, OrderType? filterType, OpenOrderInListSort? sortBy)
     {
         var doCourier = s_dal.Courier.Read(courierId);
@@ -544,6 +616,10 @@ internal static class OrderManager
 
         return openOrdersList;
     }
+
+    /// <summary>
+    /// Returns a projection list of orders with last-delivery and scheduling metrics, supports filtering and sorting.
+    /// </summary>
     internal static IEnumerable<OrderInList> GetordersList(OrderInListFilter? filterField, object? filterValue, OrderInListSort? sortBy)
     {
         var allOrders = s_dal.Order.ReadAll(o => true);
@@ -610,6 +686,8 @@ internal static class OrderManager
         return ordersWithLastDelivery.AsEnumerable();
     }
 }
+
+
 
 
 

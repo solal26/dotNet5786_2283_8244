@@ -4,10 +4,19 @@ using BO;
 
 namespace BlTest
 {
+    /// <summary>
+    /// Simple console test harness for the BL layer.
+    /// Provides interactive menus for admin, order and courier operations using the <see cref="BlApi.IBl"/> facade.
+    /// </summary>
     internal class Program
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         static int s_currentUserId = 0;
+
+        /// <summary>
+        /// Application entry point. Initializes current user id and drives the main menu loop.
+        /// Catches and prints BL exceptions to the console.
+        /// </summary>
         static void Main(string[] args)
         {
             bool exitRequested = false;
@@ -90,6 +99,9 @@ namespace BlTest
         }
 
         // =============== ADMIN MENU ===============
+        /// <summary>
+        /// Displays the admin submenu and routes admin actions.
+        /// </summary>
         static void ShowAdminMenu()
         {
             bool back = false;
@@ -142,6 +154,10 @@ namespace BlTest
                 }
             }
         }
+
+        /// <summary>
+        /// Initialize demo database (user confirmation required).
+        /// </summary>
         static void InitializeDatabase()
         {
             Console.Write("Are you sure you want to initialize the database? (y/n): ");
@@ -151,6 +167,10 @@ namespace BlTest
                 Console.WriteLine("Database initialized successfully.");
             }
         }
+
+        /// <summary>
+        /// Reset database to defaults (user confirmation required).
+        /// </summary>
         static void ResetDatabase()
         {
             Console.Write("Are you sure you want to reset the database? This will delete all data! (y/n): ");
@@ -160,11 +180,19 @@ namespace BlTest
                 Console.WriteLine("Database reset successfully.");
             }
         }
+
+        /// <summary>
+        /// Prints the current system clock provided by the BL admin facade.
+        /// </summary>
         static void GetClock()
         {
             var clock = s_bl.Admin.GetClock();
             Console.WriteLine($"Current system clock: {clock}");
         }
+
+        /// <summary>
+        /// Prompts the user for a time unit and forwards the system clock by one unit.
+        /// </summary>
         static void ForwardClock()
         {
             Console.WriteLine("Select time unit to forward:");
@@ -186,6 +214,10 @@ namespace BlTest
             Console.WriteLine($"Clock forwarded by one {unit}.");
             Console.WriteLine($"New time: {s_bl.Admin.GetClock()}");
         }
+
+        /// <summary>
+        /// Displays current configuration values from the BL admin facade.
+        /// </summary>
         static void GetConfiguration()
         {
             var config = s_bl.Admin.GetConfig();
@@ -204,6 +236,11 @@ namespace BlTest
             Console.WriteLine($"Risk Range: {config.RiskRange}");
             Console.WriteLine($"Inactivity Range: {config.InactivityRange}");
         }
+
+        /// <summary>
+        /// Prompts the user and applies configuration updates via BL admin facade.
+        /// Press Enter to keep current values.
+        /// </summary>
         static void SetConfiguration()
         {
             var currentConfig = s_bl.Admin.GetConfig();
@@ -280,6 +317,9 @@ namespace BlTest
         }
 
         // =============== ORDER MENU ===============
+        /// <summary>
+        /// Displays the order submenu and routes order-related actions.
+        /// </summary>
         static void ShowOrderMenu()
         {
             bool back = false;
@@ -351,6 +391,9 @@ namespace BlTest
                 }
             }
         }
+        /// <summary>
+        /// Prompts for Order ID then calls BL to delete order (DeleteOrder implementation throws in BL).
+        /// </summary>
         static void DeleteOrder()
         {
             Console.Write("Enter Order ID to delete: ");
@@ -359,6 +402,10 @@ namespace BlTest
                 s_bl.Order.DeleteOrder(s_currentUserId, orderId);
             }
         }
+
+        /// <summary>
+        /// Collects order details from console and submits a new BO.Order via BL facade.
+        /// </summary>
         static void AddOrder()
         {
 
@@ -394,6 +441,10 @@ namespace BlTest
 
             s_bl.Order.AddOrder(s_currentUserId, order);
         }
+
+        /// <summary>
+        /// Prompts for an order id and displays the order details retrieved from BL.
+        /// </summary>
         static void GetOrder()
         {
             Console.Write("Enter Order ID: ");
@@ -402,6 +453,10 @@ namespace BlTest
                 var order = s_bl.Order.GetOrder(s_currentUserId, orderId);
             }
         }
+
+        /// <summary>
+        /// Shows interactive filter/sort options and prints a list of orders returned by BL.
+        /// </summary>
         static void GetOrdersList()
         {
             Console.WriteLine("\n=== Filter Options ===");
@@ -459,6 +514,9 @@ namespace BlTest
                 Console.WriteLine(order);
             }
         }
+        /// <summary>
+        /// Prints aggregated orders summary retrieved from BL.
+        /// </summary>
         static void GetOrdersSummary()
         {
             var summary = s_bl.Order.GetOrdersSummary(s_currentUserId);
@@ -470,6 +528,9 @@ namespace BlTest
             Console.WriteLine($"Completed: {summary[4]}");
             Console.WriteLine($"Cancelled: {summary[5]}");
         }
+        /// <summary>
+        /// Prompts user to update an order and submits the update to BL.
+        /// </summary>
         static void UpdateOrder()
         {
             Console.Write("Enter Order ID to update: ");
@@ -508,6 +569,9 @@ namespace BlTest
                 Console.WriteLine("Order updated successfully!");
             }
         }
+        /// <summary>
+        /// Prompts for order id and cancels it via BL.
+        /// </summary>
         static void CancelOrder()
         {
             Console.Write("Enter Order ID to cancel: ");
@@ -517,6 +581,9 @@ namespace BlTest
                 Console.WriteLine("Order cancelled successfully!");
             }
         }
+        /// <summary>
+        /// Prompts and assigns an order to a courier via BL.
+        /// </summary>
         static void ChooseOrderForDelivery()
         {
             Console.Write("Enter Courier ID: ");
@@ -528,6 +595,9 @@ namespace BlTest
             s_bl.Order.ChooseOrderForDelivery(s_currentUserId, courierId, orderId);
             Console.WriteLine("Order assigned to courier successfully!");
         }
+        /// <summary>
+        /// Prompts and marks a delivery complete via BL.
+        /// </summary>
         static void CompleteOrderDelivery()
         {
             Console.Write("Enter Courier ID: ");
@@ -539,6 +609,9 @@ namespace BlTest
             s_bl.Order.CompleteOrderDelivery(s_currentUserId, courierId, deliveryId);
             Console.WriteLine("Delivery completed successfully!");
         }
+        /// <summary>
+        /// Prompts for courier id and lists open orders returned from BL for that courier.
+        /// </summary>
         static void GetOpenOrdersForCourier()
         {
             Console.Write("Enter Courier ID: ");
@@ -593,6 +666,9 @@ namespace BlTest
                 Console.WriteLine(order);
             }
         }
+        /// <summary>
+        /// Prompts for courier id and prints closed deliveries returned from BL.
+        /// </summary>
         static void GetClosedDeliveries()
         {
             Console.Write("Enter Courier ID: ");
@@ -642,6 +718,9 @@ namespace BlTest
         }
 
         // =============== COURIER MENU ===============
+        /// <summary>
+        /// Shows the courier submenu and routes courier operations.
+        /// </summary>
         static void ShowCourierMenu()
         {
             bool back = false;
@@ -686,6 +765,9 @@ namespace BlTest
                 }
             }
         }
+        /// <summary>
+        /// Prompts for courier id and prints courier details retrieved from BL.
+        /// </summary>
         static void GetCourier()
         {
             Console.Write("Enter Courier ID: ");
@@ -695,6 +777,9 @@ namespace BlTest
                 Console.WriteLine(courier);
             }
         }
+        /// <summary>
+        /// Collects courier details from the console and submits a new courier to BL.
+        /// </summary>
         static void AddCourier()
         {
             Console.WriteLine("\n=== Add New Courier ===");
@@ -736,6 +821,9 @@ namespace BlTest
             s_bl.Courier.AddCourier(s_currentUserId, courier);
 
         }
+        /// <summary>
+        /// Interactive couriers list filter/sort UI and print.
+        /// </summary>
         static void GetCouriersList()
         {
             Console.WriteLine("\n=== Filter by Active Status ===");
@@ -778,6 +866,9 @@ namespace BlTest
                 Console.WriteLine(courier);
             }
         }
+        /// <summary>
+        /// Prompts for courier id and allows updating fields, then sends update to BL.
+        /// </summary>
         static void UpdateCourier()
         {
             Console.Write("Enter Courier ID to update: ");
@@ -821,6 +912,9 @@ namespace BlTest
                 
             }
         }
+        /// <summary>
+        /// Prompts for courier id and deletes it (confirmation required).
+        /// </summary>
         static void DeleteCourier()
         {
             Console.Write("Enter Courier ID to delete: ");
@@ -834,6 +928,9 @@ namespace BlTest
                 }
             }
         }
+        /// <summary>
+        /// Prompts for credentials and attempts to log in through BL.
+        /// </summary>
         static void LoginCourier()
         {
             Console.Write("IdUser: ");
