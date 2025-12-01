@@ -544,43 +544,45 @@ namespace BlTest
             Console.Write("Enter Courier ID: ");
             int courierId = int.TryParse(Console.ReadLine(), out int tempId) ? tempId : 0;
 
-            // Filter
-            Console.WriteLine("\n=== Filter Options ===");
-            Console.WriteLine("1. Type");
-            Console.WriteLine("2. ScheduleStatus");
+            Console.WriteLine("\n=== Filter by Order Type ===");
+            Console.WriteLine("1. SingleOrder");
+            Console.WriteLine("2. BulkOrder");
+            Console.WriteLine("3. ExpressOrder");
+            Console.WriteLine("4. InternalTransfer");
             Console.Write("Select: ");
             string? filterChoice = Console.ReadLine();
 
-            OpenOrderInListFilter? filterType = filterChoice switch
+            OrderType? filterType = filterChoice switch
             {
-                "1" => OpenOrderInListFilter.Type,
-                "2" => OpenOrderInListFilter.ScheduleStatus,
+                "1" => OrderType.SingleOrder,
+                "2" => OrderType.BulkOrder,
+                "3" => OrderType.ExpressOrder,
+                "4" => OrderType.InternalTransfer,
                 _ => null
             };
 
             // Sort
             Console.WriteLine("\n=== Sort Options ===");
             Console.WriteLine("1. OrderId");
-            Console.WriteLine("2. Volume");
-            Console.WriteLine("3. Weight");
-            Console.WriteLine("4. AirDistance");
-            Console.WriteLine("5. ActualDistance");
-            Console.WriteLine("6. EstimatedActualTime");
-            Console.WriteLine("7. TimeRemaining");
-            Console.WriteLine("8. MaxDeliveryTime");
+            Console.WriteLine("2. Weight");
+            Console.WriteLine("3. AirDistance");
+            Console.WriteLine("4. ActualDistance");
+            Console.WriteLine("5. EstimatedActualTime");
+            Console.WriteLine("6. TimeRemaining");
+            Console.WriteLine("7. MaxDeliveryTime");
             Console.Write("Select: ");
             string? sortChoice = Console.ReadLine();
 
             OpenOrderInListSort sortBy = sortChoice switch
             {
-                "2" => OpenOrderInListSort.Volume,
-                "3" => OpenOrderInListSort.Weight,
-                "4" => OpenOrderInListSort.AirDistance,
-                "5" => OpenOrderInListSort.ActualDistance,
-                "6" => OpenOrderInListSort.EstimatedActualTime,
-                "7" => OpenOrderInListSort.TimeRemaining,
-                "8" => OpenOrderInListSort.MaxDeliveryTime,
-                _ => OpenOrderInListSort.OrderId
+                "1" => OpenOrderInListSort.OrderId,
+                "2" => OpenOrderInListSort.Weight,
+                "3" => OpenOrderInListSort.AirDistance,
+                "4" => OpenOrderInListSort.ActualDistance,
+                "5" => OpenOrderInListSort.EstimatedActualTime,
+                "6" => OpenOrderInListSort.TimeRemaining,
+                "7" => OpenOrderInListSort.MaxDeliveryTime,
+                _ => OpenOrderInListSort.OrderId 
             };
 
             var orders = s_bl.Order.GetOpenOrdersForCourier(s_currentUserId, courierId, filterType, sortBy);
@@ -596,19 +598,20 @@ namespace BlTest
             Console.Write("Enter Courier ID: ");
             int courierId = int.TryParse(Console.ReadLine(), out int tempId) ? tempId : 0;
 
-            // Filter
-            Console.WriteLine("\n=== Filter Options ===");
-            Console.WriteLine("1. OrderType");
-            Console.WriteLine("2. DeliveryType");
-            Console.WriteLine("3. EndType");
+            Console.WriteLine("\n=== Filter by Order Type ===");
+            Console.WriteLine("1. SingleOrder");
+            Console.WriteLine("2. BulkOrder");
+            Console.WriteLine("3. ExpressOrder");
+            Console.WriteLine("4. InternalTransfer");
             Console.Write("Select: ");
             string? filterChoice = Console.ReadLine();
 
-            ClosedDeliveryInListFilter? filterType = filterChoice switch
+            OrderType? filterType = filterChoice switch
             {
-                "1" => ClosedDeliveryInListFilter.OrderType,
-                "2" => ClosedDeliveryInListFilter.DeliveryType,
-                "3" => ClosedDeliveryInListFilter.EndType,
+                "1" => OrderType.SingleOrder,
+                "2" => OrderType.BulkOrder,
+                "3" => OrderType.ExpressOrder,
+                "4" => OrderType.InternalTransfer,
                 _ => null
             };
 

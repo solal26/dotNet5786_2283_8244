@@ -2,7 +2,7 @@
 
 public interface ICourier
 {
-    string Login(string username, string password);
+    string Login(int iduser, string password);
 
     IEnumerable<BO.CourierInList> GetList(string requesterId,
                                           bool? isActive = null,
