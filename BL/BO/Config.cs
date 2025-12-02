@@ -61,7 +61,7 @@ public class Config
     /// <summary>
     /// Average motorbike / scooter speed (km/h).
     /// </summary>
-    public double AvgMotorbikeSpeed { get; set; }
+    public double AvgMotorBikeSpeed { get; set; }
 
     /// <summary>
     /// Average bicycle speed (km/h).

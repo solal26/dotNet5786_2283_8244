@@ -632,7 +632,7 @@ namespace DalTest
                     case 3: Console.WriteLine($"Company Address: {s_dal!.Config.CompanyAddress}"); break;
                     case 6: Console.WriteLine($"Max Range: {s_dal!.Config.MaxRange}"); break;
                     case 7: Console.WriteLine($"Avg Car Speed: {s_dal!.Config.AvgCarSpeed}"); break;
-                    case 8: Console.WriteLine($"Avg Motorbike Speed: {s_dal!.Config.AvgMotorbikeSpeed}"); break;
+                    case 8: Console.WriteLine($"Avg Motorbike Speed: {s_dal!.Config.AvgMotorBikeSpeed}"); break;
                     case 9: Console.WriteLine($"Avg Bicycle Speed: {s_dal!.Config.AvgBicycleSpeed}"); break;
                     case 10: Console.WriteLine($"Avg Walking Speed: {s_dal!.Config.AvgWalkingSpeed}"); break;
                     case 11: Console.WriteLine($"Max Delivery Time: {s_dal!.Config.MaxDeliveryTime}"); break;
@@ -691,7 +691,7 @@ namespace DalTest
                         break;
                     case 6:
                         Console.Write("Enter new Avg Motorbike Speed: ");
-                        s_dal!.Config.AvgMotorbikeSpeed = double.Parse(Console.ReadLine()!);
+                        s_dal!.Config.AvgMotorBikeSpeed = double.Parse(Console.ReadLine()!);
                         break;
                     case 7:
                         Console.Write("Enter new Avg Bicycle Speed: ");

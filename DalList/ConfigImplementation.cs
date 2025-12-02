@@ -86,10 +86,10 @@ internal class ConfigImplementation : IConfig
     /// <summary>
     /// Average motorbike speed (km/h) used for ETA approximations. Delegates to <see cref="Config.AvgMotorbikeSpeed"/>.
     /// </summary>
-    public double AvgMotorbikeSpeed
+    public double AvgMotorBikeSpeed
     {
-        get => Config.AvgMotorbikeSpeed;
-        set => Config.AvgMotorbikeSpeed = value;
+        get => Config.AvgMotorBikeSpeed;
+        set => Config.AvgMotorBikeSpeed = value;
     }
 
     /// <summary>

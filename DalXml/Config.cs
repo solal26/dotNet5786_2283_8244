@@ -59,7 +59,7 @@ internal static class Config
         get => XMLTools.GetConfigDoubleVal(s_data_config_xml, "AvgCarSpeed");
         set => XMLTools.SetConfigDoubleVal(s_data_config_xml, "AvgCarSpeed", value);
     }
-    internal static double AvgMotorbikeSpeed
+    internal static double AvgMotorBikeSpeed
     {
         get => XMLTools.GetConfigDoubleVal(s_data_config_xml, "AvgMotorbikeSpeed");
         set => XMLTools.SetConfigDoubleVal(s_data_config_xml, "AvgMotorbikeSpeed", value);

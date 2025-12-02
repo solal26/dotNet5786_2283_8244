@@ -71,7 +71,7 @@ internal static class Config
     /// <summary>
     /// Average speed for motorbikes (km/h). Used for ETA approximations.
     /// </summary>
-    internal static double AvgMotorbikeSpeed { get; set; } = 40; // in km/h
+    internal static double AvgMotorBikeSpeed { get; set; } = 40; // in km/h
     /// <summary>
     /// Average speed for bicycles (km/h). Used for ETA approximations.
     /// </summary>
@@ -117,7 +117,7 @@ internal static class Config
 
         MaxRange = 4;
         AvgCarSpeed = 50;
-        AvgMotorbikeSpeed = 40;
+        AvgMotorBikeSpeed = 40;
         AvgBicycleSpeed = 15;
         AvgWalkingSpeed = 5;
 

@@ -436,7 +436,7 @@ internal static class CourierManager
            TypeOfShipment.Car => s_dal.Config.AvgCarSpeed,
            TypeOfShipment.Bike => s_dal.Config.AvgBicycleSpeed,
            TypeOfShipment.OnFoot => s_dal.Config.AvgWalkingSpeed,
-           TypeOfShipment.Scooter => s_dal.Config.AvgMotorbikeSpeed,
+           TypeOfShipment.Scooter => s_dal.Config.AvgMotorBikeSpeed,
             _ => s_dal.Config.AvgCarSpeed
         };
 
@@ -505,7 +505,7 @@ internal static class CourierManager
             TypeOfShipment.Car => s_dal.Config.AvgCarSpeed,
             TypeOfShipment.Bike => s_dal.Config.AvgBicycleSpeed,
             TypeOfShipment.OnFoot => s_dal.Config.AvgWalkingSpeed,
-            TypeOfShipment.Scooter => s_dal.Config.AvgMotorbikeSpeed,
+            TypeOfShipment.Scooter => s_dal.Config.AvgMotorBikeSpeed,
             _ => s_dal.Config.AvgCarSpeed
         };
 

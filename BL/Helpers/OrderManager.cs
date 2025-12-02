@@ -169,8 +169,8 @@ internal static class OrderManager
         if (parts.Length < 3)
             throw new BlInvalidValueException("Address must include street, number, city and country.");
 
-        if (!parts.Last().Equals("ישראל", StringComparison.OrdinalIgnoreCase))
-            throw new BlInvalidValueException("Address must end with 'ישראל'.");
+        if (!parts.Last().Equals("Israel", StringComparison.OrdinalIgnoreCase))
+            throw new BlInvalidValueException("Address must end with 'Israel'.");
     }
 
     /// <summary>

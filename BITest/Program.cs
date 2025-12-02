@@ -229,7 +229,7 @@ namespace BlTest
             Console.WriteLine($"Location: Lat={config.Latitude}, Lon={config.Longitude}");
             Console.WriteLine($"Max Range: {config.MaxRange} km");
             Console.WriteLine($"Avg Car Speed: {config.AvgCarSpeed} km/h");
-            Console.WriteLine($"Avg Motorbike Speed: {config.AvgMotorbikeSpeed} km/h");
+            Console.WriteLine($"Avg Motorbike Speed: {config.AvgMotorBikeSpeed} km/h");
             Console.WriteLine($"Avg Bicycle Speed: {config.AvgBicycleSpeed} km/h");
             Console.WriteLine($"Avg Walking Speed: {config.AvgWalkingSpeed} km/h");
             Console.WriteLine($"Max Delivery Time: {config.MaxDeliveryTime}");
@@ -270,9 +270,9 @@ namespace BlTest
             input = Console.ReadLine();
             double avgCarSpeed = string.IsNullOrWhiteSpace(input) ? currentConfig.AvgCarSpeed : double.Parse(input);
 
-            Console.Write($"Avg Motorbike Speed [{currentConfig.AvgMotorbikeSpeed}]: ");
+            Console.Write($"Avg Motorbike Speed [{currentConfig.AvgMotorBikeSpeed}]: ");
             input = Console.ReadLine();
-            double avgMotorbikeSpeed = string.IsNullOrWhiteSpace(input) ? currentConfig.AvgMotorbikeSpeed : double.Parse(input);
+            double avgMotorbikeSpeed = string.IsNullOrWhiteSpace(input) ? currentConfig.AvgMotorBikeSpeed : double.Parse(input);
 
             Console.Write($"Avg Bicycle Speed [{currentConfig.AvgBicycleSpeed}]: ");
             input = Console.ReadLine();
@@ -304,7 +304,7 @@ namespace BlTest
                 Longitude = 0,
                 MaxRange = maxRange,
                 AvgCarSpeed = avgCarSpeed,
-                AvgMotorbikeSpeed = avgMotorbikeSpeed,
+                AvgMotorBikeSpeed = avgMotorbikeSpeed,
                 AvgBicycleSpeed = avgBicycleSpeed,
                 AvgWalkingSpeed = avgWalkingSpeed,
                 MaxDeliveryTime = maxDeliveryTime,

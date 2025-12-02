@@ -62,7 +62,7 @@ internal static class AdminManager //stage 4
         Latitude = OrderManager.ValidateAddress(s_dal.Config.CompanyAddress).Latitude,
         Longitude = OrderManager.ValidateAddress(s_dal.Config.CompanyAddress).Longitude,
         AvgCarSpeed = s_dal.Config.AvgCarSpeed,
-        AvgMotorbikeSpeed = s_dal.Config.AvgMotorbikeSpeed,
+        AvgMotorBikeSpeed = s_dal.Config.AvgMotorBikeSpeed,
         AvgBicycleSpeed = s_dal.Config.AvgBicycleSpeed,
         AvgWalkingSpeed = s_dal.Config.AvgWalkingSpeed,
         MaxDeliveryTime = s_dal.Config.MaxDeliveryTime,
@@ -125,9 +125,9 @@ internal static class AdminManager //stage 4
             s_dal.Config.AvgCarSpeed = configuration.AvgCarSpeed;
             configChanged = true;
         }
-        if (s_dal.Config.AvgMotorbikeSpeed != configuration.AvgMotorbikeSpeed) //stage 4
+        if (s_dal.Config.AvgMotorBikeSpeed != configuration.AvgMotorBikeSpeed) //stage 4
         {
-            s_dal.Config.AvgMotorbikeSpeed = configuration.AvgMotorbikeSpeed;
+            s_dal.Config.AvgMotorBikeSpeed = configuration.AvgMotorBikeSpeed;
             configChanged = true;
         }
         if (s_dal.Config.AvgBicycleSpeed != configuration.AvgBicycleSpeed) //stage 4

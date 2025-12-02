@@ -71,7 +71,7 @@ using System;
     /// <summary>
     /// Average motorbike speed.
     /// </summary>
-    double AvgMotorbikeSpeed { get; set; }
+    double AvgMotorBikeSpeed { get; set; }
 
     /// <summary>
     /// Average bicycle speed.

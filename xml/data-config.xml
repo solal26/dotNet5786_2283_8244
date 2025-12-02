@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <config>
   <NextOrderId>1050</NextOrderId>
-  <NextDeliveryId>5019</NextDeliveryId>
-  <Clock>17/11/2025 17:48:47</Clock>
+  <NextDeliveryId>5015</NextDeliveryId>
+  <Clock>02/12/2025 01:05:10</Clock>
   <ManagerId>123456789</ManagerId>
   <ManagerPassword>admin123</ManagerPassword>
   <CompanyAddress>Tel Aviv, Israel</CompanyAddress>
@@ -14,6 +14,6 @@
   <AvgBicycleSpeed>15</AvgBicycleSpeed>
   <AvgWalkingSpeed>5</AvgWalkingSpeed>
   <MaxDeliveryTime>03:00:00</MaxDeliveryTime>
-  <RiskRange>00:30:00</RiskRange>
-  <InactivityRange>00:15:00</InactivityRange>
+  <RiskRange>02:00:00</RiskRange>
+  <InactivityRange>1.00:00:00</InactivityRange>
 </config>
