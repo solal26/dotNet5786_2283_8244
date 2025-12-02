@@ -42,6 +42,8 @@ internal static class AdminManager //stage 4
         //if (_periodicTask is null || _periodicTask.IsCompleted) //stage 7
         //    _periodicTask = Task.Run(() => StudentManager.PeriodicStudentsUpdates(oldClock, newClock));
         //...
+        if (ClockUpdatedObservers == null)
+            return;
 
         //Calling all the observers of clock update
         ClockUpdatedObservers?.Invoke(); //prepared for stage 5
@@ -176,8 +178,8 @@ internal static class AdminManager //stage 4
         lock (BlMutex) //stage 7
         {
             DalTest.Initialization.Do(); //stage 4
-            //AdminManager.UpdateClock(AdminManager.Now);  //stage 5 - needed since we want the label on Pl to be updated           
-            //AdminManager.SetConfig(AdminManager.GetConfig()); //stage 5 - needed for update the PL
+            AdminManager.UpdateClock(AdminManager.Now);  //stage 5 - needed since we want the label on Pl to be updated           
+            AdminManager.SetConfig(AdminManager.GetConfig()); //stage 5 - needed for update the PL
         }
     }
 

@@ -142,6 +142,9 @@ internal static class OrderManager
 
         string url = $"https://nominatim.openstreetmap.org/search?q={Uri.EscapeDataString(address)}&format=json&limit=1";
 
+        if (!client.DefaultRequestHeaders.Contains("User-Agent"))
+            client.DefaultRequestHeaders.Add("User-Agent", "MyDeliveryApp/1.0");
+
         var response = client.GetStringAsync(url).Result; // סינכרוני
         var jsonDoc = JsonDocument.Parse(response);
 
