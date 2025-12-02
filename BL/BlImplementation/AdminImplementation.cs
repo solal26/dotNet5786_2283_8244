@@ -20,14 +20,24 @@ internal class AdminImplementation : IAdmin
     /// </remarks>
     public void ForwardClock(TimeUnit unit)
     {
-        AdminManager.UpdateClock(AdminManager.Now.AddMinutes(1));
+        var now = AdminManager.Now;
+        DateTime newTime = unit switch
+        {
+            TimeUnit.Minute => now.AddMinutes(1),
+            TimeUnit.Hour => now.AddHours(1),
+            TimeUnit.Day => now.AddDays(1),
+            _ => throw new ArgumentOutOfRangeException(nameof(unit))
+        };
+
+        AdminManager.UpdateClock(newTime);
     }
+
 
     /// <summary>
     /// Returns the current system time used by the application (local system time).
     /// </summary>
     /// <returns>The current <see cref="DateTime"/>.</returns>
-    public DateTime GetClock()=> DateTime.Now;
+    public DateTime GetClock()=> AdminManager.Now;
    
     /// <summary>
     /// Read current runtime configuration.

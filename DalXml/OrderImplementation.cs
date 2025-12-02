@@ -42,7 +42,7 @@ namespace Dal
         {
             // Load XML root and find the element with matching Id (note: code checks "Id" element here).
             XElement? orderElem =
-                XMLTools.LoadListFromXMLElement(Config.s_orders_xml).Elements().FirstOrDefault(st => (int?)st.Element("Id") == id);
+                XMLTools.LoadListFromXMLElement(Config.s_orders_xml).Elements().FirstOrDefault(st => (int?)st.Element("OrderId") == id);
             return orderElem is null ? null : getOrder(orderElem);
         }
 

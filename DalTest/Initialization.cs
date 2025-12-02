@@ -23,15 +23,15 @@ public static class Initialization
     private static readonly (string Address, double Lat, double Lon)[] addresses =
     {
         
-        ("14 Rothschild Blvd, Tel Aviv", 32.06672, 34.77403),
-        ("59 Ibn Gabirol St, Tel Aviv", 32.07206, 34.78138),
-        ("34 David HaMelech St, Tel Aviv", 32.06999, 34.77224),
-        ("45 King George St, Jerusalem", 31.77196, 35.21766),
-        ("28 Jaffa St, Jerusalem", 31.76832, 35.21371),
-        ("15 Ben Gurion Blvd, Haifa", 32.81669, 34.98957),
-        ("10 HaAtzmaut St, Haifa", 32.81421, 34.98912),
-        ("22 Herzl St, Beersheba", 31.25179, 34.79146),
-        ("9 Jerusalem Blvd, Beersheba", 31.25693, 34.79332)
+        ("14 Rothschild Blvd, Tel Aviv,Israel", 32.06672, 34.77403),
+        ("59 Ibn Gabirol St, Tel Aviv,Israel", 32.07206, 34.78138),
+        ("34 David HaMelech St, Tel Aviv,Israel", 32.06999, 34.77224),
+        ("45 King George St, Jerusalem,Israel", 31.77196, 35.21766),
+        ("28 Jaffa St, Jerusalem,Israel", 31.76832, 35.21371),
+        ("15 Ben Gurion Blvd, Haifa,Israel", 32.81669, 34.98957),
+        ("10 HaAtzmaut St, Haifa,Israel", 32.81421, 34.98912),
+        ("22 Herzl St, Beersheba,Israel", 31.25179, 34.79146),
+        ("9 Jerusalem Blvd, Beersheba,Israel", 31.25693, 34.79332)
     };
 
     /// <summary>
@@ -76,7 +76,7 @@ public static class Initialization
         for (int i = 0; i < 20; i++)
         {
             string name = names[i];
-            string phone = $"05{s_rand.Next(0, 10)}{s_rand.Next(10000000, 99999999)}";
+            string phone = $"05{s_rand.Next(0, 10)}{s_rand.Next(1000000, 9999999)}";
             string email = $"{name.ToLower()}{s_rand.Next(1, 10000)}@gmail.com";
             string code = s_rand.Next(1000, 10000).ToString();
             TypeOfShipment type = shipmentTypes[s_rand.Next(shipmentTypes.Length)];
@@ -127,7 +127,7 @@ public static class Initialization
         for (int i = 0; i < totalOrders; i++)
         {
             string customerName = customerNames[s_rand.Next(customerNames.Length)];
-            string customerPhone = $"05{s_rand.Next(0, 10)}{s_rand.Next(10000000, 99999999)}";
+            string customerPhone = $"05{s_rand.Next(0, 10)}{s_rand.Next(1000000, 9999999)}";
 
             var addr = addresses[s_rand.Next(addresses.Length)];
             string address = addr.Address;
