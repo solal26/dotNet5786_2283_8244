@@ -37,14 +37,14 @@ internal class AdminImplementation : IAdmin
     /// Returns the current system time used by the application (local system time).
     /// </summary>
     /// <returns>The current <see cref="DateTime"/>.</returns>
-    public DateTime GetClock()=> AdminManager.Now;
-   
+    public DateTime GetClock() => AdminManager.Now;
+
     /// <summary>
     /// Read current runtime configuration.
     /// </summary>
     /// <returns>Business-layer <see cref="Config"/> instance from <see cref="AdminManager"/>.</returns>
     public Config GetConfig() => AdminManager.GetConfig();
-  
+
     /// <summary>
     /// Initialize the demo database and seed sample data.
     /// </summary>
@@ -53,7 +53,7 @@ internal class AdminImplementation : IAdmin
     /// </remarks>
     public void InitializeDB()
     {
-        AdminManager.InitializeDB();    
+        AdminManager.InitializeDB();
     }
 
     /// <summary>
@@ -71,7 +71,19 @@ internal class AdminImplementation : IAdmin
     /// Replace runtime configuration with the provided <paramref name="config"/>.
     /// </summary>
     /// <param name="config">Configuration values to apply.</param>
-    public void SetConfig(Config config)=>
+    public void SetConfig(Config config) =>
         AdminManager.SetConfig(config);
+
+    #region Stage 5
+    public void AddClockObserver(Action clockObserver) =>
+    AdminManager.ClockUpdatedObservers += clockObserver;
+    public void RemoveClockObserver(Action clockObserver) =>
+    AdminManager.ClockUpdatedObservers -= clockObserver;
+    public void AddConfigObserver(Action configObserver) =>
+   AdminManager.ConfigUpdatedObservers += configObserver;
+    public void RemoveConfigObserver(Action configObserver) =>
+    AdminManager.ConfigUpdatedObservers -= configObserver;
+    #endregion Stage 5
+
 
 }

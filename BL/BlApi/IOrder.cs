@@ -15,7 +15,7 @@ namespace BlApi;
 /// - Implementations should document thrown BL exceptions (for example: <c>BlDoesNotExistException</c>, <c>BlInvalidRequestException</c>,
 ///   <c>BlAlreadyExistsException</c>, <c>BlUnauthorizedAccessException</c>, <c>BlInvalidAddressException</c>).
 /// </remarks>
-public interface IOrder
+public interface IOrder:IObservable<Order>
 {
     /// <summary>
     /// Returns aggregated counts for orders and schedule-status buckets.

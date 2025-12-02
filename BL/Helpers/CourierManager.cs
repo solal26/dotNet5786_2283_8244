@@ -21,6 +21,10 @@ internal static class CourierManager
 {
     private static IDal s_dal = DalApi.Factory.Get;
 
+    internal static ObserverManager Observers = new(); //stage 5 
+                                                       //...
+
+
     /// <summary>
     /// Validates a national id number format used for couriers.
     /// </summary>
@@ -161,6 +165,7 @@ internal static class CourierManager
         {
             throw new BlDoesNotExistException("Related entity does not exist.", ex);
         }
+        Observers.NotifyListUpdated(); //stage 5
     }
 
     /// <summary>
@@ -197,6 +202,7 @@ internal static class CourierManager
         {
             throw new BO.BlDoesNotExistException($"Courier ID={courierId} does not exist.", ex);
         }
+        Observers.NotifyListUpdated(); //stage 5
     }
 
     /// <summary>
@@ -272,6 +278,8 @@ internal static class CourierManager
 
         // 5. Call DAL for update
         s_dal.Courier.Update(updatedCourier);
+        Observers.NotifyListUpdated(); //stage 5
+        Observers.NotifyItemUpdated(doCourier.Id); //stage 5
     }
 
     /// <summary>
@@ -331,8 +339,11 @@ internal static class CourierManager
             {
                 var updated = doCourier with { Active = false };
                 s_dal.Courier.Update(updated);
+                
             }
+            Observers.NotifyItemUpdated(doCourier.Id); //stage 5
         }
+        Observers.NotifyListUpdated();  //stage 5
     }
 
     /// <summary>

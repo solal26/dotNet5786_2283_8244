@@ -12,7 +12,7 @@ namespace BlApi;
 /// - Implementations should document which BL exceptions they throw (for example: <see cref="BlDoesNotExistException"/>, 
 ///   <see cref="BlAlreadyExistsException"/>, <see cref="BlUnauthorizedAccessException"/>, <see cref="BlInvalidValueException"/>).
 /// </remarks>
-public interface ICourier
+public interface ICourier:IObservable<Courier>
 {
     /// <summary>
     /// Authenticate a user and return role string ("Admin" or "Courier").

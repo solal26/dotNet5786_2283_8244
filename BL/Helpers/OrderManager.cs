@@ -20,6 +20,10 @@ internal static class OrderManager
 {
     private static IDal s_dal = Factory.Get;
 
+    internal static ObserverManager Observers = new(); //stage 5 
+                                                       //...
+
+
     /// <summary>
     /// Validates the BO order, maps to DO and persists a new order.
     /// </summary>
@@ -59,7 +63,7 @@ internal static class OrderManager
         {
             throw new BlAlreadyExistsException("Order with the same ID already exists.", ex);
         }
-
+        Observers.NotifyListUpdated();  //stage 5
     }
 
     /// <summary>
@@ -113,8 +117,8 @@ internal static class OrderManager
             typeOfOrder = (DO.TypeOfOrder)boOrder.Type,
             VerbalDescription = boOrder.Description,
             ShippingAddress = boOrder.FullAddress,
-            Latitude = boOrder.Latitude,
-            Longitude = boOrder.Longitude,
+            Latitude = ValidateAddress(boOrder.FullAddress).Latitude,
+            Longitude =ValidateAddress(boOrder.FullAddress).Longitude,
             CustomerName = boOrder.CustomerName,
             CustomerPhone = boOrder.CustomerPhone,
             // Map other BO fields to DO fields
@@ -122,6 +126,9 @@ internal static class OrderManager
 
         // 6. Call DAL for update
         s_dal.Order.Update(updatedOrder);
+        Observers.NotifyListUpdated();  //stage 5
+        Observers.NotifyItemUpdated(boOrder.Id);
+
     }
 
     private static readonly HttpClient client = new HttpClient();
@@ -222,6 +229,7 @@ internal static class OrderManager
             {
                 throw new BlAlreadyExistsException(" delivery already exists.", ex);
             }
+            Observers.NotifyListUpdated();  //stage 5
 
         }
 
@@ -242,6 +250,8 @@ internal static class OrderManager
             {
                 throw new BlDoesNotExistException(" delivery does not exist.", ex);
             }
+            Observers.NotifyListUpdated();  //stage 5
+            Observers.NotifyItemUpdated(activeDelivery.Id); //stage 5
 
         }
     }
@@ -290,6 +300,8 @@ internal static class OrderManager
 
 
         s_dal.Delivery.Update(updatedDelivery);
+        Observers.NotifyItemUpdated(updatedDelivery.Id); //stage 5
+        Observers.NotifyListUpdated();  //stage 5
 
     }
 
@@ -429,6 +441,7 @@ internal static class OrderManager
         {
             throw new BlAlreadyExistsException("Delivery for this order already exists.", ex);
         }
+        Observers.NotifyListUpdated();  //stage 5
     }
 
     /// <summary>

@@ -142,6 +142,15 @@ internal class OrderImplementation : BlApi.IOrder
             throw new BlUnauthorizedAccessException("Requester does not have permission to add this order.");
         return OrderManager.GetordersSummary();
     }
+    public void AddObserver(Action listObserver) =>
+   OrderManager.Observers.AddListObserver(listObserver); //stage 5
+    public void AddObserver(int id, Action observer) =>
+OrderManager.Observers.AddObserver(id, observer); //stage 5
+    public void RemoveObserver(Action listObserver) =>
+OrderManager.Observers.RemoveListObserver(listObserver); //stage 5
+    public void RemoveObserver(int id, Action observer) =>
+OrderManager.Observers.RemoveObserver(id, observer); //stage 5
+
 }
 
 
