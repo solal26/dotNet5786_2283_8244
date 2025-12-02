@@ -521,12 +521,14 @@ namespace BlTest
         {
             var summary = s_bl.Order.GetOrdersSummary(s_currentUserId);
             Console.WriteLine("\n=== Orders Summary ===");
-            Console.WriteLine($"Total Orders: {summary[0]}");
-            Console.WriteLine($"Pending: {summary[1]}");
-            Console.WriteLine($"Assigned: {summary[2]}");
-            Console.WriteLine($"In Delivery: {summary[3]}");
-            Console.WriteLine($"Completed: {summary[4]}");
-            Console.WriteLine($"Cancelled: {summary[5]}");
+            Console.WriteLine($"Open: {summary[0]}");
+            Console.WriteLine($"InProgress: {summary[1]}");
+            Console.WriteLine($"Delivered: {summary[2]}");
+            Console.WriteLine($"Refused: {summary[3]}");
+            Console.WriteLine($"Cancelled: {summary[4]}");
+            Console.WriteLine($"OnTime: {summary[5]}");
+            Console.WriteLine($"InRisk: {summary[6]}");
+            Console.WriteLine($"Late: {summary[7]}");
         }
         /// <summary>
         /// Prompts user to update an order and submits the update to BL.

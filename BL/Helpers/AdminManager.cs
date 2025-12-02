@@ -168,8 +168,8 @@ internal static class AdminManager //stage 4
         lock (BlMutex) //stage 7
         {
             s_dal.ResetDB(); //stage 4
-            //AdminManager.UpdateClock(AdminManager.Now); //stage 5 - needed since we want the label on Pl to be updated
-            //AdminManager.SetConfig(AdminManager.GetConfig()); //stage 5 - needed to update PL 
+            AdminManager.UpdateClock(AdminManager.Now); //stage 5 - needed since we want the label on Pl to be updated
+            AdminManager.SetConfig(AdminManager.GetConfig()); //stage 5 - needed to update PL 
         }
     }
 
