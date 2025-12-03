@@ -1,6 +1,8 @@
-﻿namespace BLApi
+﻿namespace BlApi 
+    
 {
     /// <summary>
+    /// 
     /// This interface provides actions to **register** (add) and **unregister** (remove) **observers**
     /// for changes in a list of entities and in a specific entity
     /// </summary>

@@ -88,7 +88,7 @@ internal class CourierImplementation : BlApi.ICourier
     }
 
 
-    #region Stage 5
+    
     public void AddObserver(Action listObserver) =>
     CourierManager.Observers.AddListObserver(listObserver); //stage 5
     public void AddObserver(int id, Action observer) =>
@@ -98,5 +98,8 @@ CourierManager.Observers.RemoveListObserver(listObserver); //stage 5
     public void RemoveObserver(int id, Action observer) =>
 CourierManager.Observers.RemoveObserver(id, observer); //stage 5
 
-
+    //public IDisposable Subscribe(IObserver<BO.Courier> observer)
+    //{
+    //    throw new NotImplementedException();
+    //}
 }

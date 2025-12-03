@@ -1,11 +1,15 @@
-﻿<Window x:Class="PL.Courier.CourierWindow"
+﻿<Window x:Class="PL.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Courier"
         mc:Ignorable="d"
-        Title="Courier Management" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" 
+   	 DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+   
+      
+
 
     <Grid>
         <!-- =================== Grid Rows & Columns =================== -->
@@ -33,30 +37,34 @@
 
         <!-- ======================== System Clock ======================== -->
         <Label Grid.Row="0" Grid.Column="0" Content="System Clock:" VerticalAlignment="Center" Margin="5"/>
+
+        <Label Content="{Binding CurrentTime}" FontWeight="Bold" FontSize="20"/>
+
         <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
                     Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
-            <Button Content="+1 min" Width="70" Height="30" Margin="2"/>
-            <Button Content="+1 hr" Width="70" Height="30" Margin="2"/>
-            <Button Content="+1 day" Width="70" Height="30" Margin="2"/>
-            <Button Content="+1 month" Width="70" Height="30" Margin="2"/>
-            <Button Content="+1 year" Width="70" Height="30" Margin="2"/>
+            <Button Content="Add One min" Click="btnAddOneMinute_Click" Width="80" Height="30" Margin="2"/>
+            <Button Content="Add One hr" Click="btnAddOneHour_Click" Width="80" Height="30" Margin="2"/>
+            <Button Content="Add One day"  Click="btnAddOneDay_Click" Width="80" Height="30" Margin="2"/>
+            <Button Content="Add One month" Click="btnAddOneMonth_Click" Width="90" Height="30" Margin="2"/>
+            <Button Content="Add One year" Click="btnAddOneYear_Click"  Width="80" Height="30" Margin="2"/>
+                      
         </StackPanel>
 
         <!-- ======================== Configuration Variables ======================== -->
         <!-- Max Delivery Time -->
         <Label Grid.Row="2" Grid.Column="0" Content="Max Delivery Time:" VerticalAlignment="Center" Margin="5"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Width="120" Margin="5" Text="{Binding MaxDeliveryTime, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Width="120" Margin="5" Text="{Binding Configuration.MaxDeliveryTime, UpdateSourceTrigger=PropertyChanged}"/>
         <Button Grid.Row="2" Grid.Column="2" Content="Update" Width="60" Height="25" Margin="5"/>
 
         <!-- Inactivity Timeout -->
         <Label Grid.Row="3" Grid.Column="0" Content="Inactivity Timeout:" VerticalAlignment="Center" Margin="5"/>
-        <TextBox Grid.Row="3" Grid.Column="1" Width="120" Margin="5" Text="{Binding InactivityRange, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Width="120" Margin="5" Text="{Binding Configuration.InactivityRange, UpdateSourceTrigger=PropertyChanged}"/>
         <Button Grid.Row="3" Grid.Column="2" Content="Update" Width="60" Height="25" Margin="5"/>
 
         <!-- ======================== General Buttons ======================== -->
         <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3"
                     Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Open List Screen" Width="100" Height="30" Margin="5,0"/>
+            <Button Content="Open List Screen" Click="btnCouriers_Click" Width="100" Height="30" Margin="5,0"/>
             <Button Content="Initialize DB" Width="100" Height="30" Margin="5,0"/>
             <Button Content="Reset DB" Width="100" Height="30" Margin="5,0"/>
         </StackPanel>
