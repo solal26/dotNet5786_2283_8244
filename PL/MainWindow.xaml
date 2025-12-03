@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:PL.Courier"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" 
-   	 DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+   	 DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+         Loaded="MainWindow_Loaded" Closed="MainWindow_Closed"
+        >
    
       
 
@@ -37,8 +39,9 @@
 
         <!-- ======================== System Clock ======================== -->
         <Label Grid.Row="0" Grid.Column="0" Content="System Clock:" VerticalAlignment="Center" Margin="5"/>
+        
+        <Label Grid.Row="0" Grid.Column="1" Content="{Binding CurrentTime}" FontWeight="Bold" FontSize="20"/>
 
-        <Label Content="{Binding CurrentTime}" FontWeight="Bold" FontSize="20"/>
 
         <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
                     Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
@@ -65,8 +68,8 @@
         <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3"
                     Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
             <Button Content="Open List Screen" Click="btnCouriers_Click" Width="100" Height="30" Margin="5,0"/>
-            <Button Content="Initialize DB" Width="100" Height="30" Margin="5,0"/>
-            <Button Content="Reset DB" Width="100" Height="30" Margin="5,0"/>
+            <Button Content="Initialize DB" Click="btnInitialize_Click" Width="100" Height="30" Margin="5,0"/>
+            <Button Content="Reset DB" Click="btnReset_Click" Width="100" Height="30" Margin="5,0"/>
         </StackPanel>
     </Grid>
 </Window>

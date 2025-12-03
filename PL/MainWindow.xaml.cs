@@ -93,7 +93,7 @@ namespace PL
             s_bl.Admin.AddConfigObserver(configObserver);
         }
 
-        private void MainWindow_Closed(object Sender,RoutedEventArgs e)
+        private void MainWindow_Closed(object Sender, EventArgs e)
         {
             s_bl.Admin.RemoveClockObserver(clockObserver);
             s_bl.Admin.RemoveConfigObserver(configObserver);

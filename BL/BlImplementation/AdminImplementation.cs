@@ -26,6 +26,8 @@ internal class AdminImplementation : IAdmin
             TimeUnit.Minute => now.AddMinutes(1),
             TimeUnit.Hour => now.AddHours(1),
             TimeUnit.Day => now.AddDays(1),
+            TimeUnit.Month => now.AddMonths(1),
+            TimeUnit.Year => now.AddYears(1),
             _ => throw new ArgumentOutOfRangeException(nameof(unit))
         };
 
