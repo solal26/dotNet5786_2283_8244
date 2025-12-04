@@ -35,10 +35,7 @@ namespace PL.Courier
 
         private void ChooseDelivery(object sender, SelectionChangedEventArgs e)
         {
-            if (dtype == BO.DeliveryType.All)
-                CourierList = s_bl.Courier.GetListOfCourier();
-            else
-                CourierList = s_bl.Courier.GetListOfCourier(dtype);
+            CourierList = s_bl.Courier.GetListOfCourier(0, dtype);
         }
         public CourierListWindow()
         {

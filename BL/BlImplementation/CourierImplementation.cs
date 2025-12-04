@@ -86,12 +86,12 @@ internal class CourierImplementation : BlApi.ICourier
     {
         CourierManager.UpdateCourier(requesterId, boCourier);
     }
-    public IEnumerable<BO.CourierInList> GetListOfCourier(int requesterId=0, DeliveryType? filter = null)
+    public IEnumerable<BO.CourierInList> GetListOfCourier(int requesterId, BO.DeliveryType filter )
     {
         var list = CourierManager.GetAllCouriersInList();
-        if (filter != null)
+        if (filter.Equals(BO.DeliveryType.All) == false)
         {
-            list = list.Where(c => c.DeliveryType == filter.Value);
+            list = list.Where(c => c.DeliveryType == filter);
         }
         return list;
     }
