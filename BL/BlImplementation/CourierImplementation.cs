@@ -50,7 +50,7 @@ internal class CourierImplementation : BlApi.ICourier
     /// <summary>
     /// Returns a filtered and sorted list projection suitable for UI lists.
     /// </summary>
-    public IEnumerable<BO.CourierInList> GetList(string requesterId, bool? isActive = null, BO.CourierSortBy? sortBy = null)
+    public IEnumerable<BO.CourierInList> GetList(int requesterId, bool? isActive = null, BO.CourierSortBy? sortBy = null)
     {
         var list = CourierManager.GetAllCouriersInList();
 
@@ -86,9 +86,17 @@ internal class CourierImplementation : BlApi.ICourier
     {
         CourierManager.UpdateCourier(requesterId, boCourier);
     }
+    public IEnumerable<BO.CourierInList> GetListOfCourier(int requesterId=0, DeliveryType? filter = null)
+    {
+        var list = CourierManager.GetAllCouriersInList();
+        if (filter != null)
+        {
+            list = list.Where(c => c.DeliveryType == filter.Value);
+        }
+        return list;
+    }
 
 
-    
     public void AddObserver(Action listObserver) =>
     CourierManager.Observers.AddListObserver(listObserver); //stage 5
     public void AddObserver(int id, Action observer) =>
@@ -98,8 +106,4 @@ CourierManager.Observers.RemoveListObserver(listObserver); //stage 5
     public void RemoveObserver(int id, Action observer) =>
 CourierManager.Observers.RemoveObserver(id, observer); //stage 5
 
-    //public IDisposable Subscribe(IObserver<BO.Courier> observer)
-    //{
-    //    throw new NotImplementedException();
-    //}
 }

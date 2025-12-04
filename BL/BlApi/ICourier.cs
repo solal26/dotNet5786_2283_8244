@@ -30,7 +30,7 @@ public interface ICourier: IObservable
     /// <param name="isActive">Optional filter by active status; null returns all.</param>
     /// <param name="sortBy">Optional sort key for the returned sequence.</param>
     /// <returns>Enumerable of <see cref="CourierInList"/> suitable for listing and sorting.</returns>
-    IEnumerable<BO.CourierInList> GetList(string requesterId,
+    IEnumerable<BO.CourierInList> GetList(int requesterId,
                                           bool? isActive = null,
                                           BO.CourierSortBy? sortBy = null);
 
@@ -70,4 +70,6 @@ public interface ICourier: IObservable
     /// <param name="courier">Business-layer courier to add (Id must be validated/unique).</param>
     /// <exception cref="BlAlreadyExistsException">Thrown when a courier with the same Id already exists.</exception>
     void AddCourier(int requesterId, BO.Courier courier);
+
+    IEnumerable<BO.CourierInList> GetListOfCourier(int requesterId = 0, DeliveryType? filter = null);
 }
