@@ -60,8 +60,11 @@ public enum DeliveryType
     /// <summary>Bicycle transport.</summary>
     Bike,
     /// <summary>On-foot (walking) delivery.</summary>
-    OnFoot
+    OnFoot,
+    /// <summary>All transport types (used for filtering).</summary>
+    All
 }
+
 
 /// <summary>
 /// Final outcome of a delivery attempt.
