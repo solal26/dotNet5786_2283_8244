@@ -85,14 +85,14 @@ namespace PL
             Configuration=s_bl.Admin.GetConfig();
         }
 
-        private void MainWindow_Loaded(object Sender,RoutedEventArgs e)
+        private void MainWindow_Loaded(object Sender, RoutedEventArgs e)
         {
             CurrentTime = s_bl.Admin.GetClock();
             Configuration = s_bl.Admin.GetConfig();
             s_bl.Admin.AddClockObserver(clockObserver);
             s_bl.Admin.AddConfigObserver(configObserver);
         }
-
+        
         private void MainWindow_Closed(object Sender, EventArgs e)
         {
             s_bl.Admin.RemoveClockObserver(clockObserver);

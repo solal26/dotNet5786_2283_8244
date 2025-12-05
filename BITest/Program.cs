@@ -860,7 +860,7 @@ namespace BlTest
                 _ => null
             };
 
-            var couriers = s_bl.Courier.GetList(s_currentUserId.ToString(), isActive, sortBy);
+            var couriers = s_bl.Courier.GetList(s_currentUserId, isActive, sortBy);
 
             Console.WriteLine("\n=== Couriers List ===");
             foreach (var courier in couriers)

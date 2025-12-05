@@ -307,7 +307,7 @@ internal static class CourierManager
     /// </summary>
     internal static void PeriodicCouriersUpdates()
     {
-        DateTime now = s_dal.Config.Clock;
+        DateTime now = AdminManager.Now;
         TimeSpan inactivityLimit = s_dal.Config.InactivityRange;
 
         var doCouriers = s_dal.Courier.ReadAll();

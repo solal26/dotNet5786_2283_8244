@@ -162,38 +162,104 @@ public static class Initialization
     /// - Randomly sets delivery completion and status for some deliveries to simulate finished and in-progress deliveries.
     /// - Removes orders from the available pool when they are considered assigned or finished.
     /// </remarks>
+    //private static void createDeliveries()
+    //{
+
+    //    List<Order> allOrders = s_dal!.Order.ReadAll().ToList();
+    //    List<Courier> allCouriers = s_dal!.Courier.ReadAll().ToList();
+    //    List<Order> availableOrders = new List<Order>(allOrders); 
+
+    //    foreach (Order order in allOrders)
+    //    {
+
+    //        if (!availableOrders.Contains(order))
+    //            continue;
+
+    //        Courier? chosenCourier = null;
+    //        double distance = 0;
+
+    //        foreach (Courier courier in allCouriers)
+    //        {
+    //            distance = CalculateDistance(courier, order);
+
+
+    //            if (courier.Active && distance <= (courier.Distance ?? 10))
+    //            {
+    //                chosenCourier = courier;
+    //                break; 
+    //            }
+    //        }
+
+
+    //        if (chosenCourier == null)
+    //            continue;
+
+    //        DateTime startDelivery = order.OrderInitiation.AddMinutes(s_rand.Next(5, 20));
+    //        DateTime? endDelivery = null;
+    //        Endofcourier? endStatus = null;
+
+    //        bool isFinished = s_rand.NextDouble() > 0.5;
+    //        if (isFinished)
+    //        {
+    //            endDelivery = startDelivery.AddMinutes(s_rand.Next(10, 90));
+    //            Array values = Enum.GetValues(typeof(Endofcourier));
+    //            endStatus = (Endofcourier)values.GetValue(s_rand.Next(values.Length))!;
+    //        }
+
+
+    //        Delivery newDelivery = new Delivery(
+    //            Id: 0,
+    //            OrderId: order.OrderId,
+    //            CourierId: chosenCourier.Id,
+    //            typeofshipment: chosenCourier.typeofshipment,
+    //            TimeBegin: startDelivery,
+    //            endcour: endStatus,
+    //            TimeEnd: endDelivery,
+    //            Distance: distance
+    //        );
+
+    //        s_dal!.Delivery.Create(newDelivery);
+
+
+    //        if (isFinished || s_rand.NextDouble() > 0.5)
+    //            availableOrders.Remove(order);
+    //    }
+
+    //}
     private static void createDeliveries()
     {
-        
         List<Order> allOrders = s_dal!.Order.ReadAll().ToList();
         List<Courier> allCouriers = s_dal!.Courier.ReadAll().ToList();
-        List<Order> availableOrders = new List<Order>(allOrders); 
+
+        double maxCompanyDistance = s_dal!.Config.MaxRange;
 
         foreach (Order order in allOrders)
         {
-            
-            if (!availableOrders.Contains(order))
-                continue;
-
             Courier? chosenCourier = null;
             double distance = 0;
 
             foreach (Courier courier in allCouriers)
             {
+                
+                bool hasActiveDelivery = s_dal.Delivery.ReadAll()
+                                            .Any(d => d.CourierId == courier.Id && d.TimeEnd == null);
+
                 distance = CalculateDistance(courier, order);
 
-               
-                if (courier.Active && distance <= (courier.Distance ?? 10))
+              
+                bool withinDistance = distance <= (courier.Distance ?? maxCompanyDistance) &&
+                                      distance <= maxCompanyDistance;
+
+                if (courier.Active && !hasActiveDelivery && withinDistance)
                 {
                     chosenCourier = courier;
                     break; 
                 }
             }
 
-            
             if (chosenCourier == null)
-                continue;
-           
+                continue; 
+
             DateTime startDelivery = order.OrderInitiation.AddMinutes(s_rand.Next(5, 20));
             DateTime? endDelivery = null;
             Endofcourier? endStatus = null;
@@ -206,7 +272,6 @@ public static class Initialization
                 endStatus = (Endofcourier)values.GetValue(s_rand.Next(values.Length))!;
             }
 
-           
             Delivery newDelivery = new Delivery(
                 Id: 0,
                 OrderId: order.OrderId,
@@ -219,13 +284,10 @@ public static class Initialization
             );
 
             s_dal!.Delivery.Create(newDelivery);
-
-            
-            if (isFinished || s_rand.NextDouble() > 0.5)
-                availableOrders.Remove(order);
         }
-       
+
     }
+
     /// <summary>
     /// Calculate the great-circle distance (in kilometers) between the company and the order using the Haversine formula.
     /// </summary>

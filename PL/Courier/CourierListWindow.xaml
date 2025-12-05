@@ -6,7 +6,10 @@
         xmlns:local="clr-namespace:PL.Courier"
         mc:Ignorable="d"
         Title="CourierListWindow" Height="640" Width="800"
-        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        Loaded="Window_Loaded"
+        Closed="Window_Closed"
+        >
     <!--External Grid-->
     <Grid>
         <Grid.RowDefinitions>
@@ -25,7 +28,29 @@
             <ComboBox ItemsSource="{Binding Source={StaticResource Deliverytypekey}}" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedValue="{Binding Path=dtype, Mode=TwoWay}" SelectionChanged="ChooseDelivery" />
 
         </Grid>
-        <DataGrid Grid.Row="1" d:ItemsSource="{Binding Path=CourierList}"/>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Path=CourierList}" IsReadOnly ="True" AutoGenerateColumns="False"
+       	 EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected"
+       	 >
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Id}" Header="Id" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding FullName}" Header="Name" Width="Auto"/>
+                <DataGridTextColumn Binding= "{Binding DeliveryType}" Header="Type of Delivery" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding StartDate}" Header="Start Date" Width="Auto"/>
+                <DataGridTemplateColumn Header="Is Active" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsEnabled="False" IsChecked="{Binding Path=Active}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding DeliveredOnTime}" Header="Delivered On Time" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding DeliveredLate}" Header="Delivered On Late" Width="Auto"/>
+                <DataGridTextColumn Header="Current Order" Binding="{Binding CurrentOrderId, TargetNullValue='No current order' }" Width="Auto"/>
+
+
+
+            </DataGrid.Columns>
+        </DataGrid>
         <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
 
 

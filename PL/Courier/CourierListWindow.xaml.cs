@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,6 +38,19 @@ namespace PL.Courier
         {
             CourierList = s_bl.Courier.GetListOfCourier(0, dtype);
         }
+
+        private void queryCourierList()
+             => CourierList = s_bl.Courier.GetListOfCourier(0, dtype);
+        
+        private void courierListObserver()
+            => queryCourierList();
+ 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+             => s_bl.Courier.AddObserver(courierListObserver);
+
+        private void Window_Closed(object sender, EventArgs e)
+            => s_bl.Courier.RemoveObserver(courierListObserver);
+
         public CourierListWindow()
         {
             InitializeComponent();
