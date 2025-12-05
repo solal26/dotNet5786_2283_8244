@@ -29,7 +29,8 @@
 
         </Grid>
         <DataGrid Grid.Row="1" ItemsSource="{Binding Path=CourierList}" IsReadOnly ="True" AutoGenerateColumns="False"
-       	 EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected"
+       	 EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected" SelectedItem="{Binding SelectedCourier}"
+         MouseDoubleClick="lsvCourierList_MouseDoubleClick" 
        	 >
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Id}" Header="Id" Width="Auto"/>
@@ -46,12 +47,20 @@
                 <DataGridTextColumn Binding="{Binding DeliveredOnTime}" Header="Delivered On Time" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding DeliveredLate}" Header="Delivered On Late" Width="Auto"/>
                 <DataGridTextColumn Header="Current Order" Binding="{Binding CurrentOrderId, TargetNullValue='No current order' }" Width="Auto"/>
+                <DataGridTemplateColumn Header="Delete">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Delete" Click="btnDeleteCourier_Click" Tag="{Binding Id}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+
+                </DataGridTemplateColumn>
 
 
 
             </DataGrid.Columns>
         </DataGrid>
-        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
+        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="btnAddCourier_Click"/>
 
 
     </Grid>

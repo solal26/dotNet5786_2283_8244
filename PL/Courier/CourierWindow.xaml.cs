@@ -23,5 +23,10 @@ namespace PL.Courier
         {
             InitializeComponent();
         }
+        public CourierWindow(int courierId)
+        {
+            InitializeComponent();
+
+        }
     }
 }

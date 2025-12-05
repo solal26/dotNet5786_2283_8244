@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using BO;
 
 namespace PL.Courier
 {
@@ -22,18 +23,14 @@ namespace PL.Courier
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
-
         public IEnumerable<BO.CourierInList> CourierList
         {
             get { return (IEnumerable<BO.CourierInList>)GetValue(CourierListProperty); }
             set { SetValue(CourierListProperty, value); }
         }
-
-
         public static readonly DependencyProperty CourierListProperty =
             DependencyProperty.Register("CourierList", typeof(IEnumerable<BO.CourierInList>), typeof(CourierListWindow), new PropertyMetadata(null));
         public BO.DeliveryType dtype { get; set; } = BO.DeliveryType.All;
-
         private void ChooseDelivery(object sender, SelectionChangedEventArgs e)
         {
             CourierList = s_bl.Courier.GetListOfCourier(0, dtype);
@@ -51,6 +48,49 @@ namespace PL.Courier
         private void Window_Closed(object sender, EventArgs e)
             => s_bl.Courier.RemoveObserver(courierListObserver);
 
+        public BO.CourierInList? SelectedCourier { get; set; }
+        private void lsvCourierList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (SelectedCourier != null)
+                new CourierWindow(SelectedCourier.Id).Show();
+        }
+        private void btnAddCourier_Click(object sender, RoutedEventArgs e)
+        {
+            new CourierWindow().Show();
+        }
+        private void btnDeleteCourier_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            if (button == null) return;
+
+            int courierId = (int)button.Tag;
+
+            var result = MessageBox.Show($"Are you sure you want to delete courier {courierId}?",
+                                         "Delete Courier",
+                                         MessageBoxButton.YesNo,
+                                         MessageBoxImage.Warning);
+
+            if (result != MessageBoxResult.Yes)
+                return;
+
+            try
+            {
+                s_bl.Courier.DeleteCourier(courierId, courierId);
+                
+            }
+            catch (BO.BlDoesNotExistException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (BO.BlUnauthorizedAccessException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch( BO.BlInvalidRequestException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
         public CourierListWindow()
         {
             InitializeComponent();

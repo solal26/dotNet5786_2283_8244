@@ -12,17 +12,6 @@
     <Distance>19</Distance>
   </Courier>
   <Courier>
-    <Id>201236769</Id>
-    <Name>Sarah</Name>
-    <PhoneNumber>0524296093</PhoneNumber>
-    <Email>sarah2159@gmail.com</Email>
-    <Code>7161</Code>
-    <Active>false</Active>
-    <TimeBegin>2025-12-05T12:43:57</TimeBegin>
-    <typeofshipment>OnFoot</typeofshipment>
-    <Distance>1</Distance>
-  </Courier>
-  <Courier>
     <Id>315302735</Id>
     <Name>Michael</Name>
     <PhoneNumber>0581533664</PhoneNumber>
