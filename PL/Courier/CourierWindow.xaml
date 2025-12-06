@@ -4,9 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Courier"
-        mc:Ignorable="d"
+    mc:Ignorable="d"
         Title="CourierWindow" Height="616" Width="441"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Window.Resources>  
+    </Window.Resources>
     <Grid Height="487" VerticalAlignment="Top" >
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -35,29 +37,29 @@
                 <ColumnDefinition Width="168*"/>
             </Grid.ColumnDefinitions>
             <Label Content="Id Number:" HorizontalAlignment="Left" Grid.Row="0" FontSize="10"  VerticalAlignment="Center" Width="64" />
-            <TextBox Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
+            <TextBox Grid.Column="2" Text="{Binding CurrentCourier.Id}" HorizontalAlignment="Stretch" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
             <Label Content="Full name:" HorizontalAlignment="Left" Grid.Row="1" FontSize="10"  VerticalAlignment="Center" Width="64" />
-            <TextBox Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
+            <TextBox Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="1" Text="{Binding CurrentCourier.FullName}" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
             <Label Content="Phone Number:" HorizontalAlignment="Left" Grid.Row="2" FontSize="10"  VerticalAlignment="Center" Width="83" />
-            <TextBox Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="2" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
+            <TextBox Grid.Column="2" HorizontalAlignment="Stretch"  Grid.Row="2"  Text="{Binding CurrentCourier.Phone}" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
             <Label Content="Email:" HorizontalAlignment="Left" Grid.Row="3" FontSize="10"  VerticalAlignment="Center" Width="64" />
-            <TextBox Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="3" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
+            <TextBox Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="3" Text="{Binding CurrentCourier.Email}" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
             <Label Content="Password:" HorizontalAlignment="Left" Grid.Row="4" FontSize="10"  VerticalAlignment="Center" Width="64" />
-            <TextBox Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="4" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
+            <TextBox Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="4" Text="{Binding CurrentCourier.Password}" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
             <Label Content="Is Active:" HorizontalAlignment="Left" Grid.Row="5" FontSize="10"  VerticalAlignment="Center" Width="64" />
-            <CheckBox Grid.Column="2" HorizontalAlignment="Center" Grid.Row="5" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
+            <CheckBox Grid.Column="2" HorizontalAlignment="Center" Grid.Row="5" IsChecked="{Binding CurrentCourier.Active}"  VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
             <Label Content="Max Delivery Distance:" HorizontalAlignment="Left" Grid.Row="6" FontSize="10"  VerticalAlignment="Center" Width="113" />
-            <TextBox Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="6" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
+            <TextBox Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="6"  Text="{Binding CurrentCourier.MaxDeliveryDistance}" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
             <Label Content="Type of Delivery:" HorizontalAlignment="Left" Grid.Row="7" FontSize="10"  VerticalAlignment="Center" Width="83" />
-            <ComboBox HorizontalAlignment="Left" Grid.Row="7" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2" Margin="123,0,0,0" Width="148"/>
+            <ComboBox HorizontalAlignment="Left" Grid.Row="7"  VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2" Margin="123,0,0,0"  ItemsSource="{Binding Source={StaticResource DeliveryType}}" Width="148"/>
             <Label Content="Start Date:" HorizontalAlignment="Left" Grid.Row="8" FontSize="10"  VerticalAlignment="Center" Width="64" />
-            <DatePicker HorizontalAlignment="Center" Grid.Row="8" VerticalAlignment="Center"  FontSize="10" Height="23" Width="128" Grid.Column="1"/>
+            <DatePicker HorizontalAlignment="Center" Grid.Row="8" VerticalAlignment="Center"   SelectedDate="{Binding CurrentCourier.StartDate}"  FontSize="10" Height="23" Width="128" Grid.Column="1"/>
             <Label Content="Delivered On Time:" HorizontalAlignment="Left" Grid.Row="9" FontSize="10"  VerticalAlignment="Center" Width="96" />
-            <TextBox Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="9" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
+            <TextBox Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="9" VerticalAlignment="Center" Text="{Binding CurrentCourier.DeliveredOnTime}"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
             <Label Content="Delivered Late:" HorizontalAlignment="Left" Grid.Row="10" FontSize="10"  VerticalAlignment="Center" Width="83" />
-            <TextBox Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="10" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
+            <TextBox Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="10" VerticalAlignment="Center" Text="{Binding CurrentCourier.DeliveredLate}"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
             <Label Content="Current Order:" HorizontalAlignment="Left" Grid.Row="11" FontSize="10"  VerticalAlignment="Center" Width="76" />
-            <TextBox Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="11" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
+            <TextBox Grid.Column="2" HorizontalAlignment="Stretch" Grid.Row="11" VerticalAlignment="Center" Text="{Binding CurrentCourier.CurrentOrder}"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
             <Button Content="{Binding ButtonText}" Click="btnAddUpdate_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="75" Margin="0,0,0,-40" Grid.Row="11" Height="26" RenderTransformOrigin="0.48,0.412"/>
 
 

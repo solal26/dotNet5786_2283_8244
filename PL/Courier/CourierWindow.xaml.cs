@@ -47,12 +47,12 @@ namespace PL.Courier
             {
                 if (CurrentCourier!.Id == 0)  // מצב הוספה
                 {
-                    bl.Courier.AddCourier(0,CurrentCourier);
+                    bl.Courier.AddCourier(0, CurrentCourier);
                     MessageBox.Show("Courier added successfully");
                 }
                 else   // מצב עדכון
                 {
-                    bl.Courier.UpdateCourier(0,CurrentCourier);
+                    bl.Courier.UpdateCourier(0, CurrentCourier);
                     MessageBox.Show("Courier updated successfully");
                 }
 
@@ -70,9 +70,11 @@ namespace PL.Courier
             InitializeComponent();
             CurrentCourier = courierId == 0
            ? new BO.Courier()
-           : bl.Courier.GetCourier(0,courierId);
+           : bl.Courier.GetCourier(0, courierId);
         }
 
-      
+ 
+
+
     }
 }
