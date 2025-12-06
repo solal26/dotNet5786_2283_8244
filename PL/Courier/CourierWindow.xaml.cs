@@ -19,14 +19,60 @@ namespace PL.Courier
     /// </summary>
     public partial class CourierWindow : Window
     {
-        public CourierWindow()
+        private readonly BlApi.IBl bl = BlApi.Factory.Get();
+        public BO.Courier? CurrentCourier
         {
-            InitializeComponent();
+            get => (BO.Courier?)GetValue(CurrentCourierProperty);
+            set => SetValue(CurrentCourierProperty, value);
         }
-        public CourierWindow(int courierId)
-        {
-            InitializeComponent();
 
+        public static readonly DependencyProperty CurrentCourierProperty =
+            DependencyProperty.Register("CurrentCourier",
+                typeof(BO.Courier),
+                typeof(CourierWindow),
+                new PropertyMetadata(null));
+        public string ButtonText
+        {
+            get => (string)GetValue(ButtonTextProperty);
+            set => SetValue(ButtonTextProperty, value);
         }
+        public static readonly DependencyProperty ButtonTextProperty =
+        DependencyProperty.Register("ButtonText",
+            typeof(string),
+            typeof(CourierWindow),
+            new PropertyMetadata(""));
+        private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (CurrentCourier!.Id == 0)  // מצב הוספה
+                {
+                    bl.Courier.AddCourier(0,CurrentCourier);
+                    MessageBox.Show("Courier added successfully");
+                }
+                else   // מצב עדכון
+                {
+                    bl.Courier.UpdateCourier(0,CurrentCourier);
+                    MessageBox.Show("Courier updated successfully");
+                }
+
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        public CourierWindow(int courierId = 0)
+        {
+            ButtonText = courierId == 0 ? "Add" : "Update";
+            InitializeComponent();
+            CurrentCourier = courierId == 0
+           ? new BO.Courier()
+           : bl.Courier.GetCourier(0,courierId);
+        }
+
+      
     }
 }
