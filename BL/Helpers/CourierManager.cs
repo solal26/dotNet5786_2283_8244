@@ -121,7 +121,7 @@ internal static class CourierManager
     /// </summary>
     internal static void ValidateStartDate(DateTime start)
     {
-        if (start > s_dal.Config.Clock)
+        if (start > AdminManager.Now)
             throw new BlInvalidDateException("Start date cannot be in the future.");
     }
 
