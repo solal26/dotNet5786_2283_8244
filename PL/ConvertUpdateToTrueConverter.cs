@@ -4,41 +4,37 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows;
 
-
-namespace PL;
-
-public class ConvertUpdateToTrueConverter : IValueConverter
+namespace PL.Courier
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public class ModeToReadOnlyConverter : IValueConverter
     {
+        //returns true if in update mode (not add mode)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            bool isAddMode = (bool)value;
 
-        if (value is string buttonText && buttonText == "Update")
-            return true;
 
-        return false;
+            return !isAddMode;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    //returns Collapsed if in add mode, Visible if in update mode
+    public class ModeToVisibilityConverter : IValueConverter
     {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            bool isAddMode = (bool)value;
+            return isAddMode ? Visibility.Collapsed : Visibility.Visible;
+        }
 
-        throw new NotImplementedException();
-    }
-}
-
-public class ConvertUpdateToVisibleConverter : IValueConverter
-{
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        
-        if (value is string buttonText && buttonText == "Update")
-            return Visibility.Visible;
-
-        
-        return Visibility.Collapsed;
-    }
-
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

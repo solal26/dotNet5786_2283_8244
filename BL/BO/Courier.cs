@@ -60,7 +60,7 @@ public class Courier
     /// The date/time when the courier started (immutable).
     /// Used for inactivity and history calculations.
     /// </summary>
-    public DateTime StartDate { get; init; }
+    public DateTime StartDate { get; init; } = AdminManager.Now;
 
     /// <summary>
     /// Number of deliveries completed on time (computed by BL).

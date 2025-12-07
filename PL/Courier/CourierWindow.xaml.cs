@@ -20,7 +20,7 @@ namespace PL.Courier
     public partial class CourierWindow : Window
     {
         private readonly BlApi.IBl bl = BlApi.Factory.Get();
-        private readonly bool _isAddMode;
+        public bool _isAddMode { get; }
         public BO.Courier? CurrentCourier
         {
             get => (BO.Courier?)GetValue(CurrentCourierProperty);
@@ -69,8 +69,8 @@ namespace PL.Courier
         public CourierWindow(int courierId = 0)
         {
             ButtonText = courierId == 0 ? "Add" : "Update";
-            InitializeComponent();
             _isAddMode = courierId == 0;
+            InitializeComponent();
             CurrentCourier = courierId == 0
            ? new BO.Courier()
            : bl.Courier.GetCourier(courierId, courierId);
@@ -80,13 +80,13 @@ namespace PL.Courier
         {
             int id = CurrentCourier!.Id;
             CurrentCourier = null;
-            CurrentCourier= bl.Courier.GetCourier(id, id);
+            CurrentCourier = bl.Courier.GetCourier(id, id);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if(CurrentCourier != null)
-                bl.Courier.AddObserver(CurrentCourier.Id,CourierObserver);
+            if (CurrentCourier != null)
+                bl.Courier.AddObserver(CurrentCourier.Id, CourierObserver);
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -95,4 +95,5 @@ namespace PL.Courier
                 bl.Courier.RemoveObserver(CurrentCourier.Id, CourierObserver);
 
         }
+    }
 }
