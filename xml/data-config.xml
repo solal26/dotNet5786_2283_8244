@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <config>
   <NextOrderId>1050</NextOrderId>
-  <NextDeliveryId>5019</NextDeliveryId>
-  <Clock>05/12/2025 16:32:57</Clock>
+  <NextDeliveryId>5021</NextDeliveryId>
+  <Clock>12/7/2025 4:55:53 PM</Clock>
   <ManagerId>123456789</ManagerId>
   <ManagerPassword>admin123</ManagerPassword>
   <CompanyAddress>Tel Aviv, Israel</CompanyAddress>

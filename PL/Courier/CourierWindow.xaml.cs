@@ -76,8 +76,23 @@ namespace PL.Courier
            : bl.Courier.GetCourier(courierId, courierId);
         }
 
- 
+        private void CourierObserver()
+        {
+            int id = CurrentCourier!.Id;
+            CurrentCourier = null;
+            CurrentCourier= bl.Courier.GetCourier(id, id);
+        }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if(CurrentCourier != null)
+                bl.Courier.AddObserver(CurrentCourier.Id,CourierObserver);
+        }
 
-    }
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            if (CurrentCourier != null)
+                bl.Courier.RemoveObserver(CurrentCourier.Id, CourierObserver);
+
+        }
 }

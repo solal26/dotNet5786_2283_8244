@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:PL.Courier"
     mc:Ignorable="d"
         Title="CourierWindow" Height="616" Width="441"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Loaded="Window_Loaded"
+        Closed="Window_Closed">
     <Window.Resources>
 
     </Window.Resources>
