@@ -20,6 +20,7 @@ namespace PL.Courier
     public partial class CourierWindow : Window
     {
         private readonly BlApi.IBl bl = BlApi.Factory.Get();
+        private readonly bool _isAddMode;
         public BO.Courier? CurrentCourier
         {
             get => (BO.Courier?)GetValue(CurrentCourierProperty);
@@ -45,14 +46,14 @@ namespace PL.Courier
         {
             try
             {
-                if (CurrentCourier!.Id == 0)  // מצב הוספה
+                if (_isAddMode)  // מצב הוספה
                 {
-                    bl.Courier.AddCourier(0, CurrentCourier);
+                    bl.Courier.AddCourier(123456789, CurrentCourier);
                     MessageBox.Show("Courier added successfully");
                 }
                 else   // מצב עדכון
                 {
-                    bl.Courier.UpdateCourier(0, CurrentCourier);
+                    bl.Courier.UpdateCourier(CurrentCourier.Id, CurrentCourier);
                     MessageBox.Show("Courier updated successfully");
                 }
 
@@ -63,14 +64,16 @@ namespace PL.Courier
                 MessageBox.Show(ex.Message);
             }
         }
+        public IEnumerable<BO.DeliveryType> DeliveryTypes => Enum.GetValues(typeof(BO.DeliveryType)).Cast<BO.DeliveryType>();
 
         public CourierWindow(int courierId = 0)
         {
             ButtonText = courierId == 0 ? "Add" : "Update";
             InitializeComponent();
+            _isAddMode = courierId == 0;
             CurrentCourier = courierId == 0
            ? new BO.Courier()
-           : bl.Courier.GetCourier(0, courierId);
+           : bl.Courier.GetCourier(courierId, courierId);
         }
 
  

@@ -111,17 +111,6 @@
     <Distance>28</Distance>
   </Courier>
   <Courier>
-    <Id>346638497</Id>
-    <Name>Maya</Name>
-    <PhoneNumber>0519171279</PhoneNumber>
-    <Email>maya4446@gmail.com</Email>
-    <Code>1935</Code>
-    <Active>false</Active>
-    <TimeBegin>2025-12-05T11:44:57</TimeBegin>
-    <typeofshipment>Car</typeofshipment>
-    <Distance>28</Distance>
-  </Courier>
-  <Courier>
     <Id>252995657</Id>
     <Name>Itay</Name>
     <PhoneNumber>0596110756</PhoneNumber>
@@ -144,17 +133,6 @@
     <Distance>8</Distance>
   </Courier>
   <Courier>
-    <Id>311603277</Id>
-    <Name>Jonathan</Name>
-    <PhoneNumber>0577010878</PhoneNumber>
-    <Email>jonathan4678@gmail.com</Email>
-    <Code>8963</Code>
-    <Active>true</Active>
-    <TimeBegin>2025-12-05T13:23:57</TimeBegin>
-    <typeofshipment>Scooter</typeofshipment>
-    <Distance>17</Distance>
-  </Courier>
-  <Courier>
     <Id>386484504</Id>
     <Name>Hadas</Name>
     <PhoneNumber>0555634997</PhoneNumber>
@@ -164,17 +142,6 @@
     <TimeBegin>2025-12-05T13:26:57</TimeBegin>
     <typeofshipment>Bike</typeofshipment>
     <Distance>10</Distance>
-  </Courier>
-  <Courier>
-    <Id>303921434</Id>
-    <Name>Shimon</Name>
-    <PhoneNumber>0579791585</PhoneNumber>
-    <Email>shimon1821@gmail.com</Email>
-    <Code>9339</Code>
-    <Active>true</Active>
-    <TimeBegin>2025-12-05T12:32:57</TimeBegin>
-    <typeofshipment>OnFoot</typeofshipment>
-    <Distance>1</Distance>
   </Courier>
   <Courier>
     <Id>377972062</Id>
@@ -208,5 +175,37 @@
     <TimeBegin>2025-12-05T12:58:57</TimeBegin>
     <typeofshipment>Car</typeofshipment>
     <Distance>34</Distance>
+  </Courier>
+  <Courier>
+    <Id>303921434</Id>
+    <Name>Shimon</Name>
+    <PhoneNumber>0579791585</PhoneNumber>
+    <Email>shimon1821@gmail.com</Email>
+    <Code>9339</Code>
+    <Active>true</Active>
+    <TimeBegin>2025-12-05T12:32:57</TimeBegin>
+    <typeofshipment>OnFoot</typeofshipment>
+    <Distance>20</Distance>
+  </Courier>
+  <Courier>
+    <Id>311603277</Id>
+    <Name>Jonathan</Name>
+    <PhoneNumber>0577010878</PhoneNumber>
+    <Email>jonathan4678@gmail.com</Email>
+    <Code>8963</Code>
+    <Active>true</Active>
+    <TimeBegin>2025-12-05T13:23:57</TimeBegin>
+    <typeofshipment>Bike</typeofshipment>
+    <Distance>17</Distance>
+  </Courier>
+  <Courier>
+    <Id>328798244</Id>
+    <Name>neta</Name>
+    <PhoneNumber>0584260107</PhoneNumber>
+    <Email>ncdhcb@gmail.com</Email>
+    <Active>false</Active>
+    <TimeBegin>0001-01-01T00:00:00</TimeBegin>
+    <typeofshipment>Car</typeofshipment>
+    <Distance xsi:nil="true" />
   </Courier>
 </ArrayOfCourier>

@@ -18,7 +18,7 @@ public class Courier
     /// Unique courier identifier (immutable after construction).
     /// Must follow application id rules (validated in BL helpers).
     /// </summary>
-    public int Id { get; init; }
+    public int Id { get; init; }=0;
 
     /// <summary>
     /// Courier's full name used for display and lookup.

@@ -138,7 +138,7 @@ internal static class CourierManager
         ValidatePhone(courier.Phone);
         ValidateEmail(courier.Email);
         ValidateDistance(courier.MaxDeliveryDistance);
-        ValidateStartDate(courier.StartDate);
+        
 
         var doCourier = new DO.Courier
         {
@@ -150,7 +150,7 @@ internal static class CourierManager
             Active = courier.Active,
             Distance = courier.MaxDeliveryDistance,
             typeofshipment = (DO.TypeOfShipment)courier.DeliveryType,
-            TimeBegin = courier.StartDate
+            TimeBegin = AdminManager.Now
         };
 
         try
@@ -363,6 +363,7 @@ internal static class CourierManager
             Phone = doCourier.PhoneNumber,
             Email = doCourier.Email,
             Active =doCourier.Active,
+            Password= doCourier.Code,
             MaxDeliveryDistance = doCourier.Distance,
             DeliveryType = (DeliveryType)doCourier.typeofshipment,
             StartDate = doCourier.TimeBegin,
