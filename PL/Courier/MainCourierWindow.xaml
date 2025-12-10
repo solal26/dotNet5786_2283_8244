@@ -47,14 +47,14 @@
             <Label Content="Password:" HorizontalAlignment="Left" Grid.Row="4" FontSize="20"  VerticalAlignment="Center" Width="96" Height="35" Grid.ColumnSpan="2" />
             <TextBox Grid.Column="2" Grid.Row="4" Text="{Binding CurrentCourier.Password}" VerticalAlignment="Center"  FontSize="10" Height="15" Margin="23,0,10,0" Grid.ColumnSpan="2"/>
             <Label Content="Is Active:" HorizontalAlignment="Left" Grid.Row="5" FontSize="20"  VerticalAlignment="Center" Width="96" Height="36" Grid.ColumnSpan="2" />
-            <CheckBox Grid.Column="2" HorizontalAlignment="Left" Grid.Row="5" IsChecked="{Binding CurrentCourier.Active}"  VerticalAlignment="Center"  FontSize="10" Height="15" Width="16" Grid.ColumnSpan="2" Margin="168,0,0,0"/>
+            <CheckBox Grid.Column="2" IsEnabled="False" HorizontalAlignment="Left" Grid.Row="5" IsChecked="{Binding CurrentCourier.Active}"  VerticalAlignment="Center"  FontSize="10" Height="15" Width="16" Grid.ColumnSpan="2" Margin="168,0,0,0"/>
             <Label Content="Max Delivery Distance:" HorizontalAlignment="Left" Grid.Row="6" FontSize="20"  VerticalAlignment="Center" Width="127" Height="36" Grid.ColumnSpan="3" />
             <TextBox Grid.Column="2" Grid.Row="6"  Text="{Binding CurrentCourier.MaxDeliveryDistance}" VerticalAlignment="Center"  FontSize="10" Height="15" Margin="55,0,10,0" Grid.ColumnSpan="2"/>
             <Label Content="Type of Delivery:" HorizontalAlignment="Left" Grid.Row="7" FontSize="20"  VerticalAlignment="Center" Width="160" Height="35" Grid.ColumnSpan="3" />
-            <ComboBox HorizontalAlignment="Left" Grid.Row="7"  VerticalAlignment="Center"  FontSize="20" Height="23" 
+            <ComboBox HorizontalAlignment="Left" IsEnabled="{Binding haveCurrentOlder}" Grid.Row="7"  VerticalAlignment="Center"  FontSize="20" Height="35" 
                       ItemsSource="{Binding DeliveryTypes}"  SelectedItem="{Binding CurrentCourier.DeliveryType, Mode=TwoWay}" Width="148" Grid.Column="2" Grid.ColumnSpan="2" Margin="102,0,0,0"/>
             <Label Content="Start Date:" HorizontalAlignment="Left" Grid.Row="8" FontSize="20"  VerticalAlignment="Center" Width="113" Height="36" Grid.ColumnSpan="3" />
-            <DatePicker HorizontalAlignment="Left" IsEnabled="False"  Grid.Row="8" VerticalAlignment="Center"   SelectedDate="{Binding CurrentCourier.StartDate}"  FontSize="10" Height="23" Width="128" Grid.Column="2" Grid.ColumnSpan="2" Margin="112,0,0,0"/>
+            <DatePicker HorizontalAlignment="Left" IsEnabled="False"  Grid.Row="8" VerticalAlignment="Top"   SelectedDate="{Binding CurrentCourier.StartDate}"  FontSize="10" Height="29" Width="128" Grid.Column="2" Grid.ColumnSpan="2" Margin="112,9,0,0"/>
             <Label Content="Delivered On Time:"  HorizontalAlignment="Left" Grid.Row="8" FontSize="20"  VerticalAlignment="Top" Width="212" Height="34" Grid.ColumnSpan="3" Margin="0,39,0,0" Grid.RowSpan="2" />
             <TextBox Grid.Column="2" Grid.Row="9" VerticalAlignment="Center" Text="{Binding CurrentCourier.DeliveredOnTime}"  FontSize="10" Height="15" Margin="102,0,0,0" Grid.ColumnSpan="2"/>
             <Label Content="Delivered Late:"  HorizontalAlignment="Left" Grid.Row="10" FontSize="20"  VerticalAlignment="Center" Width="160" Height="34" Grid.ColumnSpan="3" />

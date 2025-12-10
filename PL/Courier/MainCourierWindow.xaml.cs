@@ -21,7 +21,7 @@ namespace PL.Courier
     public partial class MainCourierWindow : Window
     {
         private readonly BlApi.IBl bl = BlApi.Factory.Get();
-        public bool _isAddMode { get; }
+        public bool haveCurrentOlder { get; set; }
         public BO.Courier? CurrentCourier
         {
             get => (BO.Courier?)GetValue(CurrentCourierProperty);
@@ -64,8 +64,9 @@ namespace PL.Courier
 
         public MainCourierWindow(int courierId )
         {
-            _isAddMode = courierId == 0;
+            
             InitializeComponent();
+            
             CurrentCourier = courierId == 0
            ? new BO.Courier()
            : bl.Courier.GetCourier(courierId, courierId);
@@ -83,6 +84,8 @@ namespace PL.Courier
             if (CurrentCourier != null)
                 bl.Courier.AddObserver(CurrentCourier.Id, CourierObserver);
             ButtonText = CurrentCourier!.CurrentOrder == null ? "New delivery" : "EndDelivery";
+            haveCurrentOlder = CurrentCourier!.CurrentOrder == null;
+
         }
 
         private void Window_Closed(object sender, EventArgs e)
