@@ -32,7 +32,7 @@ namespace PL
                 new MainWindow().Show();
             else
                 if(s_bl.Courier.GetCourier(int.Parse(Username), int.Parse(Username))!=null)//l(d=>d.Id==(int.Parse(Username)).any())
-                    new Courier.CourierWindow(int.Parse(Username)).Show();
+                    new Courier.MainCourierWindow(int.Parse(Username)).Show();
                 else
                     MessageBox.Show("Invalid ID");
 
