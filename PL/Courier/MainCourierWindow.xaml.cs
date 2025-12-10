@@ -31,7 +31,7 @@ namespace PL.Courier
         public static readonly DependencyProperty CurrentCourierProperty =
             DependencyProperty.Register("CurrentCourier",
                 typeof(BO.Courier),
-                typeof(CourierWindow),
+                typeof(MainCourierWindow),
                 new PropertyMetadata(null));
         public string ButtonText
         {
@@ -41,7 +41,7 @@ namespace PL.Courier
         public static readonly DependencyProperty ButtonTextProperty =
         DependencyProperty.Register("ButtonText",
             typeof(string),
-            typeof(CourierWindow),
+            typeof(MainCourierWindow),
             new PropertyMetadata(""));
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
@@ -64,10 +64,8 @@ namespace PL.Courier
 
         public MainCourierWindow(int courierId )
         {
-            InitializeComponent();
-            ButtonText = CurrentCourier.CurrentOrder == null ? "New delivery" : "EndDelivery";
             _isAddMode = courierId == 0;
-            
+            InitializeComponent();
             CurrentCourier = courierId == 0
            ? new BO.Courier()
            : bl.Courier.GetCourier(courierId, courierId);
@@ -84,6 +82,7 @@ namespace PL.Courier
         {
             if (CurrentCourier != null)
                 bl.Courier.AddObserver(CurrentCourier.Id, CourierObserver);
+            ButtonText = CurrentCourier!.CurrentOrder == null ? "New delivery" : "EndDelivery";
         }
 
         private void Window_Closed(object sender, EventArgs e)

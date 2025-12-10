@@ -220,4 +220,15 @@
     <typeofshipment>Car</typeofshipment>
     <Distance>30</Distance>
   </Courier>
+  <Courier>
+    <Id>328798244</Id>
+    <Name>neta</Name>
+    <PhoneNumber>0584260401</PhoneNumber>
+    <Email>necdvh@gmail.com</Email>
+    <Code>1234</Code>
+    <Active>true</Active>
+    <TimeBegin>2025-12-13T16:56:53</TimeBegin>
+    <typeofshipment>Car</typeofshipment>
+    <Distance>23</Distance>
+  </Courier>
 </ArrayOfCourier>
