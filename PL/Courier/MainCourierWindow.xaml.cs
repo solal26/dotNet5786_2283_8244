@@ -21,7 +21,15 @@ namespace PL.Courier
     public partial class MainCourierWindow : Window
     {
         private readonly BlApi.IBl bl = BlApi.Factory.Get();
-        public bool haveCurrentOlder { get; set; }
+        //public bool haveCurrentOlder { get; set; }
+        public bool haveCurrentOlder
+        {
+            get => (bool)GetValue(HaveCurrentOlderProperty);
+            set => SetValue(HaveCurrentOlderProperty, value);
+        }
+
+        public static readonly DependencyProperty HaveCurrentOlderProperty =
+            DependencyProperty.Register("haveCurrentOlder", typeof(bool), typeof(MainCourierWindow), new PropertyMetadata(false));
         public BO.Courier? CurrentCourier
         {
             get => (BO.Courier?)GetValue(CurrentCourierProperty);
@@ -43,17 +51,37 @@ namespace PL.Courier
             typeof(string),
             typeof(MainCourierWindow),
             new PropertyMetadata(""));
+
+        private void btnChooseOrEnd_Click(object sender, RoutedEventArgs e)
+        {
+            if (ButtonText == "New delivery")
+            {
+                new OpenOrderInListWindow(CurrentCourier!.Id).Show();
+            }
+            else
+            {
+                try
+                {
+                    bl.Order.CompleteOrderDelivery(CurrentCourier!.Id, CurrentCourier!.Id, CurrentCourier!.CurrentOrder.DeliveryId);
+                    MessageBox.Show("Delivery ended successfully");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-              // מצב עדכון
+                // מצב עדכון
                 {
                     bl.Courier.UpdateCourier(CurrentCourier.Id, CurrentCourier);
                     MessageBox.Show("Courier updated successfully");
                 }
 
-                
+
             }
             catch (Exception ex)
             {
@@ -62,14 +90,15 @@ namespace PL.Courier
         }
         public IEnumerable<BO.DeliveryType> DeliveryTypes => Enum.GetValues(typeof(BO.DeliveryType)).Cast<BO.DeliveryType>();
 
-        public MainCourierWindow(int courierId )
+        public MainCourierWindow(int courierId)
         {
-            
+
             InitializeComponent();
-            
+           
             CurrentCourier = courierId == 0
            ? new BO.Courier()
            : bl.Courier.GetCourier(courierId, courierId);
+          
         }
 
         private void CourierObserver()
@@ -85,7 +114,6 @@ namespace PL.Courier
                 bl.Courier.AddObserver(CurrentCourier.Id, CourierObserver);
             ButtonText = CurrentCourier!.CurrentOrder == null ? "New delivery" : "EndDelivery";
             haveCurrentOlder = CurrentCourier!.CurrentOrder == null;
-
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -94,14 +122,8 @@ namespace PL.Courier
                 bl.Courier.RemoveObserver(CurrentCourier.Id, CourierObserver);
 
         }
-        private void btnChooseOrEnd_Click(object sender, RoutedEventArgs e)
-        {
-            if(ButtonText== "New delivery")
-            {
-                new OpenOrderInListWindow().Show();
-            }
-        }
-    }
 
+
+    }
 }
 

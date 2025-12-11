@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using PL.Courier;
 
 namespace PL.Order
 {
@@ -19,9 +20,86 @@ namespace PL.Order
     /// </summary>
     public partial class OpenOrderInListWindow : Window
     {
-        public OpenOrderInListWindow()
+        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        public BO.Courier? CurrentCourier { get; set; }
+        public IEnumerable<BO.OpenOrderInList> OpenOrderList
+        {
+            get { return (IEnumerable<BO.OpenOrderInList>)GetValue(OpenOrderListProperty); }
+            set { SetValue(OpenOrderListProperty, value); }
+        }
+        public static readonly DependencyProperty OpenOrderListProperty =
+            DependencyProperty.Register("OpenOrderList", typeof(IEnumerable<BO.OpenOrderInList>), typeof(OpenOrderInListWindow), new PropertyMetadata(null));
+        public BO.DeliveryType dtype { get; set; } = BO.DeliveryType.All;
+
+        //private void ChooseDelivery(object sender, SelectionChangedEventArgs e)
+        //{
+        //    OpenOrderList = s_bl.Order.GetOpenOrdersForCourier(CurrentCourier.Id, CurrentCourier.Id);
+        //}
+        //private void queryOpenOrderList()
+        //{
+        //    var list = s_bl.Order.GetOpenOrdersForCourier(CurrentCourier.Id, CurrentCourier.Id);
+        //    MessageBox.Show($"Orders found: {list.Count()}");
+        //    OpenOrderList = list;
+        //}
+
+        private void queryOpenOrderList()
+             => OpenOrderList = s_bl.Order.GetOpenOrdersForCourier(CurrentCourier.Id, CurrentCourier.Id);
+
+        private void OpenOrderListObserver()
+            => queryOpenOrderList();
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            s_bl.Courier.AddObserver(OpenOrderListObserver);
+            queryOpenOrderList();
+        }
+        private void Window_Closed(object sender, EventArgs e)
+            => s_bl.Courier.RemoveObserver(OpenOrderListObserver);
+
+       
+       
+        
+        private void btnChooseOrder_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            if (button == null) return;
+
+            int courierId = (int)button.Tag;
+
+            var result = MessageBox.Show($"Are you sure you want to delete courier {courierId}?",
+                                         "Delete Courier",
+                                         MessageBoxButton.YesNo,
+                                         MessageBoxImage.Warning);
+
+            if (result != MessageBoxResult.Yes)
+                return;
+
+            try
+            {
+                s_bl.Courier.DeleteCourier(courierId, courierId);
+
+            }
+            catch (BO.BlDoesNotExistException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (BO.BlUnauthorizedAccessException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (BO.BlInvalidRequestException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        public OpenOrderInListWindow(int id)
         {
             InitializeComponent();
+            CurrentCourier =
+            s_bl.Courier.GetCourier(id, id);
+            this.DataContext = this;
         }
+
+        
     }
 }

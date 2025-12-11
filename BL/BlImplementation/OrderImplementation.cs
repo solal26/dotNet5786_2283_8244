@@ -101,7 +101,7 @@ internal class OrderImplementation : BlApi.IOrder
     OpenOrderInListSort? sortBy = null)
     {
         
-        bool permission = CourierManager.HasPermission(requesterId);
+        bool permission = CourierManager.HasPermission(requesterId, courierId);
         if (!permission)
             throw new BlUnauthorizedAccessException("Requester does not have permission to view open orders.");
 

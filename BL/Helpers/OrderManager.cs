@@ -571,32 +571,41 @@ internal static class OrderManager
     internal static IEnumerable<OpenOrderInList> GetOpenOrdersForACourier(int courierId, OrderType? filterType, OpenOrderInListSort? sortBy)
     {
         var doCourier = s_dal.Courier.Read(courierId);
+
         var openOrders = s_dal.Order.ReadAll(o =>
         {
             bool hasDelivery = s_dal.Delivery.ReadAll(d => d.OrderId == o.OrderId).Any();
             return !hasDelivery;
         });
 
-
+        
         var openOrdersList = openOrders
-    .Select(o => new OpenOrderInList
-    {
-        CourierId = courierId,
-        OrderId = o.OrderId,
-        Type = (OrderType)o.typeOfOrder,
-        FullAddress = o.ShippingAddress,
-        Weight = o.weight,
-        AirDistance = CourierManager.CalculateAirDistance(o.Latitude, o.Longitude),
-        EstimatedActualTime = CourierManager.CalculateEstimatedActualTime(doCourier.typeofshipment, CourierManager.CalculateActualDistance(o.Latitude, o.Longitude, (DeliveryType)doCourier.typeofshipment)),
-        TimeRemaining = CourierManager.CalculateMaxDeliveryTime(o.OrderInitiation) - DateTime.Now,
-        MaxDeliveryTime = CourierManager.CalculateMaxDeliveryTime(o.OrderInitiation),
-        ScheduleStatus = CalculateScheduleStatus(o.OrderId),
-
-    })
-    .AsEnumerable();
+            .Select(o =>
+            {
+                var airDistance = CourierManager.CalculateAirDistance(o.Latitude, o.Longitude);
+                return new OpenOrderInList
+                {
+                    CourierId = courierId,
+                    OrderId = o.OrderId,
+                    Type = (OrderType)o.typeOfOrder,
+                    FullAddress = o.ShippingAddress,
+                    Weight = o.weight,
+                    AirDistance = airDistance,
+                    EstimatedActualTime = CourierManager.CalculateEstimatedActualTime(
+                        doCourier.typeofshipment,
+                        CourierManager.CalculateActualDistance(o.Latitude, o.Longitude, (DeliveryType)doCourier.typeofshipment)),
+                    TimeRemaining = CourierManager.CalculateMaxDeliveryTime(o.OrderInitiation) - DateTime.Now,
+                    MaxDeliveryTime = CourierManager.CalculateMaxDeliveryTime(o.OrderInitiation),
+                    ScheduleStatus = CalculateScheduleStatus(o.OrderId),
+                };
+            });
+            
+            //.Where(o => o.AirDistance <= doCourier.Distance)
+            //.AsEnumerable();
 
         if (filterType.HasValue)
             openOrdersList = openOrdersList.Where(o => o.Type == filterType.Value);
+
         if (!sortBy.HasValue)
         {
             openOrdersList = openOrdersList.OrderBy(d => d.ScheduleStatus);
@@ -612,7 +621,7 @@ internal static class OrderManager
                     openOrdersList.OrderBy(d => d.OrderId),
 
                 OpenOrderInListSort.ActualDistance =>
-                    openOrdersList.OrderBy(d => d.ActualDistance),
+                    openOrdersList.OrderBy(d => d.EstimatedActualTime), 
 
                 OpenOrderInListSort.AirDistance =>
                     openOrdersList.OrderBy(d => d.AirDistance),
@@ -632,6 +641,7 @@ internal static class OrderManager
 
         return openOrdersList;
     }
+
 
     /// <summary>
     /// Returns a projection list of orders with last-delivery and scheduling metrics, supports filtering and sorting.
