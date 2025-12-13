@@ -56,16 +56,17 @@
             <Label Content="Start Date:" HorizontalAlignment="Left" Grid.Row="8" FontSize="20"  VerticalAlignment="Center" Width="113" Height="36" Grid.ColumnSpan="3" />
             <DatePicker HorizontalAlignment="Left" IsEnabled="False"  Grid.Row="8" VerticalAlignment="Top"   SelectedDate="{Binding CurrentCourier.StartDate}"  FontSize="10" Height="29" Width="128" Grid.Column="2" Grid.ColumnSpan="2" Margin="112,9,0,0"/>
             <Label Content="Delivered On Time:"  HorizontalAlignment="Left" Grid.Row="8" FontSize="20"  VerticalAlignment="Top" Width="212" Height="34" Grid.ColumnSpan="3" Margin="0,39,0,0" Grid.RowSpan="2" />
-            <TextBox Grid.Column="2" Grid.Row="9" VerticalAlignment="Center" Text="{Binding CurrentCourier.DeliveredOnTime}"  FontSize="10" Height="15" Margin="102,0,0,0" Grid.ColumnSpan="2"/>
+            <TextBox Grid.Column="2" Grid.Row="9" IsReadOnly="True" VerticalAlignment="Center" Text="{Binding CurrentCourier.DeliveredOnTime}"  FontSize="10" Height="15" Margin="102,0,0,0" Grid.ColumnSpan="2"/>
             <Label Content="Delivered Late:"  HorizontalAlignment="Left" Grid.Row="10" FontSize="20"  VerticalAlignment="Center" Width="160" Height="34" Grid.ColumnSpan="3" />
-            <TextBox Grid.Column="2" Grid.Row="10" VerticalAlignment="Center" Text="{Binding CurrentCourier.DeliveredLate}"  FontSize="10" Height="15" Margin="55,0,0,0" Grid.ColumnSpan="2"/>
+            <TextBox Grid.Column="2" Grid.Row="10" IsReadOnly="True" VerticalAlignment="Center" Text="{Binding CurrentCourier.DeliveredLate}"  FontSize="10" Height="15" Margin="55,0,0,0" Grid.ColumnSpan="2"/>
             <Button Content="{Binding ButtonText}" Click="btnChooseOrEnd_Click" Grid.Column="3" Margin="231,0,-174,0" RenderTransformOrigin="0.509,0.543" Height="45" VerticalAlignment="Center" />
 
 
         </Grid>
-        <TextBox Text="{Binding CurrentCourier.FullName}" HorizontalAlignment="Left" Margin="180,10,0,0" Grid.Row="1" FontSize="30"  TextWrapping="Wrap" VerticalAlignment="Top" Width="291" Height="44"/>
+        <TextBox Text="{Binding CurrentCourier.FullName}" IsReadOnly="True" HorizontalAlignment="Left" Margin="180,10,0,0" Grid.Row="1" FontSize="30"  TextWrapping="Wrap" VerticalAlignment="Top" Width="291" Height="44"/>
         <Label Content="WELCOME" HorizontalAlignment="Left" FontSize="30" Margin="25,6,0,0" Grid.Row="1" VerticalAlignment="Top" Width="155" Height="48"/>
         <Button  Content="Update" Click="btnUpdate_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="535,396,0,0" Grid.Row="1" Height="42" RenderTransformOrigin="0.48,0.412"/>
+        <Button Content="DeliveryHistory" Click="btnDeliveryHistory_Click" HorizontalAlignment="Left" Margin="535,304,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120" Height="42"/>
 
 
 

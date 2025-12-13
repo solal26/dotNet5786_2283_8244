@@ -21,7 +21,7 @@ namespace PL.Courier
     public partial class MainCourierWindow : Window
     {
         private readonly BlApi.IBl bl = BlApi.Factory.Get();
-        //public bool haveCurrentOlder { get; set; }
+       
         public bool haveCurrentOlder
         {
             get => (bool)GetValue(HaveCurrentOlderProperty);
@@ -63,6 +63,8 @@ namespace PL.Courier
                 try
                 {
                     bl.Order.CompleteOrderDelivery(CurrentCourier!.Id, CurrentCourier!.Id, CurrentCourier!.CurrentOrder.DeliveryId);
+                    ButtonText = "New delivery";
+                    haveCurrentOlder = false; 
                     MessageBox.Show("Delivery ended successfully");
                 }
                 catch (Exception ex)
@@ -70,6 +72,10 @@ namespace PL.Courier
                     MessageBox.Show(ex.Message);
                 }
             }
+        }
+        private void btnDeliveryHistory_Click(object sender, RoutedEventArgs e)
+        {
+            new DeliveryHistoryWindow(CurrentCourier!.Id).Show();
         }
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
@@ -106,6 +112,8 @@ namespace PL.Courier
             int id = CurrentCourier!.Id;
             CurrentCourier = null;
             CurrentCourier = bl.Courier.GetCourier(id, id);
+            ButtonText = CurrentCourier.CurrentOrder == null ? "New delivery" : "EndDelivery";
+            haveCurrentOlder = CurrentCourier!.CurrentOrder == null;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

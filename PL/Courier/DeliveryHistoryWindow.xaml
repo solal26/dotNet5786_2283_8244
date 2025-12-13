@@ -5,8 +5,46 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Courier"
         mc:Ignorable="d"
-        Title="DeliveryHistoryWindow" Height="450" Width="800">
-    <Grid>
-        
+        Title="DeliveryHistoryWindow" Height="500" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Loaded="Window_Loaded"
+        Closed="Window_Closed"
+        >
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Title -->
+            <RowDefinition Height="*"/>
+            <!-- DataGrid -->
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <TextBlock Text="Closed Deliveries"
+                   FontSize="28"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,20"
+                   Grid.Row="0"/>
+
+        <!-- DataGrid -->
+        <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding ClosedDeliveryList}"
+                  IsReadOnly="True"
+                  AutoGenerateColumns="False"
+                  EnableRowVirtualization="True"
+                  RowDetailsVisibilityMode="VisibleWhenSelected"
+                  CanUserResizeRows="False"
+                  CanUserResizeColumns="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding DeliveryId}" Header="Delivery ID" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding OrderId}" Header="Order ID" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding OrderType}" Header="Order Type" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding FullAddress}" Header="Address" Width="*"/>
+                <DataGridTextColumn Binding="{Binding DeliveryType}" Header="Delivery Type" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding ActualDistance, StringFormat={}{0:0.##} km}" Header="Actual Distance" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding CompletionTime}" Header="Completion Time" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding EndType}" Header="Delivery End Type" Width="Auto"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

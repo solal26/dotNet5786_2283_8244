@@ -591,6 +591,7 @@ internal static class OrderManager
                     FullAddress = o.ShippingAddress,
                     Weight = o.weight,
                     AirDistance = airDistance,
+                    ActualDistance= CourierManager.CalculateActualDistance(o.Latitude, o.Longitude, (DeliveryType)doCourier.typeofshipment),
                     EstimatedActualTime = CourierManager.CalculateEstimatedActualTime(
                         doCourier.typeofshipment,
                         CourierManager.CalculateActualDistance(o.Latitude, o.Longitude, (DeliveryType)doCourier.typeofshipment)),

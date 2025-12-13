@@ -64,7 +64,7 @@ internal class OrderImplementation : BlApi.IOrder
     /// </summary>
     public void CompleteOrderDelivery(int requesterId, int courierId, int deliveryId)
     {
-        bool permission = CourierManager.HasPermission(requesterId);
+        bool permission = CourierManager.HasPermission(requesterId, courierId);
         if (!permission)
             throw new BlUnauthorizedAccessException("Requester does not have permission to add this order.");
         OrderManager.CompleteOrderDeliveryDo(courierId, deliveryId);
@@ -85,7 +85,7 @@ internal class OrderImplementation : BlApi.IOrder
     /// </summary>
     public IEnumerable<ClosedDeliveryInList> GetClosedDeliveries(int requesterId, int courierId, OrderType? filterType=null, ClosedDeliveryInListSort? sortBy = null)
     {
-        bool permission = CourierManager.HasPermission(requesterId);
+        bool permission = CourierManager.HasPermission(requesterId, courierId);
         if (!permission)
             throw new BlUnauthorizedAccessException("Requester does not have permission to add this order.");
         return OrderManager.GetClosedDeliveriesForCourier(courierId, filterType, sortBy);

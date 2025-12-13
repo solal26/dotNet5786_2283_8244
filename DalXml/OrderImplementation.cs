@@ -23,7 +23,7 @@ namespace Dal
             {
                 OrderId = (int?)s.ToIntNullable("OrderId") ?? throw new FormatException("can't convert id"),
                 CustomerName = (string?)s.Element("CustomerName") ?? "",
-                typeOfOrder = s.ToEnumNullable<TypeOfOrder>("typeOfOrder") ?? TypeOfOrder.SingleOrder,
+                typeOfOrder = s.ToEnumNullable<TypeOfOrder>("TypeOfOrder") ?? TypeOfOrder.SingleOrder,
                 ShippingAddress = (string?)s.Element("ShippingAddress") ?? "",
                 Latitude = s.ToDoubleNullable("Latitude") ?? 0.0,
                 Longitude = s.ToDoubleNullable("Longitude") ?? 0.0,

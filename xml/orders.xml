@@ -2,7 +2,7 @@
 <ArrayOfOrder>
   <Order>
     <OrderId>1000</OrderId>
-    <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <TypeOfOrder>BulkOrder</TypeOfOrder>
     <ShippingAddress>14 Rothschild Blvd, Tel Aviv,Israel</ShippingAddress>
     <Latitude>32.06672</Latitude>
     <Longitude>34.77403</Longitude>
@@ -13,7 +13,7 @@
   </Order>
   <Order>
     <OrderId>1001</OrderId>
-    <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <TypeOfOrder>BulkOrder</TypeOfOrder>
     <ShippingAddress>9 Jerusalem Blvd, Beersheba,Israel</ShippingAddress>
     <Latitude>31.25693</Latitude>
     <Longitude>34.79332</Longitude>
@@ -25,7 +25,7 @@
   </Order>
   <Order>
     <OrderId>1002</OrderId>
-    <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <TypeOfOrder>BulkOrder</TypeOfOrder>
     <ShippingAddress>59 Ibn Gabirol St, Tel Aviv,Israel</ShippingAddress>
     <Latitude>32.07206</Latitude>
     <Longitude>34.78138</Longitude>
@@ -36,7 +36,7 @@
   </Order>
   <Order>
     <OrderId>1003</OrderId>
-    <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <TypeOfOrder>BulkOrder</TypeOfOrder>
     <ShippingAddress>14 Rothschild Blvd, Tel Aviv,Israel</ShippingAddress>
     <Latitude>32.06672</Latitude>
     <Longitude>34.77403</Longitude>
