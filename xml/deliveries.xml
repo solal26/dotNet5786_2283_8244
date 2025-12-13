@@ -210,4 +210,84 @@
     <TimeEnd>2025-12-13T16:56:53</TimeEnd>
     <Distance>1.2165604625005542</Distance>
   </Delivery>
+  <Delivery>
+    <Id>5021</Id>
+    <OrderId>1001</OrderId>
+    <CourierId>328798244</CourierId>
+    <typeofshipment>Car</typeofshipment>
+    <TimeBegin>2025-12-13T16:56:53</TimeBegin>
+    <endcour>Delivered</endcour>
+    <TimeEnd>2025-12-13T16:56:53</TimeEnd>
+    <Distance xsi:nil="true" />
+  </Delivery>
+  <Delivery>
+    <Id>5022</Id>
+    <OrderId>1004</OrderId>
+    <CourierId>328798244</CourierId>
+    <typeofshipment>Car</typeofshipment>
+    <TimeBegin>2025-12-13T16:56:53</TimeBegin>
+    <endcour>Delivered</endcour>
+    <TimeEnd>2025-12-13T16:56:53</TimeEnd>
+    <Distance xsi:nil="true" />
+  </Delivery>
+  <Delivery>
+    <Id>5023</Id>
+    <OrderId>1005</OrderId>
+    <CourierId>328798244</CourierId>
+    <typeofshipment>Car</typeofshipment>
+    <TimeBegin>2025-12-13T16:56:53</TimeBegin>
+    <endcour>Delivered</endcour>
+    <TimeEnd>2025-12-13T16:56:53</TimeEnd>
+    <Distance xsi:nil="true" />
+  </Delivery>
+  <Delivery>
+    <Id>5024</Id>
+    <OrderId>1006</OrderId>
+    <CourierId>328798244</CourierId>
+    <typeofshipment>Car</typeofshipment>
+    <TimeBegin>2025-12-13T16:56:53</TimeBegin>
+    <endcour>Delivered</endcour>
+    <TimeEnd>2025-12-13T16:56:53</TimeEnd>
+    <Distance xsi:nil="true" />
+  </Delivery>
+  <Delivery>
+    <Id>5025</Id>
+    <OrderId>1008</OrderId>
+    <CourierId>328798244</CourierId>
+    <typeofshipment>Car</typeofshipment>
+    <TimeBegin>2025-12-13T16:56:53</TimeBegin>
+    <endcour>Delivered</endcour>
+    <TimeEnd>2025-12-13T16:56:53</TimeEnd>
+    <Distance xsi:nil="true" />
+  </Delivery>
+  <Delivery>
+    <Id>5026</Id>
+    <OrderId>1009</OrderId>
+    <CourierId>328798244</CourierId>
+    <typeofshipment>Car</typeofshipment>
+    <TimeBegin>2025-12-13T16:56:53</TimeBegin>
+    <endcour>Delivered</endcour>
+    <TimeEnd>2025-12-13T16:56:53</TimeEnd>
+    <Distance xsi:nil="true" />
+  </Delivery>
+  <Delivery>
+    <Id>5027</Id>
+    <OrderId>1012</OrderId>
+    <CourierId>328798244</CourierId>
+    <typeofshipment>Car</typeofshipment>
+    <TimeBegin>2025-12-13T16:56:53</TimeBegin>
+    <endcour>Delivered</endcour>
+    <TimeEnd>2025-12-13T16:56:53</TimeEnd>
+    <Distance xsi:nil="true" />
+  </Delivery>
+  <Delivery>
+    <Id>5028</Id>
+    <OrderId>1013</OrderId>
+    <CourierId>328798244</CourierId>
+    <typeofshipment>Car</typeofshipment>
+    <TimeBegin>2025-12-13T16:56:53</TimeBegin>
+    <endcour xsi:nil="true" />
+    <TimeEnd xsi:nil="true" />
+    <Distance xsi:nil="true" />
+  </Delivery>
 </ArrayOfDelivery>

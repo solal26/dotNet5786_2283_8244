@@ -57,6 +57,7 @@ namespace PL.Courier
             if (ButtonText == "New delivery")
             {
                 new OpenOrderInListWindow(CurrentCourier!.Id).Show();
+
             }
             else
             {
@@ -120,6 +121,7 @@ namespace PL.Courier
         {
             if (CurrentCourier != null)
                 bl.Courier.AddObserver(CurrentCourier.Id, CourierObserver);
+            
             ButtonText = CurrentCourier!.CurrentOrder == null ? "New delivery" : "EndDelivery";
             haveCurrentOlder = CurrentCourier!.CurrentOrder == null;
         }

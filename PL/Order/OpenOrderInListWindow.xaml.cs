@@ -50,11 +50,11 @@ namespace PL.Order
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            s_bl.Courier.AddObserver(OpenOrderListObserver);
+            s_bl.Order.AddObserver(OpenOrderListObserver);
             queryOpenOrderList();
         }
         private void Window_Closed(object sender, EventArgs e)
-            => s_bl.Courier.RemoveObserver(OpenOrderListObserver);
+            => s_bl.Order.RemoveObserver(OpenOrderListObserver);
 
        
        
@@ -64,10 +64,10 @@ namespace PL.Order
             var button = sender as Button;
             if (button == null) return;
 
-            int courierId = (int)button.Tag;
+            int OrderId = (int)button.Tag;
 
-            var result = MessageBox.Show($"Are you sure you want to delete courier {courierId}?",
-                                         "Delete Courier",
+            var result = MessageBox.Show($"Are you sure you want to Choose Order {OrderId}?",
+                                         "Choose Order",
                                          MessageBoxButton.YesNo,
                                          MessageBoxImage.Warning);
 
@@ -76,7 +76,7 @@ namespace PL.Order
 
             try
             {
-                s_bl.Courier.DeleteCourier(courierId, courierId);
+                s_bl.Order.ChooseOrderForDelivery(CurrentCourier.Id,CurrentCourier.Id,OrderId);
 
             }
             catch (BO.BlDoesNotExistException ex)

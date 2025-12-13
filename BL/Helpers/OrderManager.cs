@@ -230,7 +230,7 @@ internal static class OrderManager
                 throw new BlAlreadyExistsException(" delivery already exists.", ex);
             }
             Observers.NotifyListUpdated();  //stage 5
-
+            
         }
 
         else if (status == BO.OrderStatus.InProgress)
@@ -302,7 +302,7 @@ internal static class OrderManager
         s_dal.Delivery.Update(updatedDelivery);
         Observers.NotifyItemUpdated(updatedDelivery.Id); //stage 5
         Observers.NotifyListUpdated();  //stage 5
-
+        Observers.NotifyItemUpdated(courierId);
     }
 
     /// <summary>
@@ -441,7 +441,8 @@ internal static class OrderManager
         {
             throw new BlAlreadyExistsException("Delivery for this order already exists.", ex);
         }
-        Observers.NotifyListUpdated();  //stage 5
+        Observers.NotifyListUpdated();
+        Observers.NotifyItemUpdated(courierId);
     }
 
     /// <summary>
@@ -469,7 +470,7 @@ internal static class OrderManager
                     EndType = (BO.DeliveryEndType)doDelivery.endcour!,
                     CompletionTime = doDelivery.TimeEnd!.Value - doDelivery.TimeBegin,
                     FullAddress = doOrder.ShippingAddress,
-                    ActualDistance = doDelivery.Distance!.Value
+                    ActualDistance = doDelivery.Distance
                 };
             }).AsEnumerable();
 
