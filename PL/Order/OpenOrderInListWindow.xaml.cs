@@ -22,6 +22,7 @@ namespace PL.Order
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         public BO.Courier? CurrentCourier { get; set; }
+        
         public IEnumerable<BO.OpenOrderInList> OpenOrderList
         {
             get { return (IEnumerable<BO.OpenOrderInList>)GetValue(OpenOrderListProperty); }
@@ -29,18 +30,7 @@ namespace PL.Order
         }
         public static readonly DependencyProperty OpenOrderListProperty =
             DependencyProperty.Register("OpenOrderList", typeof(IEnumerable<BO.OpenOrderInList>), typeof(OpenOrderInListWindow), new PropertyMetadata(null));
-        public BO.DeliveryType dtype { get; set; } = BO.DeliveryType.All;
-
-        //private void ChooseDelivery(object sender, SelectionChangedEventArgs e)
-        //{
-        //    OpenOrderList = s_bl.Order.GetOpenOrdersForCourier(CurrentCourier.Id, CurrentCourier.Id);
-        //}
-        //private void queryOpenOrderList()
-        //{
-        //    var list = s_bl.Order.GetOpenOrdersForCourier(CurrentCourier.Id, CurrentCourier.Id);
-        //    MessageBox.Show($"Orders found: {list.Count()}");
-        //    OpenOrderList = list;
-        //}
+       
 
         private void queryOpenOrderList()
              => OpenOrderList = s_bl.Order.GetOpenOrdersForCourier(CurrentCourier.Id, CurrentCourier.Id);
@@ -55,10 +45,6 @@ namespace PL.Order
         }
         private void Window_Closed(object sender, EventArgs e)
             => s_bl.Order.RemoveObserver(OpenOrderListObserver);
-
-       
-       
-        
         private void btnChooseOrder_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
@@ -103,3 +89,13 @@ namespace PL.Order
         
     }
 }
+//private void ChooseDelivery(object sender, SelectionChangedEventArgs e)
+//{
+//    OpenOrderList = s_bl.Order.GetOpenOrdersForCourier(CurrentCourier.Id, CurrentCourier.Id);
+//}
+//private void queryOpenOrderList()
+//{
+//    var list = s_bl.Order.GetOpenOrdersForCourier(CurrentCourier.Id, CurrentCourier.Id);
+//    MessageBox.Show($"Orders found: {list.Count()}");
+//    OpenOrderList = list;
+//}

@@ -56,16 +56,14 @@ namespace PL.Courier
         {
             if (ButtonText == "New delivery")
             {
+              
                 new OpenOrderInListWindow(CurrentCourier!.Id).Show();
-
             }
             else
             {
                 try
                 {
                     bl.Order.CompleteOrderDelivery(CurrentCourier!.Id, CurrentCourier!.Id, CurrentCourier!.CurrentOrder.DeliveryId);
-                    ButtonText = "New delivery";
-                    haveCurrentOlder = false; 
                     MessageBox.Show("Delivery ended successfully");
                 }
                 catch (Exception ex)
@@ -102,9 +100,8 @@ namespace PL.Courier
 
             InitializeComponent();
            
-            CurrentCourier = courierId == 0
-           ? new BO.Courier()
-           : bl.Courier.GetCourier(courierId, courierId);
+            CurrentCourier = 
+           bl.Courier.GetCourier(courierId, courierId);
           
         }
 
@@ -112,16 +109,19 @@ namespace PL.Courier
         {
             int id = CurrentCourier!.Id;
             CurrentCourier = null;
-            CurrentCourier = bl.Courier.GetCourier(id, id);
-            ButtonText = CurrentCourier.CurrentOrder == null ? "New delivery" : "EndDelivery";
-            haveCurrentOlder = CurrentCourier!.CurrentOrder == null;
+         
+            
+             CurrentCourier = bl.Courier.GetCourier(id, id);
+             ButtonText = CurrentCourier.CurrentOrder == null ? "New delivery" : "EndDelivery";
+             haveCurrentOlder = CurrentCourier!.CurrentOrder == null;
+           
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (CurrentCourier != null)
-                bl.Courier.AddObserver(CurrentCourier.Id, CourierObserver);
             
+            bl.Courier.AddObserver(CurrentCourier.Id, CourierObserver);
+            bl.Order.AddObserver(CurrentCourier.Id, CourierObserver);
             ButtonText = CurrentCourier!.CurrentOrder == null ? "New delivery" : "EndDelivery";
             haveCurrentOlder = CurrentCourier!.CurrentOrder == null;
         }

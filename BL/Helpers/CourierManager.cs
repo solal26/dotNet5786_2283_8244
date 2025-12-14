@@ -401,13 +401,13 @@ internal static class CourierManager
     /// </summary>
     internal static BO.OrderInProgress? GetCurrentOrder(int courierId)
     {
-        DateTime currentClock = s_dal.Config.Clock;
+        DateTime currentClock =AdminManager.Now;
         var allDeliveries = s_dal.Delivery.ReadAll();
         var allOrders = s_dal.Order.ReadAll();        
 
         var delivery = allDeliveries
            .FirstOrDefault(d => d.CourierId == courierId && d.TimeBegin <= currentClock && d.TimeEnd == null);
-
+       
         if (delivery == null)
             return null;
 
