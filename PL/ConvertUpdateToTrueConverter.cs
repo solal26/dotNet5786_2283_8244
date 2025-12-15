@@ -37,4 +37,17 @@ namespace PL.Courier
             throw new NotImplementedException();
         }
     }
+    public class ModeToVisibilityOrderConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            bool isAddMode = (bool)value;
+            return isAddMode ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

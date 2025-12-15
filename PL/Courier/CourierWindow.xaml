@@ -65,12 +65,12 @@
             <Label Content="Delivered Late:" Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}" HorizontalAlignment="Left" Grid.Row="10" FontSize="10"  VerticalAlignment="Center" Width="83" />
             <TextBox Grid.Column="1"  Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}" HorizontalAlignment="Stretch" Grid.Row="10" VerticalAlignment="Center" Text="{Binding CurrentCourier.DeliveredLate}"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
             <Label Content="Current Order:"  Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}" HorizontalAlignment="Left" Grid.Row="11" FontSize="10"  VerticalAlignment="Center" Width="76" />
-            <TextBox Grid.Column="1"  Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}" HorizontalAlignment="Stretch" Grid.Row="11" VerticalAlignment="Center" Text="{Binding CurrentCourier.CurrentOrder}"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
             <Button Content="{Binding ButtonText}" Click="btnAddUpdate_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="75" Margin="0,0,0,-40" Grid.Row="11" Height="26" RenderTransformOrigin="0.48,0.412"/>
+            <Button Grid.Column="1" Content="Current order" Click="btnCurrentOrder_Click" HorizontalAlignment="Left" Margin="24,9,0,0" Grid.Row="11" VerticalAlignment="Top" Width="85"/>
 
 
         </Grid>
- 
+
 
 
 

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using PL.Order;
 
 namespace PL.Courier
 {
@@ -42,6 +43,19 @@ namespace PL.Courier
             typeof(string),
             typeof(CourierWindow),
             new PropertyMetadata(""));
+
+        private void btnCurrentOrder_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (CurrentCourier!.CurrentOrder != null)
+            {
+                new OrderInProgressWindow(CurrentCourier!.Id).Show();
+            }
+            else
+            {
+                MessageBox.Show("No current order assigned");
+            }
+        }
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -85,15 +99,16 @@ namespace PL.Courier
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (CurrentCourier != null)
-                bl.Courier.AddObserver(CurrentCourier.Id, CourierObserver);
+           
+            bl.Courier.AddObserver(CurrentCourier.Id, CourierObserver);
+            bl.Order.AddObserver(CurrentCourier.Id, CourierObserver);
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            if (CurrentCourier != null)
-                bl.Courier.RemoveObserver(CurrentCourier.Id, CourierObserver);
-
+            
+            bl.Courier.RemoveObserver(CurrentCourier.Id, CourierObserver);
+            bl.Order.RemoveObserver(CurrentCourier.Id, CourierObserver);
         }
     }
 }

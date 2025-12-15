@@ -430,4 +430,34 @@
     <TimeEnd>2025-12-13T16:56:53</TimeEnd>
     <Distance xsi:nil="true" />
   </Delivery>
+  <Delivery>
+    <Id>5043</Id>
+    <OrderId>1032</OrderId>
+    <CourierId>328798244</CourierId>
+    <typeofshipment>Car</typeofshipment>
+    <TimeBegin>2025-12-13T16:56:53</TimeBegin>
+    <endcour>Delivered</endcour>
+    <TimeEnd>2025-12-13T16:56:53</TimeEnd>
+    <Distance xsi:nil="true" />
+  </Delivery>
+  <Delivery>
+    <Id>5044</Id>
+    <OrderId>1034</OrderId>
+    <CourierId>328798244</CourierId>
+    <typeofshipment>Car</typeofshipment>
+    <TimeBegin>2025-12-13T16:56:53</TimeBegin>
+    <endcour>Delivered</endcour>
+    <TimeEnd>2025-12-13T16:56:53</TimeEnd>
+    <Distance xsi:nil="true" />
+  </Delivery>
+  <Delivery>
+    <Id>5045</Id>
+    <OrderId>1038</OrderId>
+    <CourierId>328798244</CourierId>
+    <typeofshipment>Car</typeofshipment>
+    <TimeBegin>2025-12-13T16:56:53</TimeBegin>
+    <endcour>Delivered</endcour>
+    <TimeEnd>2025-12-13T16:56:53</TimeEnd>
+    <Distance xsi:nil="true" />
+  </Delivery>
 </ArrayOfDelivery>

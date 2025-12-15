@@ -52,6 +52,13 @@ namespace PL.Courier
             typeof(MainCourierWindow),
             new PropertyMetadata(""));
 
+        private void btnCurrenrOrder_Click(object sender, RoutedEventArgs e)
+        {
+            if (CurrentCourier!.CurrentOrder != null)
+            {
+                new OrderInProgressWindow(CurrentCourier!.Id).Show();
+            }
+        }
         private void btnChooseOrEnd_Click(object sender, RoutedEventArgs e)
         {
             if (ButtonText == "New delivery")

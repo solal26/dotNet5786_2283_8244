@@ -5,8 +5,88 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Order"
         mc:Ignorable="d"
-        Title="OrderInProgressWindow" Height="450" Width="800">
+        Title="OrderInProgressWindow" Height="540" Width="400"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Loaded="Window_Loaded"
+        Closed="Window_Closed">
     <Grid>
-        
+        <StackPanel  HorizontalAlignment="Center"
+    VerticalAlignment="Center"> 
+
+            <!-- Header -->
+            <TextBlock Text="📦 Order In Progress"
+               FontSize="20"
+               FontWeight="Bold"
+               Margin="0,0,0,12"/>
+
+            <!-- Order Summary -->
+            <TextBlock Text="{Binding Orderinprogress.OrderId, StringFormat=Order ID: {0}}"
+               FontWeight="SemiBold"
+               FontSize="14"/>
+
+            <!-- NEW: Delivery ID -->
+            <TextBlock Text="{Binding Orderinprogress.DeliveryId, StringFormat=Delivery ID: {0}}"
+               FontWeight="SemiBold"
+               FontSize="14"/>
+
+            <TextBlock Text="{Binding Orderinprogress.Type, StringFormat=Order Type: {0}}"
+               FontSize="14"/>
+            <TextBlock Text="{Binding Orderinprogress.OrderStatus, StringFormat=Status: {0}}"
+               FontSize="14"/>
+            <TextBlock Text="{Binding Orderinprogress.ScheduleStatus, StringFormat=Schedule: {0}}"
+               FontSize="14"/>
+
+            <Separator Margin="0,8"/>
+
+            <!-- Customer -->
+            <TextBlock Text="Customer Details"
+               FontWeight="Bold"
+               Margin="0,4"/>
+
+            <TextBlock Text="{Binding Orderinprogress.CustomerName, StringFormat=Name: {0}}"
+               FontSize="14"/>
+            <TextBlock Text="{Binding Orderinprogress.CustomerPhone, StringFormat=Phone: {0}}"
+               FontSize="14"/>
+
+            <!-- NEW: Description -->
+            <TextBlock Text="{Binding Orderinprogress.Description, StringFormat=Notes: {0}}"
+               FontSize="14"
+               TextWrapping="Wrap"/>
+
+            <Separator Margin="0,8"/>
+
+            <!-- Delivery -->
+            <TextBlock Text="Delivery Details"
+               FontWeight="Bold"
+               Margin="0,4"/>
+
+            <TextBlock Text="{Binding Orderinprogress.FullAddress, StringFormat=Address: {0}}"
+               FontSize="14"/>
+            <TextBlock Text="{Binding Orderinprogress.AirDistance, StringFormat=Air Distance: {0:0.0} km}"
+               FontSize="14"/>
+            <TextBlock Text="{Binding Orderinprogress.ActualDistance, StringFormat=Actual Distance: {0:0.0} km}"
+               FontSize="14"/>
+
+            <Separator Margin="0,8"/>
+
+            <!-- Timing -->
+            <TextBlock Text="Timing"
+               FontWeight="Bold"
+               Margin="0,4"/>
+
+            <TextBlock Text="{Binding Orderinprogress.OpenTime, StringFormat=Opened At: {0:HH:mm}}"
+               FontSize="14"/>
+            <TextBlock Text="{Binding Orderinprogress.StartTime, StringFormat=Started At: {0:HH:mm}}"
+               FontSize="14"/>
+            <TextBlock Text="{Binding Orderinprogress.ExpectedDeliveryTime, StringFormat=Expected: {0:HH:mm}}"
+               FontSize="14"/>
+            <TextBlock Text="{Binding Orderinprogress.MaxDeliveryTime, StringFormat=Latest Allowed: {0:HH:mm}}"
+               FontSize="14"/>
+
+            <TextBlock Text="{Binding Orderinprogress.TimeRemaining, StringFormat=Time Remaining: {0}}"
+               FontSize="14"
+               FontWeight="Bold"/>
+
+        </StackPanel>
     </Grid>
 </Window>

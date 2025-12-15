@@ -426,7 +426,7 @@ internal static class CourierManager
             Description = order.VerbalDescription ?? "",
             FullAddress = order.ShippingAddress ?? "",
             AirDistance = Airdistance,
-            ActualDistance = delivery.Distance,
+            ActualDistance = CalculateActualDistance(order.Latitude, order.Longitude,(BO.DeliveryType)delivery.typeofshipment),
             CustomerName = order.CustomerName ?? "",
             CustomerPhone = order.CustomerPhone ?? "",
             OpenTime = delivery.TimeBegin,
