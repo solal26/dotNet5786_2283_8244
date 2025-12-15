@@ -28,7 +28,7 @@ namespace Dal
                 Latitude = s.ToDoubleNullable("Latitude") ?? 0.0,
                 Longitude = s.ToDoubleNullable("Longitude") ?? 0.0,
                 CustomerPhone = (string?)s.Element("CustomerPhone") ?? "",
-                weight = s.ToDoubleNullable("weight") ?? 0.0,
+                weight = s.ToDoubleNullable("Weight") ?? 0.0,
                 OrderInitiation = s.ToDateTimeNullable("OrderInitiation") ?? DateTime.MinValue,
                 VerbalDescription = (string?)s.Element("VerbalDescription"),
             };
