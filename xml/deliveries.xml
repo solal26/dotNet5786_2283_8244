@@ -460,4 +460,24 @@
     <TimeEnd>2025-12-13T16:56:53</TimeEnd>
     <Distance xsi:nil="true" />
   </Delivery>
+  <Delivery>
+    <Id>5046</Id>
+    <OrderId>1048</OrderId>
+    <CourierId>340862283</CourierId>
+    <typeofshipment>Car</typeofshipment>
+    <TimeBegin>2025-12-13T16:56:53</TimeBegin>
+    <endcour>Delivered</endcour>
+    <TimeEnd>2025-12-13T16:56:53</TimeEnd>
+    <Distance xsi:nil="true" />
+  </Delivery>
+  <Delivery>
+    <Id>5047</Id>
+    <OrderId>1047</OrderId>
+    <CourierId>0</CourierId>
+    <typeofshipment>Car</typeofshipment>
+    <TimeBegin>2025-12-13T16:56:53</TimeBegin>
+    <endcour>Canceled</endcour>
+    <TimeEnd>2025-12-13T16:56:53</TimeEnd>
+    <Distance xsi:nil="true" />
+  </Delivery>
 </ArrayOfDelivery>

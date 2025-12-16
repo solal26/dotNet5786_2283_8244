@@ -47,7 +47,7 @@
                       SelectionChanged="ChooseStatus"/>
         </Grid>
 
-        <!-- 🔽 SEULE MODIFICATION ICI -->
+       
         <DataGrid
                   ItemsSource="{Binding Path=OrderList}"
                   IsReadOnly="True"
@@ -70,10 +70,10 @@
                 <DataGridTextColumn Binding="{Binding OrderId}" Header="Order ID"/>
                 <DataGridTextColumn Binding="{Binding OrderStatus}" Header="Status"/>
                 <DataGridTextColumn Binding="{Binding DeliveryId, TargetNullValue='None'}" Header="Delivery ID"/>
-                <DataGridTextColumn Binding="{Binding DeliveryType}" Header="Order Type"/>
+                <DataGridTextColumn Binding="{Binding Type}" Header="Order Type"/>
                 <DataGridTextColumn Binding="{Binding ScheduleStatus}" Header="Schedule Status"/>
-                <DataGridTextColumn Binding="{Binding Distance, StringFormat='{}{0:F1} km'}" Header="Distance"/>
-                <DataGridTextColumn Binding="{Binding RemainingTime, StringFormat='{}{0:hh\\:mm}'}" Header="Remaining Time"/>
+                <DataGridTextColumn Binding="{Binding AirDistance, StringFormat='{}{0:F1} km'}" Header="Distance"/>
+                <DataGridTextColumn Binding="{Binding TotalCompletionTime, StringFormat='{}{0:hh\\:mm}'}" Header="Remaining Time"/>
                 <DataGridTextColumn Binding="{Binding TotalHandlingTime, StringFormat='{}{0:hh\\:mm}'}" Header="Handling Time"/>
                 <DataGridTextColumn Binding="{Binding TotalDeliveries}" Header="Total Shipments"/>
 

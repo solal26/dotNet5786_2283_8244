@@ -26,9 +26,6 @@ namespace PL.Order
         // 1. Access to the Business Logic (BL) Layer
         static readonly IBl s_bl = Factory.Get();
 
-        // ======================= DATA BINDING PROPERTIES =======================
-
-        // Dependency Property for the list of Orders
         public IEnumerable<BO.OrderInList> OrderList
         {
             get { return (IEnumerable<BO.OrderInList>)GetValue(OrderListProperty); }
@@ -37,14 +34,13 @@ namespace PL.Order
         public static readonly DependencyProperty OrderListProperty =
             DependencyProperty.Register("OrderList", typeof(IEnumerable<BO.OrderInList>), typeof(OrderListWindow), new PropertyMetadata(null));
 
-        // Property for the order status filter (OrderStatus)
+    
         public BO.OrderStatus oStatus { get; set; } = BO.OrderStatus.All;
 
-        // Property for the selected order in the DataGrid
+       
         public BO.OrderInList? SelectedOrder { get; set; }
 
 
-        // ======================= FILTERING AND UPDATE MANAGEMENT =======================
 
         // Main method to query the BL for the list
         private void queryOrderList()
@@ -53,7 +49,7 @@ namespace PL.Order
             {
                 // Retrieve the list of orders filtered by the current status (oStatus)
                 // Note: The BL logic (GetListOfOrder) must handle the filtering based on oStatus.
-                OrderList = s_bl.Order.GetOrdersList(0);
+                OrderList = s_bl.Order.GetOrdersList(123456789);
             }
             catch (Exception ex)
             {
@@ -72,7 +68,7 @@ namespace PL.Order
         private void orderListObserver()
             => queryOrderList();
 
-        // ======================= LIFECYCLE AND OBSERVER MANAGEMENT =======================
+        
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -125,7 +121,7 @@ namespace PL.Order
             try
             {
                 // Call the BL method to cancel the order
-                s_bl.Order.CancelOrder(orderId,orderId);
+                s_bl.Order.CancelOrder(123456789, orderId);
                 // The BL is responsible for validation (not closed) and sending the courier email.
             }
             // Capture specific BL exceptions
@@ -141,11 +137,10 @@ namespace PL.Order
             {
                 MessageBox.Show($"An unexpected error occurred: {ex.Message}");
             }
-            // No need to call queryOrderList(), the Observer will trigger the update via BL notification.
+
+
+
         }
-
-        // ======================= CONSTRUCTOR =======================
-
         public OrderListWindow()
         {
             InitializeComponent();
