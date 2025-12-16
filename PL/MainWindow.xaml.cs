@@ -1,5 +1,6 @@
 ﻿using BO;
 using PL.Courier;
+using PL.Order;
 using System.Configuration;
 using System.Text;
 using System.Windows;
@@ -101,7 +102,8 @@ namespace PL
 
         private void btnCouriers_Click(object sender, RoutedEventArgs e)
         { new CourierListWindow().Show(); }
-
+        private void btnOrders_Click(object sender, RoutedEventArgs e)
+        { new OrderListWindow().Show(); }
         private void btnInitialize_Click(object sender, RoutedEventArgs e)
         {    
             var result = MessageBox.Show("Are you sure you want to initialize the database?",

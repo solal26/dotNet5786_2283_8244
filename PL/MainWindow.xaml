@@ -67,6 +67,7 @@
         <!-- ======================== General Buttons ======================== -->
         <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3"
                     Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <Button Content="Order Management" Click="btnOrders_Click" Width="130" Height="30" Margin="5,0"/>
             <Button Content="Open List Screen" Click="btnCouriers_Click" Width="100" Height="30" Margin="5,0"/>
             <Button Content="Initialize DB" Click="btnInitialize_Click" Width="100" Height="30" Margin="5,0"/>
             <Button Content="Reset DB" Click="btnReset_Click" Width="100" Height="30" Margin="5,0"/>

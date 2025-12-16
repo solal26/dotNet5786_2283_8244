@@ -30,7 +30,9 @@ public enum OrderStatus
     /// <summary>Delivery attempt was refused by the recipient.</summary>
     Refused,
     /// <summary>Order was cancelled and will not be delivered.</summary>
-    Cancelled
+    Cancelled,
+
+    All
 }
 
 /// <summary>
