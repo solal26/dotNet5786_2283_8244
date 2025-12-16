@@ -79,7 +79,7 @@ public class Order
     /// <summary>
     /// Computed expected delivery DateTime for the current assignment/transport type.
     /// </summary>
-    public DateTime ExpectedDeliveryTime { get; init; }
+    public DateTime? ExpectedDeliveryTime { get; init; }
 
     /// <summary>
     /// Maximum allowed delivery DateTime (OpenTime + configured MaxDeliveryTime).

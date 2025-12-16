@@ -201,7 +201,7 @@ internal static class OrderManager
             status == BO.OrderStatus.Refused ||
             status == BO.OrderStatus.Cancelled)
         {
-            throw new BlInvalidRequestException("Cannot cancel an order that is already completed or canceled.");
+            throw new BlInvalidRequestException("Cannot cancel an order that is already Delivered or canceled.");
         }
 
         var deliveries = s_dal.Delivery.ReadAll()
@@ -521,7 +521,7 @@ internal static class OrderManager
                             .Where(d => d.OrderId == orderId)
                             .OrderByDescending(d => d.TimeBegin)
                             .ToList();
-            var lastDelivery = deliveries.First();
+            var lastDelivery = deliveries.FirstOrDefault();
             var maxDeliveryTime = CourierManager.CalculateMaxDeliveryTime(doOrder.OrderInitiation);
 
             var boOrder = new BO.Order
@@ -537,27 +537,29 @@ internal static class OrderManager
                 ScheduleStatus = CalculateScheduleStatus(doOrder.OrderId),
                 OpenTime = doOrder.OrderInitiation,
                 AirDistance = Airdistance,
-                ExpectedDeliveryTime = CourierManager.CalculateExpectedDeliveryTime(lastDelivery.typeofshipment, Airdistance),
+
+                ExpectedDeliveryTime =
+                    lastDelivery != null
+                        ? CourierManager.CalculateExpectedDeliveryTime(lastDelivery.typeofshipment, Airdistance)
+                        : null,
+
                 MaxDeliveryTime = maxDeliveryTime,
                 TimeRemaining = maxDeliveryTime - AdminManager.Now,
+
                 Deliveries = deliveries
-                .Where(d => d.endcour != Endofcourier.Delivered)
-                .Select(d => new BO.DeliveryPerOrderInList
-                {
-                    DeliveryId = d.Id,
-                    CourierId = d.CourierId,
-                    CourierName = s_dal.Courier.Read(d.CourierId)?.Name ?? "Unknown Courier",
-                    DeliveryType = (BO.DeliveryType)d.typeofshipment,
-                    StartTime = d.TimeBegin,
-                    EndType = d.endcour.HasValue ? (BO.DeliveryEndType?)d.endcour.Value : null,
-                    EndTime = d.TimeEnd
-                })
-                .ToList(),
-
-
+                    .Where(d => d.endcour != Endofcourier.Delivered)
+                    .Select(d => new BO.DeliveryPerOrderInList
+                    {
+                        DeliveryId = d.Id,
+                        CourierId = d.CourierId,
+                        CourierName = s_dal.Courier.Read(d.CourierId)?.Name ?? "Unknown Courier",
+                        DeliveryType = (BO.DeliveryType)d.typeofshipment,
+                        StartTime = d.TimeBegin,
+                        EndType = d.endcour.HasValue ? (BO.DeliveryEndType?)d.endcour.Value : null,
+                        EndTime = d.TimeEnd
+                    })
+                    .ToList()
             };
-
-
             return boOrder;
         }
         catch (DO.DalDoesNotExistException ex)

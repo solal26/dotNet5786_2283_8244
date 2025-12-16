@@ -151,10 +151,7 @@ namespace PL.Order
             {
                 MessageBox.Show($"Cancellation failed: {ex.Message}");
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An unexpected error occurred: {ex.Message}");
-            }
+          
 
 
 

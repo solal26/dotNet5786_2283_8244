@@ -73,8 +73,8 @@
                 <DataGridTextColumn Binding="{Binding Type}" Header="Order Type"/>
                 <DataGridTextColumn Binding="{Binding ScheduleStatus}" Header="Schedule Status"/>
                 <DataGridTextColumn Binding="{Binding AirDistance, StringFormat='{}{0:F1} km'}" Header="Distance"/>
-                <DataGridTextColumn Binding="{Binding TotalCompletionTime, StringFormat='{}{0:hh\\:mm}'}" Header="Remaining Time"/>
-                <DataGridTextColumn Binding="{Binding TotalHandlingTime, StringFormat='{}{0:hh\\:mm}'}" Header="Handling Time"/>
+                <DataGridTextColumn Binding="{Binding TimeRemaining, StringFormat='{}{0:hh\\:mm}'}" Header="Remaining Time"/>
+                <DataGridTextColumn Binding="{Binding TotalCompletionTime, StringFormat='{}{0:hh\\:mm}'}" Header="Handling Time"/>
                 <DataGridTextColumn Binding="{Binding TotalDeliveries}" Header="Total Shipments"/>
 
                 <DataGridTemplateColumn Header="Cancel Order">

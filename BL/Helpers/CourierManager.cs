@@ -431,7 +431,7 @@ internal static class CourierManager
             CustomerPhone = order.CustomerPhone ?? "",
             OpenTime = delivery.TimeBegin,
             StartTime = currentClock,
-            ExpectedDeliveryTime = CalculateExpectedDeliveryTime(delivery.typeofshipment, Airdistance),
+            ExpectedDeliveryTime = (DateTime)CalculateExpectedDeliveryTime(delivery.typeofshipment, Airdistance),
             MaxDeliveryTime = maxDelivery,
             OrderStatus = OrderManager.CalculateOrderStatus(order.OrderId),
             ScheduleStatus = OrderManager.CalculateScheduleStatus(order.OrderId),
@@ -442,8 +442,10 @@ internal static class CourierManager
     /// <summary>
     /// Calculates expected delivery time using configured average speeds.
     /// </summary>
-    internal static DateTime CalculateExpectedDeliveryTime(TypeOfShipment t, double distanceKm)
+    internal static DateTime? CalculateExpectedDeliveryTime(TypeOfShipment t, double distanceKm)
     {
+        if(t== null)
+            return null;    
         double speedKmh = t switch
         {
            TypeOfShipment.Car => s_dal.Config.AvgCarSpeed,

@@ -3,10 +3,122 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PL.Order"
+        xmlns:local="clr-namespace:PL.Courier"
         mc:Ignorable="d"
-        Title="OrderWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="OrderWindow" Height="600" Width="600"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Loaded="Window_Loaded"
+        Closed="Window_Closed">
+    <Window.Resources>
+        <local:ModeToReadOnlyConverter x:Key="ModeToReadOnlyConverter"/>
+        <local:ModeToVisibilityConverter x:Key="ModeToVisibilityConverter"/>
+    </Window.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Id -->
+                <RowDefinition Height="Auto"/>
+                <!-- Type -->
+                <RowDefinition Height="Auto"/>
+                <!-- Description -->
+                <RowDefinition Height="Auto"/>
+                <!-- FullAddress -->
+                <RowDefinition Height="Auto"/>
+                <!-- AirDistance -->
+                <RowDefinition Height="Auto"/>
+                <!-- CustomerName -->
+                <RowDefinition Height="Auto"/>
+                <!-- CustomerPhone -->
+                <RowDefinition Height="Auto"/>
+                <!-- Weight -->
+                <RowDefinition Height="Auto"/>
+                <!-- OpenTime -->
+                <RowDefinition Height="Auto"/>
+                <!-- ExpectedDeliveryTime -->
+                <RowDefinition Height="Auto" MinHeight="30"/>
+                <!-- MaxDeliveryTime -->
+                <RowDefinition Height="Auto" MinHeight="33.96"/>
+                <!-- OrderStatus -->
+                <RowDefinition Height="Auto" MinHeight="27"/>
+                <!-- ScheduleStatus -->
+                <RowDefinition Height="Auto" MinHeight="46.96"/>
+                <!-- TimeRemaining -->
+                <RowDefinition Height="Auto" MinHeight="35"/>
+                <!-- Deliveries -->
+            </Grid.RowDefinitions>
+
+            <!-- Id -->
+            <Label Content="Order ID:" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
+            <TextBox Text="{Binding CurrentOrder.Id}" Grid.Row="0" Grid.Column="1" Margin="177,2,177,2"/>
+
+            <!-- Type -->
+            <Label Content="Type:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
+            <ComboBox ItemsSource="{Binding OrderTypes}" SelectedItem="{Binding CurrentOrder.Type}" Grid.Row="1" Grid.Column="1" Margin="167,2,167,2"/>
+
+            <!-- Description -->
+            <Label Content="Description:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" Height="26"/>
+            <TextBox Text="{Binding CurrentOrder.Description}" Grid.Row="2" Grid.Column="1" TextWrapping="Wrap" AcceptsReturn="True" Margin="102,0,102,11"/>
+
+            <!-- Full Address -->
+            <Label Content="Full Address:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
+            <TextBox Text="{Binding CurrentOrder.FullAddress}" Grid.Row="3" Grid.Column="1" TextWrapping="Wrap" AcceptsReturn="True" Margin="102,0,102,26" Grid.RowSpan="2"/>
+
+            <!-- Air Distance -->
+            <Label Content="Air Distance (km):" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
+            <TextBox Text="{Binding CurrentOrder.AirDistance}" Grid.Row="4" Grid.Column="1" Margin="152,2,152,2"/>
+
+            <!-- Customer Name -->
+            <Label Content="Customer Name:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
+            <TextBox Text="{Binding CurrentOrder.CustomerName}" Grid.Row="5" Grid.Column="1" Margin="152,2,152,2"/>
+
+            <!-- Customer Phone -->
+            <Label Content="Customer Phone:" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
+            <TextBox Text="{Binding CurrentOrder.CustomerPhone}" Grid.Row="6" Grid.Column="1" Margin="167,2,167,2"/>
+
+            <!-- Weight -->
+            <Label Content="Weight (kg):" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
+            <TextBox Text="{Binding CurrentOrder.Weight}" Grid.Row="7" Grid.Column="1" Margin="187,2,187,2"/>
+
+            <!-- Open Time -->
+            <Label Content="Open Time:" Grid.Row="8" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
+            <DatePicker SelectedDate="{Binding CurrentOrder.OpenTime}" Grid.Row="8" Grid.Column="1" Margin="167,2,167,2"/>
+
+            <!-- Expected Delivery -->
+            <Label Content="Expected Delivery:" Grid.Row="9" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
+            <DatePicker SelectedDate="{Binding CurrentOrder.ExpectedDeliveryTime}" Grid.Row="9" Grid.Column="1" Margin="167,2,167,2"/>
+
+            <!-- Max Delivery Time -->
+            <Label Content="Max Delivery:" Grid.Row="10" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
+            <DatePicker SelectedDate="{Binding CurrentOrder.MaxDeliveryTime}" Grid.Row="10" Grid.Column="1" Margin="167,2,167,2"/>
+
+            <!-- Order Status -->
+            <Label Content="Order Status:" Grid.Row="11" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
+            <ComboBox ItemsSource="{Binding OrderStatuses}" SelectedItem="{Binding CurrentOrder.OrderStatus}" Grid.Row="11" Grid.Column="1" Margin="167,6,167,6"/>
+
+            <!-- Schedule Status -->
+            <Label Content="Schedule Status:" Grid.Row="12" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
+            <ComboBox ItemsSource="{Binding ScheduleStatuses}" SelectedItem="{Binding CurrentOrder.ScheduleStatus}" Grid.Row="12" Grid.Column="1" Margin="167,0,167,0" Height="20" VerticalAlignment="Center"/>
+
+            <!-- Time Remaining -->
+            <Label Content="Time Remaining:" Grid.Row="13" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
+            <TextBox Text="{Binding CurrentOrder.TimeRemaining}" Grid.Row="13" Grid.Column="1" IsReadOnly="True" Margin="167,10,167,19"/>
+
+            <!-- Deliveries -->
+            <Label Content="Deliveries:" Grid.Row="14" Grid.Column="0" VerticalAlignment="Top" Height="25"/>
+            <Button Grid.Column="1" Content="AllDeliveries" HorizontalAlignment="Left" Margin="177,10,0,0" Grid.Row="14" VerticalAlignment="Top" Width="93"/>
+            <Button Grid.Column="1" Content="{Binding ButtonText}" HorizontalAlignment="Left" Margin="10,69,0,0" Grid.Row="14" VerticalAlignment="Top" Height="40" Width="78"/>
+        </Grid>
+
+
+
+
+    </ScrollViewer>
+
 </Window>
