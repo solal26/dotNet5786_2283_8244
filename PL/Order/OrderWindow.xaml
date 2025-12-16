@@ -56,7 +56,7 @@
 
             <!-- Id -->
             <Label Content="Order ID:" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
-            <TextBox Text="{Binding CurrentOrder.Id}" Grid.Row="0" Grid.Column="1" Margin="177,2,177,2"/>
+            <TextBox Text="{Binding CurrentOrder.Id}" IsReadOnly="{Binding _isAddMode, Converter={StaticResource ModeToReadOnlyConverter}}" Grid.Row="0" Grid.Column="1" Margin="177,2,177,2"/>
 
             <!-- Type -->
             <Label Content="Type:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
@@ -72,7 +72,7 @@
 
             <!-- Air Distance -->
             <Label Content="Air Distance (km):" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
-            <TextBox Text="{Binding CurrentOrder.AirDistance}" Grid.Row="4" Grid.Column="1" Margin="152,2,152,2"/>
+            <TextBox Text="{Binding CurrentOrder.AirDistance}" IsReadOnly="True" Grid.Row="4" Grid.Column="1" Margin="152,2,152,2"/>
 
             <!-- Customer Name -->
             <Label Content="Customer Name:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
@@ -88,32 +88,32 @@
 
             <!-- Open Time -->
             <Label Content="Open Time:" Grid.Row="8" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
-            <DatePicker SelectedDate="{Binding CurrentOrder.OpenTime}" Grid.Row="8" Grid.Column="1" Margin="167,2,167,2"/>
+            <DatePicker SelectedDate="{Binding CurrentOrder.OpenTime}" IsEnabled="False" Grid.Row="8" Grid.Column="1" Margin="167,2,167,2"/>
 
             <!-- Expected Delivery -->
             <Label Content="Expected Delivery:" Grid.Row="9" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
-            <DatePicker SelectedDate="{Binding CurrentOrder.ExpectedDeliveryTime}" Grid.Row="9" Grid.Column="1" Margin="167,2,167,2"/>
+            <DatePicker SelectedDate="{Binding CurrentOrder.ExpectedDeliveryTime}" IsEnabled="False" Grid.Row="9" Grid.Column="1" Margin="167,2,167,2"/>
 
             <!-- Max Delivery Time -->
             <Label Content="Max Delivery:" Grid.Row="10" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
-            <DatePicker SelectedDate="{Binding CurrentOrder.MaxDeliveryTime}" Grid.Row="10" Grid.Column="1" Margin="167,2,167,2"/>
+            <DatePicker SelectedDate="{Binding CurrentOrder.MaxDeliveryTime}" IsEnabled="False" Grid.Row="10" Grid.Column="1" Margin="167,2,167,2"/>
 
             <!-- Order Status -->
             <Label Content="Order Status:" Grid.Row="11" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
-            <ComboBox ItemsSource="{Binding OrderStatuses}" SelectedItem="{Binding CurrentOrder.OrderStatus}" Grid.Row="11" Grid.Column="1" Margin="167,6,167,6"/>
+            <ComboBox ItemsSource="{Binding OrderStatuses}" IsEnabled="False" SelectedItem="{Binding CurrentOrder.OrderStatus}" Grid.Row="11" Grid.Column="1" Margin="167,6,167,6"/>
 
             <!-- Schedule Status -->
             <Label Content="Schedule Status:" Grid.Row="12" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
-            <ComboBox ItemsSource="{Binding ScheduleStatuses}" SelectedItem="{Binding CurrentOrder.ScheduleStatus}" Grid.Row="12" Grid.Column="1" Margin="167,0,167,0" Height="20" VerticalAlignment="Center"/>
+            <ComboBox ItemsSource="{Binding ScheduleStatuses}" IsEnabled="False" SelectedItem="{Binding CurrentOrder.ScheduleStatus}" Grid.Row="12" Grid.Column="1" Margin="167,0,167,0" Height="20" VerticalAlignment="Center"/>
 
             <!-- Time Remaining -->
             <Label Content="Time Remaining:" Grid.Row="13" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
-            <TextBox Text="{Binding CurrentOrder.TimeRemaining}" Grid.Row="13" Grid.Column="1" IsReadOnly="True" Margin="167,10,167,19"/>
+            <TextBox Text="{Binding CurrentOrder.TimeRemaining}" IsEnabled="False" Grid.Row="13" Grid.Column="1" IsReadOnly="True" Margin="167,10,167,19"/>
 
             <!-- Deliveries -->
             <Label Content="Deliveries:" Grid.Row="14" Grid.Column="0" VerticalAlignment="Top" Height="25"/>
             <Button Grid.Column="1" Content="AllDeliveries" HorizontalAlignment="Left" Margin="177,10,0,0" Grid.Row="14" VerticalAlignment="Top" Width="93"/>
-            <Button Grid.Column="1" Content="{Binding ButtonText}" HorizontalAlignment="Left" Margin="10,69,0,0" Grid.Row="14" VerticalAlignment="Top" Height="40" Width="78"/>
+            <Button Grid.Column="1" Content="{Binding ButtonText}" Click="btnAddUpdate_Click"  HorizontalAlignment="Left" Margin="10,69,0,0" Grid.Row="14" VerticalAlignment="Top" Height="40" Width="78"/>
         </Grid>
 
 
