@@ -14,7 +14,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using BO;
-using BlApi;
+
 
 namespace PL.Order
 {
@@ -25,6 +25,7 @@ namespace PL.Order
     {
         // 1. Access to the Business Logic (BL) Layer
         static readonly IBl s_bl = Factory.Get();
+        private const int RequesterId = 123456789;
 
         public IEnumerable<BO.OrderInList> OrderList
         {
@@ -45,11 +46,28 @@ namespace PL.Order
         // Main method to query the BL for the list
         private void queryOrderList()
         {
+            BO.OrderInListFilter? filterField = null;
+            object? filterValue = null;
+
+            if (oStatus != BO.OrderStatus.All)
+            {
+                filterField = BO.OrderInListFilter.OrderStatus;
+                filterValue = oStatus;
+            }
+
             try
             {
-                // Retrieve the list of orders filtered by the current status (oStatus)
-                // Note: The BL logic (GetListOfOrder) must handle the filtering based on oStatus.
-                OrderList = s_bl.Order.GetOrdersList(123456789);
+                OrderList = s_bl.Order.GetOrdersList(
+                    requesterId: RequesterId,
+                    filterField: filterField,
+                    filterValue: filterValue,
+                    sortBy: null
+                );
+            }
+            catch (BO.BlUnauthorizedAccessException ex)
+            {
+                MessageBox.Show(ex.Message, "Permission Denied", MessageBoxButton.OK, MessageBoxImage.Stop);
+                OrderList = new List<BO.OrderInList>();
             }
             catch (Exception ex)
             {
@@ -82,7 +100,7 @@ namespace PL.Order
             => s_bl.Order.RemoveObserver(orderListObserver);
 
 
-        // ======================= USER INTERACTIONS =======================
+    
 
         // Double-click to open the "Single Order Management" (OrderWindow)
         private void lsvOrderList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -121,7 +139,7 @@ namespace PL.Order
             try
             {
                 // Call the BL method to cancel the order
-                s_bl.Order.CancelOrder(123456789, orderId);
+                s_bl.Order.CancelOrder(RequesterId, orderId);
                 // The BL is responsible for validation (not closed) and sending the courier email.
             }
             // Capture specific BL exceptions
