@@ -137,7 +137,7 @@ namespace Dal
                 ?? throw new DO.DalDoesNotExistException($"Order with ID={item.OrderId} does Not exist"))
                     .Remove();
 
-            ordersRootElem.Add(new XElement("Order", createOrderElement(item)));
+            ordersRootElem.Add(new XElement(createOrderElement(item)));
 
             XMLTools.SaveListToXMLElement(ordersRootElem, Config.s_orders_xml);
         }

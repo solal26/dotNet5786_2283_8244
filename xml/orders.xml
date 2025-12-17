@@ -517,18 +517,6 @@
     <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
-    <OrderId>1045</OrderId>
-    <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>34 David HaMelech St, Tel Aviv,Israel</ShippingAddress>
-    <Latitude>32.06999</Latitude>
-    <Longitude>34.77224</Longitude>
-    <CustomerName>Eli Horowitz</CustomerName>
-    <CustomerPhone>0566936282</CustomerPhone>
-    <Weight>13.26</Weight>
-    <OrderInitiation>2025-12-07T14:19:53</OrderInitiation>
-    <VerbalDescription>Fragile, handle with care</VerbalDescription>
-  </Order>
-  <Order>
     <OrderId>1046</OrderId>
     <TypeOfOrder>SingleOrder</TypeOfOrder>
     <ShippingAddress>14 Rothschild Blvd, Tel Aviv,Israel</ShippingAddress>
@@ -572,6 +560,18 @@
     <CustomerPhone>0556564187</CustomerPhone>
     <Weight>7.48</Weight>
     <OrderInitiation>2025-12-07T11:54:53</OrderInitiation>
+    <VerbalDescription>Fragile, handle with care</VerbalDescription>
+  </Order>
+  <Order>
+    <OrderId>1045</OrderId>
+    <TypeOfOrder>BulkOrder</TypeOfOrder>
+    <ShippingAddress>David HaMelech 34, Tel Aviv,Israel</ShippingAddress>
+    <Latitude>32.079648</Latitude>
+    <Longitude>34.786145</Longitude>
+    <CustomerName>Eli Horowitz</CustomerName>
+    <CustomerPhone>0566936282</CustomerPhone>
+    <Weight>13.26</Weight>
+    <OrderInitiation>2025-12-07T14:19:53</OrderInitiation>
     <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
 </ArrayOfOrder>

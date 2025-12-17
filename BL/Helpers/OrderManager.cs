@@ -93,7 +93,7 @@ internal static class OrderManager
         // 3. Status Check: Order must be 'Open' to be updated
 
         // Check if the Order has any deliveries that resulted in a final closure
-        bool isClosed = !s_dal.Delivery.ReadAll(d =>
+        bool isClosed = s_dal.Delivery.ReadAll(d =>
         d.OrderId == boOrder.Id &&
         d.endcour == DO.Endofcourier.Delivered
     ).Any();
