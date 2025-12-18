@@ -725,8 +725,7 @@ internal static class OrderManager
     /// <summary>
     /// gets deliveries for a specific order.
     /// summary>
-    internal static IEnumerable<BO.DeliveryPerOrderInList>
-    GetDeliveriesForOrder(int orderId)
+    internal static IEnumerable<BO.DeliveryPerOrderInList> GetDeliveriesForOrder(int orderId)
     {
 
         var deliveries = s_dal.Delivery.ReadAll(d => d.OrderId == orderId);
