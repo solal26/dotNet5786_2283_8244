@@ -520,7 +520,7 @@ internal static class OrderManager
             var doOrder = s_dal.Order.Read(orderId);
             var Airdistance = CourierManager.CalculateAirDistance(doOrder.Latitude, doOrder.Longitude);
             var deliveries = s_dal.Delivery.ReadAll()
-                            .Where(d => d.OrderId == orderId)
+                            .Where(d => d.OrderId == orderId&&d.TimeEnd!=null)
                             .OrderByDescending(d => d.TimeBegin)
                             .ToList();
             var lastDelivery = deliveries.FirstOrDefault();
@@ -547,9 +547,9 @@ internal static class OrderManager
 
                 MaxDeliveryTime = maxDeliveryTime,
                 TimeRemaining = maxDeliveryTime - AdminManager.Now,
-
+                
                 Deliveries = deliveries
-                    .Where(d => d.endcour != Endofcourier.Delivered)
+                    //.Where(d => d.endcour != Endofcourier.Delivered)
                     .Select(d => new BO.DeliveryPerOrderInList
                     {
                         DeliveryId = d.Id,
@@ -560,7 +560,7 @@ internal static class OrderManager
                         EndType = d.endcour.HasValue ? (BO.DeliveryEndType?)d.endcour.Value : null,
                         EndTime = d.TimeEnd
                     })
-                    .ToList() is var deliveryList && deliveryList.Any()
+                    .ToList() is var deliveryList && deliveryList.Any() 
                         ? deliveryList
                         : null
 
