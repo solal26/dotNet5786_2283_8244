@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using BO;
 
 namespace PL
 {
@@ -23,20 +24,24 @@ namespace PL
 
         static BO.Config conf = s_bl.Admin.GetConfig();
         int id= conf.ManagerId;
-        public string Username { get; set; }   
+        public string Username { get; set; }
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            
-            if(int.Parse(Username) == id)
-                new MainWindow().Show();
-            else
-                if(s_bl.Courier.GetCourier(int.Parse(Username), int.Parse(Username))!=null)//l(d=>d.Id==(int.Parse(Username)).any())
-                    new Courier.MainCourierWindow(int.Parse(Username)).Show();
+            try
+            {
+                if (int.Parse(Username) == id)
+                    new MainWindow().Show();
                 else
-                    MessageBox.Show("Invalid ID");
+                    if (s_bl.Courier.GetCourier(int.Parse(Username), int.Parse(Username)) != null)//l(d=>d.Id==(int.Parse(Username)).any())
+                    new Courier.MainCourierWindow(int.Parse(Username)).Show();
 
 
+            }
+            catch (BlDoesNotExistException ex)
+            {
+                MessageBox.Show("invalid Id");
+            }
         }
         public LoginWindow()
         {

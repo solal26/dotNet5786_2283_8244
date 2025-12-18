@@ -63,12 +63,12 @@ namespace PL.Order
                 if (_isAddMode)  // מצב הוספה
                 {
                     bl.Order.AddOrder(123456789, CurrentOrder);
-                    MessageBox.Show("Courier added successfully");
+                    MessageBox.Show("Order added successfully");
                 }
                 else   // מצב עדכון
                 {
                     bl.Order.UpdateOrder(123456789, CurrentOrder);
-                    MessageBox.Show("Courier updated successfully");
+                    MessageBox.Show("Order updated successfully");
                 }
 
                 Close();

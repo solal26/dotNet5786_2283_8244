@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <config>
-  <NextOrderId>1050</NextOrderId>
+  <NextOrderId>1051</NextOrderId>
   <NextDeliveryId>5050</NextDeliveryId>
   <Clock>2025-12-13T16:56:53</Clock>
   <ManagerId>123456789</ManagerId>
@@ -13,7 +13,7 @@
   <AvgMotorBikeSpeed>45</AvgMotorBikeSpeed>
   <AvgBicycleSpeed>15</AvgBicycleSpeed>
   <AvgWalkingSpeed>5</AvgWalkingSpeed>
-  <MaxDeliveryTime>03:00:00</MaxDeliveryTime>
+  <MaxDeliveryTime>1.00:00:00</MaxDeliveryTime>
   <RiskRange>02:00:00</RiskRange>
   <InactivityRange>1.00:00:00</InactivityRange>
 </config>

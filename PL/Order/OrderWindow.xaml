@@ -56,7 +56,7 @@
 
             <!-- Id -->
             <Label Content="Order ID:" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
-            <TextBox Text="{Binding CurrentOrder.Id}" IsReadOnly="{Binding _isAddMode, Converter={StaticResource ModeToReadOnlyConverter}}" Grid.Row="0" Grid.Column="1" Margin="177,2,177,2"/>
+            <TextBox Text="{Binding CurrentOrder.Id}" IsReadOnly="True" Grid.Row="0" Grid.Column="1" Margin="177,2,177,2"/>
 
             <!-- Type -->
             <Label Content="Type:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Height="26"/>

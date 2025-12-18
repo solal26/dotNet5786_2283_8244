@@ -74,7 +74,7 @@ public class Order
     /// <summary>
     /// Order creation/open time. Init-only and represents the order's open timestamp.
     /// </summary>
-    public DateTime OpenTime { get; init; }
+    public DateTime OpenTime { get; init; }=AdminManager.Now;
 
     /// <summary>
     /// Computed expected delivery DateTime for the current assignment/transport type.

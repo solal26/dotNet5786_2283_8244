@@ -574,4 +574,15 @@
     <OrderInitiation>2025-12-07T14:19:53</OrderInitiation>
     <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
+  <Order>
+    <OrderId>1050</OrderId>
+    <TypeOfOrder>InternalTransfer</TypeOfOrder>
+    <ShippingAddress>David HaMelech 2, Tel Aviv,Israel</ShippingAddress>
+    <Latitude>32.080058</Latitude>
+    <Longitude>34.781613</Longitude>
+    <CustomerName>Avi</CustomerName>
+    <CustomerPhone>0587569875</CustomerPhone>
+    <Weight>1.2</Weight>
+    <OrderInitiation>2025-12-13T16:56:53</OrderInitiation>
+  </Order>
 </ArrayOfOrder>

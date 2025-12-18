@@ -355,7 +355,7 @@ internal static class CourierManager
 
         var doCourier = s_dal.Courier.Read(id);
         if (doCourier == null)
-            throw new KeyNotFoundException($"Courier with ID {id} not found.");
+            throw new BlDoesNotExistException($"Courier with ID {id} not found.");
 
         return new BO.Courier
         {
@@ -456,7 +456,7 @@ internal static class CourierManager
         };
 
         double hours = distanceKm / speedKmh;
-        return s_dal.Config.Clock.AddHours(hours);
+        return AdminManager.Now.AddHours(hours);
     }
 
     /// <summary>
