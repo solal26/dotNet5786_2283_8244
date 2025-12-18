@@ -112,7 +112,7 @@
 
             <!-- Deliveries -->
             <Label Content="Deliveries:" Grid.Row="14" Grid.Column="0" VerticalAlignment="Top" Height="25"/>
-            <Button Grid.Column="1" Content="AllDeliveries" HorizontalAlignment="Left" Margin="177,10,0,0" Grid.Row="14" VerticalAlignment="Top" Width="93"/>
+            <Button Grid.Column="1" Content="AllDeliveries" Click="btnAllDeliveries_Click" HorizontalAlignment="Left" Margin="177,10,0,0" Grid.Row="14" VerticalAlignment="Top" Width="93"/>
             <Button Grid.Column="1" Content="{Binding ButtonText}" Click="btnAddUpdate_Click"  HorizontalAlignment="Left" Margin="10,69,0,0" Grid.Row="14" VerticalAlignment="Top" Height="40" Width="78"/>
         </Grid>
 

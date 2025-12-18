@@ -106,7 +106,7 @@ public class Order
     /// <summary>
     /// List of delivery attempts for this order. Items are projections (<see cref="DeliveryPerOrderInList"/>).
     /// </summary>
-    public List<DeliveryPerOrderInList> Deliveries { get; init; }
+    public List<DeliveryPerOrderInList>? Deliveries { get; init; }
 
     /// <summary>
     /// Returns a readable representation of the order using helper reflection-based formatting.

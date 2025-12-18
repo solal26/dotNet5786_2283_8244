@@ -44,18 +44,18 @@ namespace PL.Order
             typeof(OrderWindow),
             new PropertyMetadata(""));
 
-        //private void btnCurrentOrder_Click(object sender, RoutedEventArgs e)
-        //{
+        private void btnAllDeliveries_Click(object sender, RoutedEventArgs e)
+        {
 
-        //    if (CurrentOrder!.CurrentOrder != null)
-        //    {
-        //        new OrderInProgressWindow(CurrentOrder!.Id).Show();
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("No current order assigned");
-        //    }
-        //}
+            if (CurrentOrder.Deliveries != null)
+            {
+                new DeliveryPerOrderInListWindow(CurrentOrder!.Id).Show();
+            }
+            else
+            {
+                MessageBox.Show("No last deliveris assigned");
+            }
+        }
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
             try

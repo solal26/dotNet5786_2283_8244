@@ -142,6 +142,15 @@ internal class OrderImplementation : BlApi.IOrder
             throw new BlUnauthorizedAccessException("Requester does not have permission to add this order.");
         return OrderManager.GetordersSummary();
     }
+    
+    public IEnumerable<BO.DeliveryPerOrderInList> GetDeliveriesForOrder(int requesterId, int orderId)
+    {
+        if (!CourierManager.HasPermission(requesterId))
+            throw new BlUnauthorizedAccessException("Requester does not have permission to view orders.");
+
+        return OrderManager.GetDeliveriesForOrder(orderId); 
+    }
+
     public void AddObserver(Action listObserver) =>
    OrderManager.Observers.AddListObserver(listObserver); //stage 5
     public void AddObserver(int id, Action observer) =>

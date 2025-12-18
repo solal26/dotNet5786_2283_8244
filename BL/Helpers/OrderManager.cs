@@ -560,7 +560,10 @@ internal static class OrderManager
                         EndType = d.endcour.HasValue ? (BO.DeliveryEndType?)d.endcour.Value : null,
                         EndTime = d.TimeEnd
                     })
-                    .ToList()
+                    .ToList() is var deliveryList && deliveryList.Any()
+                        ? deliveryList
+                        : null
+
             };
             return boOrder;
         }
@@ -569,6 +572,8 @@ internal static class OrderManager
             throw new BlDoesNotExistException($"Order with ID={orderId} not found.", ex);
         }
     }
+     
+    
 
     /// <summary>
     /// Returns open orders suitable for a courier (no existing deliveries), with optional filters and sorting.
@@ -717,6 +722,31 @@ internal static class OrderManager
 
         return ordersWithLastDelivery.AsEnumerable();
     }
+    /// <summary>
+    /// gets deliveries for a specific order.
+    /// summary>
+    internal static IEnumerable<BO.DeliveryPerOrderInList>
+    GetDeliveriesForOrder(int orderId)
+    {
+
+        var deliveries = s_dal.Delivery.ReadAll(d => d.OrderId == orderId);
+
+        return from DO.Delivery delivery in deliveries
+               let courier = delivery.CourierId != null
+                   ? s_dal.Courier.Read(delivery.CourierId)
+                   : null
+               select new BO.DeliveryPerOrderInList
+               {
+                   DeliveryId = delivery.Id,
+                   CourierId = delivery.CourierId,
+                   CourierName = courier?.Name ?? "",
+                   DeliveryType = (BO.DeliveryType)delivery.typeofshipment,
+                   StartTime = delivery.TimeBegin,
+                   EndType = (BO.DeliveryEndType)delivery.endcour,
+                   EndTime = delivery.TimeEnd
+               };
+    }
+
 }
 
 

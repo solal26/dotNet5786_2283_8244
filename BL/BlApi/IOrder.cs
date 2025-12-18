@@ -118,4 +118,5 @@ public interface IOrder:IObservable
         int courierId,
         OrderType? filterType = null,
         OpenOrderInListSort? sortBy = null);
+    IEnumerable<BO.DeliveryPerOrderInList> GetDeliveriesForOrder(int requesterId, int orderId);
 }
