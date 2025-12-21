@@ -63,8 +63,10 @@ namespace PL.Courier
                 if (_isAddMode)  // מצב הוספה
                 {
                     bl.Courier.AddCourier(123456789, CurrentCourier);
+                    this.Close();
                     MessageBox.Show("Courier added successfully");
                 }
+
                 else   // מצב עדכון
                 {
                     bl.Courier.UpdateCourier(CurrentCourier.Id, CurrentCourier);

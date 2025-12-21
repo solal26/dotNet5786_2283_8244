@@ -500,4 +500,14 @@
     <TimeEnd>2025-12-13T16:56:53</TimeEnd>
     <Distance>2.1151787922544156</Distance>
   </Delivery>
+  <Delivery>
+    <Id>5050</Id>
+    <OrderId>1039</OrderId>
+    <CourierId>340862283</CourierId>
+    <typeofshipment>Car</typeofshipment>
+    <TimeBegin>2025-12-13T16:56:53</TimeBegin>
+    <endcour>Delivered</endcour>
+    <TimeEnd>2025-12-13T16:56:53</TimeEnd>
+    <Distance xsi:nil="true" />
+  </Delivery>
 </ArrayOfDelivery>
