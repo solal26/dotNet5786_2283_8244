@@ -585,4 +585,16 @@
     <Weight>1.2</Weight>
     <OrderInitiation>2025-12-13T16:56:53</OrderInitiation>
   </Order>
+  <Order>
+    <OrderId>1051</OrderId>
+    <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <ShippingAddress>14 Rothschild Blvd, Tel Aviv,Israel</ShippingAddress>
+    <Latitude>32.0627986</Latitude>
+    <Longitude>34.7706529</Longitude>
+    <CustomerName>johny test</CustomerName>
+    <CustomerPhone>0583920830</CustomerPhone>
+    <Weight>0</Weight>
+    <OrderInitiation>2025-12-13T16:56:53</OrderInitiation>
+    <VerbalDescription>important order, be careful</VerbalDescription>
+  </Order>
 </ArrayOfOrder>

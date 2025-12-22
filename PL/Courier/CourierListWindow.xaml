@@ -10,6 +10,10 @@
         Loaded="Window_Loaded"
         Closed="Window_Closed"
         >
+    <Window.Resources>
+        <local:NullCurrentOrderToVisibilityConverter
+       x:Key="NullCurrentOrderToVisibilityConverter"/>
+    </Window.Resources>
     <!--External Grid-->
     <Grid>
         <Grid.RowDefinitions>
@@ -50,7 +54,11 @@
                 <DataGridTemplateColumn Header="Delete">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Delete" Click="btnDeleteCourier_Click" Tag="{Binding Id}" />
+                            <Button Content="Delete"
+        Click="btnDeleteCourier_Click"
+        Tag="{Binding Id}"
+        Visibility="{Binding CurrentOrderId,
+                     Converter={StaticResource NullCurrentOrderToVisibilityConverter}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
 
