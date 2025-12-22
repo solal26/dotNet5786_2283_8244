@@ -22,25 +22,25 @@ namespace PL
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
-        static BO.Config conf = s_bl.Admin.GetConfig();
-        int id= conf.ManagerId;
+        
+      
         public string Username { get; set; }
+        public string Password { get; set; }
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (int.Parse(Username) == id)
-                    new MainWindow().Show();
+                if (s_bl.Courier.Login(int.Parse(Username), Password)=="Admin")
+                    new AdminChoiceWindow(int.Parse(Username)).Show();
                 else
-                    if (s_bl.Courier.GetCourier(int.Parse(Username), int.Parse(Username)) != null)//l(d=>d.Id==(int.Parse(Username)).any())
+                    
                     new Courier.MainCourierWindow(int.Parse(Username)).Show();
 
 
             }
-            catch (BlDoesNotExistException ex)
-            {
-                MessageBox.Show("invalid Id");
+            catch (UnauthorizedAccessException ex) { 
+                MessageBox.Show(ex.Message);
             }
         }
         public LoginWindow()

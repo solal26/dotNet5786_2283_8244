@@ -1,0 +1,26 @@
+﻿<Window x:Class="PL.AdminChoiceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Admin Menu"
+        Height="250"
+        Width="350"
+        WindowStartupLocation="CenterScreen">
+
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+
+        <TextBlock Text="Choose Admin Screen"
+                   FontSize="20"
+                   FontWeight="Bold"
+                   Margin="0,0,0,20"/>
+
+        <Button Content="System Management"
+                Width="200"
+                Margin="0,0,0,10"
+                Click="System_Click"/>
+
+        <Button Content="Couriers Management"
+                Width="200"
+                Click="Couriers_Click"/>
+
+    </StackPanel>
+</Window>

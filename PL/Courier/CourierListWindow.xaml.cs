@@ -23,6 +23,7 @@ namespace PL.Courier
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
+        public bool haveAcurrentOrder { get; set; } 
         public IEnumerable<BO.CourierInList> CourierList
         {
             get { return (IEnumerable<BO.CourierInList>)GetValue(CourierListProperty); }
