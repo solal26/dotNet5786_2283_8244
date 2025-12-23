@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PL.Order"
+        xmlns:local="clr-namespace:PL.Courier"
         xmlns:BO="clr-namespace:BO;assembly=BL"
         mc:Ignorable="d"
         Title="Order Management List" Height="640" Width="1000" 
@@ -12,6 +12,8 @@
         Closed="Window_Closed">
 
     <Window.Resources>
+        <local:OrderStatusToVisibilityConverter
+            x:Key="OrderStatusToVisibilityConverter"/>
         <ObjectDataProvider x:Key="OrderStatusKey" 
                             MethodName="GetValues" 
                             ObjectType="{x:Type BO:OrderStatus}">
@@ -80,7 +82,7 @@
                 <DataGridTemplateColumn Header="Cancel Order">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Cancel"
+                            <Button Content="Cancel" Visibility="{Binding OrderStatus, Converter={StaticResource OrderStatusToVisibilityConverter} }"
                                     Click="btnCancelOrder_Click"
                                     Tag="{Binding OrderId}"/>
                         </DataTemplate>

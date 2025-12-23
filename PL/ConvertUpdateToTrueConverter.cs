@@ -65,4 +65,19 @@ namespace PL.Courier
             throw new NotImplementedException();
         }
     }
+    public class OrderStatusToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value.Equals(BO.OrderStatus.Open) || value.Equals(BO.OrderStatus.InProgress))
+                return Visibility.Visible;
+
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
