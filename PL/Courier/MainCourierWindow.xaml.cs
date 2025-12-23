@@ -139,6 +139,7 @@ namespace PL.Courier
             if (CurrentCourier != null)
                 bl.Courier.RemoveObserver(CurrentCourier.Id, CourierObserver);
             bl.Order.RemoveObserver(CurrentCourier.Id, CourierObserver);
+            bl.Order.RemoveObserver(CourierObserver);
         }
 
 

@@ -71,8 +71,8 @@
             <TextBox Text="{Binding CurrentOrder.FullAddress}" Grid.Row="3" Grid.Column="1" TextWrapping="Wrap" AcceptsReturn="True" Margin="102,0,102,26" Grid.RowSpan="2"/>
 
             <!-- Air Distance -->
-            <Label Content="Air Distance (km):" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
-            <TextBox Text="{Binding CurrentOrder.AirDistance}" IsReadOnly="True" Grid.Row="4" Grid.Column="1" Margin="152,2,152,2"/>
+            <Label Content="Air Distance (km):" Grid.Row="4" Visibility="{Binding _isAddMode ,Converter={StaticResource ModeToVisibilityConverter}}" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
+            <TextBox Text="{Binding CurrentOrder.AirDistance}" Visibility="{Binding _isAddMode ,Converter={StaticResource ModeToVisibilityConverter}}" IsReadOnly="True" Grid.Row="4" Grid.Column="1" Margin="152,2,152,2"/>
 
             <!-- Customer Name -->
             <Label Content="Customer Name:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
@@ -91,12 +91,12 @@
             <DatePicker SelectedDate="{Binding CurrentOrder.OpenTime}" IsEnabled="False" Grid.Row="8" Grid.Column="1" Margin="167,2,167,2"/>
 
             <!-- Expected Delivery -->
-            <Label Content="Expected Delivery:" Grid.Row="9" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
-            <DatePicker SelectedDate="{Binding CurrentOrder.ExpectedDeliveryTime}" IsEnabled="False" Grid.Row="9" Grid.Column="1" Margin="167,2,167,2"/>
+            <Label Content="Expected Delivery:" Grid.Row="9" Visibility="{Binding _isAddMode ,Converter={StaticResource ModeToVisibilityConverter}}" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
+            <DatePicker SelectedDate="{Binding CurrentOrder.ExpectedDeliveryTime}" Visibility="{Binding _isAddMode ,Converter={StaticResource ModeToVisibilityConverter}}" IsEnabled="False" Grid.Row="9" Grid.Column="1" Margin="167,2,167,2"/>
 
             <!-- Max Delivery Time -->
-            <Label Content="Max Delivery:" Grid.Row="10" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
-            <DatePicker SelectedDate="{Binding CurrentOrder.MaxDeliveryTime}" IsEnabled="False" Grid.Row="10" Grid.Column="1" Margin="167,2,167,2"/>
+            <Label Content="Max Delivery:" Grid.Row="10" Visibility="{Binding _isAddMode ,Converter={StaticResource ModeToVisibilityConverter}}" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
+            <DatePicker SelectedDate="{Binding CurrentOrder.MaxDeliveryTime}" Visibility="{Binding _isAddMode ,Converter={StaticResource ModeToVisibilityConverter}}" IsEnabled="False" Grid.Row="10" Grid.Column="1" Margin="167,2,167,2"/>
 
             <!-- Order Status -->
             <Label Content="Order Status:" Grid.Row="11" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
@@ -107,12 +107,12 @@
             <ComboBox ItemsSource="{Binding ScheduleStatuses}" IsEnabled="False" SelectedItem="{Binding CurrentOrder.ScheduleStatus}" Grid.Row="12" Grid.Column="1" Margin="167,0,167,0" Height="20" VerticalAlignment="Center"/>
 
             <!-- Time Remaining -->
-            <Label Content="Time Remaining:" Grid.Row="13" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
-            <TextBox Text="{Binding CurrentOrder.TimeRemaining}" IsEnabled="False" Grid.Row="13" Grid.Column="1" IsReadOnly="True" Margin="167,10,167,19"/>
+            <Label Content="Time Remaining:" Grid.Row="13" Visibility="{Binding _isAddMode ,Converter={StaticResource ModeToVisibilityConverter}}" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
+            <TextBox Text="{Binding CurrentOrder.TimeRemaining}" Visibility="{Binding _isAddMode ,Converter={StaticResource ModeToVisibilityConverter}}" IsEnabled="False" Grid.Row="13" Grid.Column="1" IsReadOnly="True" Margin="167,10,167,19"/>
 
             <!-- Deliveries -->
-            <Label Content="Deliveries:" Grid.Row="14" Grid.Column="0" VerticalAlignment="Top" Height="25"/>
-            <Button Grid.Column="1" Content="AllDeliveries" Click="btnAllDeliveries_Click" HorizontalAlignment="Left" Margin="177,10,0,0" Grid.Row="14" VerticalAlignment="Top" Width="93"/>
+            <Label Content="Deliveries:" Grid.Row="14" Visibility="{Binding _isAddMode ,Converter={StaticResource ModeToVisibilityConverter}}" Grid.Column="0" VerticalAlignment="Top" Height="25"/>
+            <Button Grid.Column="1" Content="AllDeliveries" Visibility="{Binding _isAddMode ,Converter={StaticResource ModeToVisibilityConverter}}" Click="btnAllDeliveries_Click" HorizontalAlignment="Left" Margin="177,10,0,0" Grid.Row="14" VerticalAlignment="Top" Width="93"/>
             <Button Grid.Column="1" Content="{Binding ButtonText}" Click="btnAddUpdate_Click"  HorizontalAlignment="Left" Margin="10,69,0,0" Grid.Row="14" VerticalAlignment="Top" Height="40" Width="78"/>
         </Grid>
 

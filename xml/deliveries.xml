@@ -101,16 +101,6 @@
     <Distance>2.1151787922544156</Distance>
   </Delivery>
   <Delivery>
-    <Id>5017</Id>
-    <OrderId>1043</OrderId>
-    <CourierId>393928475</CourierId>
-    <typeofshipment>OnFoot</typeofshipment>
-    <TimeBegin>2025-12-07T16:47:53</TimeBegin>
-    <endcour xsi:nil="true" />
-    <TimeEnd xsi:nil="true" />
-    <Distance>1.9914717201010803</Distance>
-  </Delivery>
-  <Delivery>
     <Id>5018</Id>
     <OrderId>1045</OrderId>
     <CourierId>344619929</CourierId>
@@ -519,5 +509,15 @@
     <endcour xsi:nil="true" />
     <TimeEnd xsi:nil="true" />
     <Distance xsi:nil="true" />
+  </Delivery>
+  <Delivery>
+    <Id>5017</Id>
+    <OrderId>1043</OrderId>
+    <CourierId>393928475</CourierId>
+    <typeofshipment>OnFoot</typeofshipment>
+    <TimeBegin>2025-12-07T16:47:53</TimeBegin>
+    <endcour>Canceled</endcour>
+    <TimeEnd>2025-12-13T16:56:53</TimeEnd>
+    <Distance>1.9914717201010803</Distance>
   </Delivery>
 </ArrayOfDelivery>
