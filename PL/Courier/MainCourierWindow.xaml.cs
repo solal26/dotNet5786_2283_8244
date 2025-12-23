@@ -129,6 +129,7 @@ namespace PL.Courier
             
             bl.Courier.AddObserver(CurrentCourier.Id, CourierObserver);
             bl.Order.AddObserver(CurrentCourier.Id, CourierObserver);
+            bl.Order.AddObserver(CourierObserver);
             ButtonText = CurrentCourier!.CurrentOrder == null ? "New delivery" : "EndDelivery";
             haveCurrentOlder = CurrentCourier!.CurrentOrder == null;
         }
