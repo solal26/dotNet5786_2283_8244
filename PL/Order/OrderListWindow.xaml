@@ -6,51 +6,85 @@
         xmlns:local="clr-namespace:PL.Courier"
         xmlns:BO="clr-namespace:BO;assembly=BL"
         mc:Ignorable="d"
-        Title="Order Management List" Height="640" Width="1000" 
+        Title="Order Management List"
+        Height="640"
+        Width="1000"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         Loaded="Window_Loaded"
         Closed="Window_Closed">
 
+    <!-- ================= RESOURCES ================= -->
     <Window.Resources>
+
         <local:OrderStatusToVisibilityConverter
             x:Key="OrderStatusToVisibilityConverter"/>
-        <ObjectDataProvider x:Key="OrderStatusKey" 
-                            MethodName="GetValues" 
+
+        <!-- OrderStatus enum -->
+        <ObjectDataProvider x:Key="OrderStatusKey"
+                            MethodName="GetValues"
                             ObjectType="{x:Type BO:OrderStatus}">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="BO:OrderStatus"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+
+        <!-- OrderInListSort enum -->
+        <ObjectDataProvider x:Key="OrderInListSortKey"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type BO:OrderInListSort}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="BO:OrderInListSort"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
     </Window.Resources>
 
+    <!-- ================= LAYOUT ================= -->
     <Grid>
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="500*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <!-- ===== TOP BAR: FILTER + SORT ===== -->
+        <Grid Grid.Row="0" Margin="20">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="180"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="180"/>
             </Grid.ColumnDefinitions>
 
+            <!-- Filter -->
             <Label Content="Filter by Order Status:"
-                   HorizontalAlignment="Center"
-                   Margin="0,10,0,0"
-                   VerticalAlignment="Top"/>
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   FontSize="16"/>
 
-            <ComboBox ItemsSource="{Binding Source={StaticResource OrderStatusKey}}" 
-                      Grid.Column="1"
-                      HorizontalAlignment="Stretch"
-                      VerticalAlignment="Stretch" 
-                      SelectedValue="{Binding Path=oStatus, Mode=TwoWay}" 
-                      SelectionChanged="ChooseStatus"/>
+            <ComboBox Grid.Column="1"
+                      ItemsSource="{Binding Source={StaticResource OrderStatusKey}}"
+                      SelectedValue="{Binding Path=oStatus, Mode=TwoWay}"
+                      SelectionChanged="ChooseStatus"
+                      Height="32"/>
+
+            <!-- Sort -->
+            <Label Content="Sort by:"
+                   Grid.Column="3"
+                   VerticalAlignment="Center"
+                   FontSize="16"/>
+
+            <ComboBox Grid.Column="4"
+                      ItemsSource="{Binding Source={StaticResource OrderInListSortKey}}"
+                      SelectedValue="{Binding Path=orderS, Mode=TwoWay}"
+                      SelectionChanged="ChooseSort"
+                      Height="32"/>
         </Grid>
 
-       
-        <DataGrid
+        <!-- ===== ORDER LIST ===== -->
+        <DataGrid Grid.Row="1"
                   ItemsSource="{Binding Path=OrderList}"
                   IsReadOnly="True"
                   AutoGenerateColumns="False"
@@ -58,15 +92,8 @@
                   RowDetailsVisibilityMode="VisibleWhenSelected"
                   SelectedItem="{Binding SelectedOrder}"
                   MouseDoubleClick="lsvOrderList_MouseDoubleClick"
-                  ColumnWidth="*" RenderTransformOrigin="0.5,0.5" Margin="0,42,0,0" Grid.RowSpan="2">
-            <DataGrid.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform AngleY="-0.132"/>
-                    <RotateTransform/>
-                    <TranslateTransform Y="-0.998"/>
-                </TransformGroup>
-            </DataGrid.RenderTransform>
+                  ColumnWidth="*"
+                  Margin="10">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding OrderId}" Header="Order ID"/>
@@ -82,20 +109,26 @@
                 <DataGridTemplateColumn Header="Cancel Order">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Cancel" Visibility="{Binding OrderStatus, Converter={StaticResource OrderStatusToVisibilityConverter} }"
+                            <Button Content="Cancel"
+                                    Visibility="{Binding OrderStatus,
+                                                 Converter={StaticResource OrderStatusToVisibilityConverter}}"
                                     Click="btnCancelOrder_Click"
                                     Tag="{Binding OrderId}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
+
         </DataGrid>
 
-        <Button Content="Add New Order"
-                Grid.Row="2"
-                HorizontalAlignment="Center"
+        <!-- ===== BOTTOM BUTTON ===== -->
+        <Button Grid.Row="2"
+                Content="Add New Order"
                 Height="50"
                 Width="150"
+                Margin="10"
+                HorizontalAlignment="Center"
                 Click="btnAddOrder_Click"/>
+
     </Grid>
 </Window>

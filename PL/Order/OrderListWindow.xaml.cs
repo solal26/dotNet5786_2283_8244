@@ -37,8 +37,7 @@ namespace PL.Order
 
     
         public BO.OrderStatus oStatus { get; set; } = BO.OrderStatus.All;
-
-       
+        public BO.OrderInListSort orderS { get; set; } 
         public BO.OrderInList? SelectedOrder { get; set; }
 
 
@@ -47,6 +46,7 @@ namespace PL.Order
         private void queryOrderList()
         {
             BO.OrderInListFilter? filterField = null;
+            BO.OrderInListSort? so = orderS;
             object? filterValue = null;
 
             if (oStatus != BO.OrderStatus.All)
@@ -61,7 +61,7 @@ namespace PL.Order
                     requesterId: RequesterId,
                     filterField: filterField,
                     filterValue: filterValue,
-                    sortBy: null
+                    sortBy: so
                 );
             }
             catch (BO.BlUnauthorizedAccessException ex)
@@ -78,6 +78,10 @@ namespace PL.Order
 
         // Handler for the filter change (ComboBox SelectionChanged)
         private void ChooseStatus(object sender, SelectionChangedEventArgs e)
+        {
+            queryOrderList();
+        }
+        private void ChooseSort(object sender, SelectionChangedEventArgs e)
         {
             queryOrderList();
         }
