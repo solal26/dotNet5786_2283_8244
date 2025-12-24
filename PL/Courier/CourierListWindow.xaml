@@ -4,73 +4,123 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Courier"
+        xmlns:BO="clr-namespace:BO;assembly=BL"
         mc:Ignorable="d"
-        Title="CourierListWindow" Height="640" Width="800"
+        Title="CourierListWindow"
+        Height="640"
+        Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         Loaded="Window_Loaded"
-        Closed="Window_Closed"
-        >
+        Closed="Window_Closed">
+
     <Window.Resources>
         <local:NullCurrentOrderToVisibilityConverter
-       x:Key="NullCurrentOrderToVisibilityConverter"/>
+            x:Key="NullCurrentOrderToVisibilityConverter"/>
+
+        <ObjectDataProvider x:Key="CourierSortByInListKey"
+                     MethodName="GetValues"
+                     ObjectType="{x:Type BO:CourierSortBy}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="BO:CourierSortBy"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
     </Window.Resources>
-    <!--External Grid-->
+
+    <!-- External Grid -->
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="500*"/>
             <RowDefinition Height="Auto"/>
-
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <!--Internal, Upper Grid-->
-        <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Label Content="Label" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top"/>
-            <ComboBox ItemsSource="{Binding Source={StaticResource Deliverytypekey}}" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedValue="{Binding Path=dtype, Mode=TwoWay}" SelectionChanged="ChooseDelivery" />
 
+        <!-- ===== Upper Grid : Filter + Sort ===== -->
+        <Grid Grid.Row="0" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="180"/>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="180"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Filter -->
+            <Label Content="Filter by delivery type"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Margin="0,0,5,0"/>
+
+            <ComboBox Grid.Column="1"
+                      ItemsSource="{Binding Source={StaticResource Deliverytypekey}}"
+                      SelectedValue="{Binding Path=dtype, Mode=TwoWay}"
+                      SelectionChanged="ChooseDelivery"
+                      VerticalAlignment="Center"/>
+
+            <!-- Sort -->
+            <Label Content="Sort by"
+                   Grid.Column="3"
+                   VerticalAlignment="Center"
+                   Margin="0,0,5,0"/>
+
+            <ComboBox Grid.Column="4"
+                      ItemsSource="{Binding Source={StaticResource CourierSortByInListKey}}"
+                      SelectedItem="{Binding courierSortBy, Mode=TwoWay}"
+                      SelectionChanged="ChooseSort"
+                      VerticalAlignment="Center"/>
         </Grid>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding Path=CourierList}" IsReadOnly ="True" AutoGenerateColumns="False"
-       	 EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected" SelectedItem="{Binding SelectedCourier}"
-         MouseDoubleClick="lsvCourierList_MouseDoubleClick" 
-       	 >
+
+        <!-- ===== DataGrid ===== -->
+        <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding CourierList}"
+                  IsReadOnly="True"
+                  AutoGenerateColumns="False"
+                  EnableRowVirtualization="True"
+                  RowDetailsVisibilityMode="VisibleWhenSelected"
+                  SelectedItem="{Binding SelectedCourier}"
+                  MouseDoubleClick="lsvCourierList_MouseDoubleClick">
+
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Id}" Header="Id" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding FullName}" Header="Name" Width="Auto"/>
-                <DataGridTextColumn Binding= "{Binding DeliveryType}" Header="Type of Delivery" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding DeliveryType}" Header="Type of Delivery" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding StartDate}" Header="Start Date" Width="Auto"/>
+
                 <DataGridTemplateColumn Header="Is Active" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsEnabled="False" IsChecked="{Binding Path=Active}" />
+                            <CheckBox IsEnabled="False"
+                                      IsChecked="{Binding Active}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+
                 <DataGridTextColumn Binding="{Binding DeliveredOnTime}" Header="Delivered On Time" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding DeliveredLate}" Header="Delivered On Late" Width="Auto"/>
-                <DataGridTextColumn Header="Current Order" Binding="{Binding CurrentOrderId, TargetNullValue='No current order' }" Width="Auto"/>
-                <DataGridTemplateColumn Header="Delete">
+                <DataGridTextColumn Binding="{Binding DeliveredLate}" Header="Delivered Late" Width="Auto"/>
+                <DataGridTextColumn Header="Current Order"
+                                    Binding="{Binding CurrentOrderId, TargetNullValue='No current order'}"
+                                    Width="Auto"/>
+
+                <DataGridTemplateColumn Header="Delete" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Content="Delete"
-        Click="btnDeleteCourier_Click"
-        Tag="{Binding Id}"
-        Visibility="{Binding CurrentOrderId,
-                     Converter={StaticResource NullCurrentOrderToVisibilityConverter}}"/>
+                                    Click="btnDeleteCourier_Click"
+                                    Tag="{Binding Id}"
+                                    Visibility="{Binding CurrentOrderId,
+                                        Converter={StaticResource NullCurrentOrderToVisibilityConverter}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-
                 </DataGridTemplateColumn>
-
-
-
             </DataGrid.Columns>
         </DataGrid>
-        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="btnAddCourier_Click"/>
 
-
+        <!-- ===== Add Button ===== -->
+        <Button Grid.Row="2"
+                Content="Add"
+                HorizontalAlignment="Center"
+                Height="50"
+                Width="100"
+                Margin="0,10"
+                Click="btnAddCourier_Click"/>
     </Grid>
-
 </Window>

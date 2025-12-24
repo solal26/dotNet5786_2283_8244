@@ -71,5 +71,5 @@ public interface ICourier: IObservable
     /// <exception cref="BlAlreadyExistsException">Thrown when a courier with the same Id already exists.</exception>
     void AddCourier(int requesterId, BO.Courier courier);
 
-    IEnumerable<BO.CourierInList> GetListOfCourier(int requesterId , DeliveryType filter );
+    IEnumerable<BO.CourierInList> GetListOfCourier(int requesterId , DeliveryType filter, BO.CourierSortBy? sortBy = null);
 }
