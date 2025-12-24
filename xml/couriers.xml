@@ -111,28 +111,6 @@
     <Distance>29</Distance>
   </Courier>
   <Courier>
-    <Id>296518991</Id>
-    <Name>Itay</Name>
-    <PhoneNumber>0595863723</PhoneNumber>
-    <Email>itay8414@gmail.com</Email>
-    <Code>1334</Code>
-    <Active>false</Active>
-    <TimeBegin>2025-12-07T16:47:53</TimeBegin>
-    <typeofshipment>OnFoot</typeofshipment>
-    <Distance>5</Distance>
-  </Courier>
-  <Courier>
-    <Id>215805839</Id>
-    <Name>Aya</Name>
-    <PhoneNumber>0545572438</PhoneNumber>
-    <Email>aya4635@gmail.com</Email>
-    <Code>5008</Code>
-    <Active>false</Active>
-    <TimeBegin>2025-12-07T16:06:53</TimeBegin>
-    <typeofshipment>Car</typeofshipment>
-    <Distance>28</Distance>
-  </Courier>
-  <Courier>
     <Id>292436377</Id>
     <Name>Jonathan</Name>
     <PhoneNumber>0576631555</PhoneNumber>

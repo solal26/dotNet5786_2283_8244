@@ -4,25 +4,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Courier"
-    mc:Ignorable="d"
+        mc:Ignorable="d"
         Title="CourierWindow" Height="616" Width="441"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Loaded="Window_Loaded"
         Closed="Window_Closed">
+
     <Window.Resources>
         <local:ModeToReadOnlyConverter x:Key="ModeToReadOnlyConverter"/>
         <local:ModeToVisibilityConverter x:Key="ModeToVisibilityConverter"/>
+        <local:NullCurrentOrderToVisibilityConverter x:Key="NullCurrentOrderToVisibilityConverter"/>
+      
     </Window.Resources>
 
-    <Grid Height="487" VerticalAlignment="Top" >
+    <Grid Height="487" VerticalAlignment="Top">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="425"/>
-
         </Grid.RowDefinitions>
 
-
-        <Grid Grid.Row="1" HorizontalAlignment="Left"  Margin="90,0,0,0" Width="271"  >
+        <Grid Grid.Row="1" HorizontalAlignment="Left" Margin="90,0,0,0" Width="271">
             <Grid.RowDefinitions>
                 <RowDefinition Height="25*"/>
                 <RowDefinition Height="25*"/>
@@ -37,47 +38,86 @@
                 <RowDefinition Height="25*"/>
                 <RowDefinition Height="25*"/>
             </Grid.RowDefinitions>
+
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="140*"/>
                 <ColumnDefinition Width="168*"/>
             </Grid.ColumnDefinitions>
-            <Label Content="Id Number:" HorizontalAlignment="Left" Grid.Row="0" FontSize="10"  VerticalAlignment="Center" Width="64" />
-            <TextBox Text="{Binding CurrentCourier.Id}"  IsReadOnly="{Binding _isAddMode, Converter={StaticResource ModeToReadOnlyConverter}}"  HorizontalAlignment="Left" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2" Margin="123,0,0,0" Width="148"/>
-            <Label Content="Full name:" HorizontalAlignment="Left" Grid.Row="1" FontSize="10"  VerticalAlignment="Center" Width="64" />
-            <TextBox Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="1" Text="{Binding CurrentCourier.FullName}" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
-            <Label Content="Phone Number:" HorizontalAlignment="Left" Grid.Row="2" FontSize="10"  VerticalAlignment="Center" Width="83" />
-            <TextBox Grid.Column="1" HorizontalAlignment="Stretch"  Grid.Row="2"  Text="{Binding CurrentCourier.Phone}" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
-            <Label Content="Email:" HorizontalAlignment="Left" Grid.Row="3" FontSize="10"  VerticalAlignment="Center" Width="64" />
-            <TextBox Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="3" Text="{Binding CurrentCourier.Email}" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
-            <Label Content="Password:" HorizontalAlignment="Left" Grid.Row="4" FontSize="10"  VerticalAlignment="Center" Width="64" />
-            <TextBox Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="4" Text="{Binding CurrentCourier.Password}" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
-            <Label Content="Is Active:" HorizontalAlignment="Left" Grid.Row="5" FontSize="10"  VerticalAlignment="Center" Width="64" />
-            <CheckBox Grid.Column="1" HorizontalAlignment="Center" Grid.Row="5" IsChecked="{Binding CurrentCourier.Active}"  VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
-            <Label Content="Max Delivery Distance:" HorizontalAlignment="Left" Grid.Row="6" FontSize="10"  VerticalAlignment="Center" Width="113" />
-            <TextBox Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="6"  Text="{Binding CurrentCourier.MaxDeliveryDistance}" VerticalAlignment="Center"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
-            <Label Content="Type of Delivery:" HorizontalAlignment="Left" Grid.Row="7" FontSize="10"  VerticalAlignment="Center" Width="83" />
-            <ComboBox HorizontalAlignment="Center" Grid.Row="7"  VerticalAlignment="Center"  FontSize="10" Height="23" 
-                      ItemsSource="{Binding DeliveryTypes}"  SelectedItem="{Binding CurrentCourier.DeliveryType, Mode=TwoWay}" Width="148" Grid.Column="1"/>
-            <Label Content="Start Date:" HorizontalAlignment="Left" Grid.Row="8" FontSize="10"  VerticalAlignment="Center" Width="64" />
-            <DatePicker HorizontalAlignment="Center" IsEnabled="False"  Grid.Row="8" VerticalAlignment="Center"   SelectedDate="{Binding CurrentCourier.StartDate}"  FontSize="10" Height="23" Width="128" Grid.Column="1"/>
-            <Label Content="Delivered On Time:"  Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}" HorizontalAlignment="Left" Grid.Row="9" FontSize="10"  VerticalAlignment="Center" Width="96" />
-            <TextBox Grid.Column="1"  Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}" HorizontalAlignment="Stretch" Grid.Row="9" VerticalAlignment="Center" Text="{Binding CurrentCourier.DeliveredOnTime}"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
-            <Label Content="Delivered Late:" Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}" HorizontalAlignment="Left" Grid.Row="10" FontSize="10"  VerticalAlignment="Center" Width="83" />
-            <TextBox Grid.Column="1"  Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}" HorizontalAlignment="Stretch" Grid.Row="10" VerticalAlignment="Center" Text="{Binding CurrentCourier.DeliveredLate}"  FontSize="10" Height="15" Grid.ColumnSpan="2"/>
-            <Label Content="Current Order:"  Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}" HorizontalAlignment="Left" Grid.Row="11" FontSize="10"  VerticalAlignment="Center" Width="76" />
-            <Button Content="{Binding ButtonText}"  Click="btnAddUpdate_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="75" Margin="0,0,0,-40" Grid.Row="11" Height="26" RenderTransformOrigin="0.48,0.412"/>
-            <Button Grid.Column="1" Content="Current order"  Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}" Click="btnCurrentOrder_Click" HorizontalAlignment="Left" Margin="24,9,0,0" Grid.Row="11" VerticalAlignment="Top" Width="85"/>
 
+            <Label Content="Id Number:" Grid.Row="0" FontSize="10" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding CurrentCourier.Id}"
+                     IsReadOnly="{Binding _isAddMode, Converter={StaticResource ModeToReadOnlyConverter}}"
+                     Grid.ColumnSpan="2"
+                     Margin="123,0,0,0"
+                     FontSize="10" Height="15"/>
+
+            <Label Content="Full name:" Grid.Row="1" FontSize="10" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding CurrentCourier.FullName}" FontSize="10" Height="15"/>
+
+            <Label Content="Phone Number:" Grid.Row="2" FontSize="10" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding CurrentCourier.Phone}" FontSize="10" Height="15"/>
+
+            <Label Content="Email:" Grid.Row="3" FontSize="10" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding CurrentCourier.Email}" FontSize="10" Height="15"/>
+
+            <Label Content="Password:" Grid.Row="4" FontSize="10" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding CurrentCourier.Password}" FontSize="10" Height="15"/>
+
+            <Label Content="Is Active:" Grid.Row="5" FontSize="10" VerticalAlignment="Center"/>
+            <CheckBox Grid.Column="1" Grid.Row="5" IsChecked="{Binding CurrentCourier.Active}"/>
+
+            <Label Content="Max Delivery Distance:" Grid.Row="6" FontSize="10" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1" Grid.Row="6" Text="{Binding CurrentCourier.MaxDeliveryDistance}" FontSize="10" Height="15"/>
+
+            <Label Content="Type of Delivery:" Grid.Row="7" FontSize="10" VerticalAlignment="Center"/>
+            <ComboBox Grid.Column="1" Grid.Row="7"
+                      ItemsSource="{Binding DeliveryTypes}"
+                      SelectedItem="{Binding CurrentCourier.DeliveryType, Mode=TwoWay}"
+                      FontSize="10" Height="23"/>
+
+            <Label Content="Start Date:" Grid.Row="8" FontSize="10" VerticalAlignment="Center"/>
+            <DatePicker Grid.Column="1" Grid.Row="8"
+                        SelectedDate="{Binding CurrentCourier.StartDate}"
+                        IsEnabled="False"
+                        FontSize="10" Height="23"/>
+
+            <Label Content="Delivered On Time:"
+                   Grid.Row="9" FontSize="10"
+                   Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}"/>
+
+            <TextBox Grid.Column="1" Grid.Row="9"
+                     Text="{Binding CurrentCourier.DeliveredOnTime}"
+                     FontSize="10" Height="15"
+                     Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}"/>
+
+            <Label Content="Delivered Late:"
+                   Grid.Row="10" FontSize="10"
+                   Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}"/>
+
+            <TextBox Grid.Column="1" Grid.Row="10"
+                     Text="{Binding CurrentCourier.DeliveredLate}"
+                     FontSize="10" Height="15"
+                     Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}"/>
+
+            <!-- Bottom buttons -->
+            <Button Content="{Binding ButtonText}"
+                    Click="btnAddUpdate_Click"
+                    Grid.Row="11"
+                    Width="75"
+                    Height="26"
+                    HorizontalAlignment="Left"
+                    Margin="0,0,0,-40"/>
+
+            <!-- DELETE button added next to ADD -->
+            <Button Content="Delete"
+                    Click="btnDeleteCourier_Click"
+                    Grid.Row="11"
+                    Width="75"
+                    Height="26"
+                    HorizontalAlignment="Left"
+                    Margin="85,0,0,-40"
+                    Visibility="{Binding _isAddMode, Converter={StaticResource NullCurrentOrderToVisibilityConverter}}"/>
 
         </Grid>
-
-
-
-
-
-
-
-
-
     </Grid>
 </Window>

@@ -112,5 +112,50 @@ namespace PL.Courier
             bl.Courier.RemoveObserver(CurrentCourier.Id, CourierObserver);
             bl.Order.RemoveObserver(CurrentCourier.Id, CourierObserver);
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnDeleteCourier_Click(object sender, RoutedEventArgs e)
+        {
+            
+
+            int courierId = CurrentCourier.Id;
+
+            var result = MessageBox.Show($"Are you sure you want to delete courier {courierId}?",
+                                         "Delete Courier",
+                                         MessageBoxButton.YesNo,
+                                         MessageBoxImage.Warning);
+
+            if (result != MessageBoxResult.Yes)
+                return;
+
+            try
+            {
+                bl.Courier.DeleteCourier(courierId, courierId);
+                this.Close();
+
+
+            }
+            catch (BO.BlDoesNotExistException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (BO.BlUnauthorizedAccessException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (BO.BlInvalidRequestException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }
