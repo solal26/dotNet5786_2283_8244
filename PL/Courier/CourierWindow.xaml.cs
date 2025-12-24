@@ -86,10 +86,12 @@ namespace PL.Courier
         {
             ButtonText = courierId == 0 ? "Add" : "Update";
             _isAddMode = courierId == 0;
+
             InitializeComponent();
             CurrentCourier = courierId == 0
            ? new BO.Courier()
            : bl.Courier.GetCourier(courierId, courierId);
+            
         }
 
         private void CourierObserver()
@@ -104,6 +106,7 @@ namespace PL.Courier
            
             bl.Courier.AddObserver(CurrentCourier.Id, CourierObserver);
             bl.Order.AddObserver(CurrentCourier.Id, CourierObserver);
+         
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -111,16 +114,6 @@ namespace PL.Courier
             
             bl.Courier.RemoveObserver(CurrentCourier.Id, CourierObserver);
             bl.Order.RemoveObserver(CurrentCourier.Id, CourierObserver);
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void btnDeleteCourier_Click(object sender, RoutedEventArgs e)

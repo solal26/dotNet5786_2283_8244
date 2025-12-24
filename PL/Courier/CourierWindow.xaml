@@ -36,7 +36,7 @@
                 <RowDefinition Height="25*"/>
                 <RowDefinition Height="25*"/>
                 <RowDefinition Height="25*"/>
-                <RowDefinition Height="25*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -99,24 +99,25 @@
                      FontSize="10" Height="15"
                      Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}"/>
 
-            <!-- Bottom buttons -->
-            <Button Content="{Binding ButtonText}"
-                    Click="btnAddUpdate_Click"
-                    Grid.Row="11"
-                    Width="75"
-                    Height="26"
-                    HorizontalAlignment="Left"
-                    Margin="0,0,0,-40"/>
+            <StackPanel Grid.Row="11"
+            Grid.ColumnSpan="2"
+            Orientation="Horizontal"
+            HorizontalAlignment="Center"
+            Margin="0,15,0,0">
 
-            <!-- DELETE button added next to ADD -->
-            <Button Content="Delete"
-                    Click="btnDeleteCourier_Click"
-                    Grid.Row="11"
-                    Width="75"
-                    Height="26"
-                    HorizontalAlignment="Left"
-                    Margin="85,0,0,-40"
-                    Visibility="{Binding _isAddMode, Converter={StaticResource NullCurrentOrderToVisibilityConverter}}"/>
+                <Button Content="{Binding ButtonText}"
+            Click="btnAddUpdate_Click"
+            Width="75"
+            Height="26"/>
+
+                <Button Content="Delete"
+            Click="btnDeleteCourier_Click"
+            Width="75"
+            Height="26"
+            Margin="15,0,0,0"
+            Visibility="{Binding CurrentCourier.CurrentOrder,
+            Converter={StaticResource NullCurrentOrderToVisibilityConverter}}"/>
+            </StackPanel>
 
         </Grid>
     </Grid>
