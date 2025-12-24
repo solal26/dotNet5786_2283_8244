@@ -32,13 +32,18 @@ namespace PL.Courier
         public static readonly DependencyProperty CourierListProperty =
             DependencyProperty.Register("CourierList", typeof(IEnumerable<BO.CourierInList>), typeof(CourierListWindow), new PropertyMetadata(null));
         public BO.DeliveryType dtype { get; set; } = BO.DeliveryType.All;
+        public BO.CourierSortBy courierSortBy { get; set; } 
         private void ChooseDelivery(object sender, SelectionChangedEventArgs e)
         {
-            CourierList = s_bl.Courier.GetListOfCourier(0, dtype);
+            CourierList = s_bl.Courier.GetListOfCourier(0, dtype, courierSortBy);
+        }
+        private void ChooseSort(object sender, SelectionChangedEventArgs e)
+        {
+            CourierList = s_bl.Courier.GetListOfCourier(0, dtype, courierSortBy);
         }
 
         private void queryCourierList()
-             => CourierList = s_bl.Courier.GetListOfCourier(0, dtype);
+             => CourierList = s_bl.Courier.GetListOfCourier(0, dtype, courierSortBy);
         
         private void courierListObserver()
             => queryCourierList();

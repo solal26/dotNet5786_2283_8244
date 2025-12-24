@@ -86,13 +86,23 @@ internal class CourierImplementation : BlApi.ICourier
     {
         CourierManager.UpdateCourier(requesterId, boCourier);
     }
-    public IEnumerable<BO.CourierInList> GetListOfCourier(int requesterId, BO.DeliveryType filter )
+    public IEnumerable<BO.CourierInList> GetListOfCourier(int requesterId, BO.DeliveryType filter , BO.CourierSortBy? sortBy = null)
     {
         var list = CourierManager.GetAllCouriersInList();
         if (filter.Equals(BO.DeliveryType.All) == false)
         {
             list = list.Where(c => c.DeliveryType == filter);
         }
+        list = sortBy switch
+        {
+            CourierSortBy.FullName => list.OrderBy(c => c.FullName),
+            CourierSortBy.StartDate => list.OrderBy(c => c.StartDate),
+            CourierSortBy.DeliveredOnTime => list.OrderByDescending(c => c.DeliveredOnTime),
+            CourierSortBy.DeliveredLate => list.OrderByDescending(c => c.DeliveredLate),
+            CourierSortBy.Active => list.OrderByDescending(c => c.Active),
+            CourierSortBy.DeliveryType => list.OrderBy(c => c.DeliveryType),
+            _ => list.OrderBy(c => c.Id),
+        };
         return list;
     }
 
