@@ -11,6 +11,7 @@
         Closed="Window_Closed">
     <Window.Resources>
         <local:ModeToVisibilityConverter x:Key="ModeToVisibilityOrderConverter"/>
+        <local:ModeToVisibilityActiveConverter x:Key="ModeToVisibilityActiveConverter"/>
     </Window.Resources>
     <Grid Height="487" VerticalAlignment="Top" >
         <Grid.RowDefinitions>
@@ -62,7 +63,7 @@
             <TextBox Grid.Column="2" Grid.Row="9" IsReadOnly="True" VerticalAlignment="Center" Text="{Binding CurrentCourier.DeliveredOnTime}"  FontSize="10" Height="15" Margin="102,0,0,0" Grid.ColumnSpan="2"/>
             <Label Content="Delivered Late:"  HorizontalAlignment="Left" Grid.Row="10" FontSize="20"  VerticalAlignment="Center" Width="160" Height="34" Grid.ColumnSpan="3" />
             <TextBox Grid.Column="2" Grid.Row="10" IsReadOnly="True" VerticalAlignment="Center" Text="{Binding CurrentCourier.DeliveredLate}"  FontSize="10" Height="15" Margin="55,0,0,0" Grid.ColumnSpan="2"/>
-            <Button Content="{Binding ButtonText}" Click="btnChooseOrEnd_Click" Grid.Column="3" Margin="235,0,-178,0" RenderTransformOrigin="0.509,0.543" Height="45" VerticalAlignment="Center" />
+            <Button Content="{Binding ButtonText}" Click="btnChooseOrEnd_Click" Visibility="{Binding CurrentCourier.Active ,Converter={StaticResource ModeToVisibilityActiveConverter}}" Grid.Column="3" Margin="235,0,-178,0" RenderTransformOrigin="0.509,0.543" Height="45" VerticalAlignment="Center" />
 
 
         </Grid>

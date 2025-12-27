@@ -79,6 +79,32 @@ namespace PL.Order
                 MessageBox.Show(ex.Message);
             }
         }
+        private void btnCancelOrder_Click(object sender, RoutedEventArgs e)
+        {
+            int orderId = CurrentOrder.Id;
+
+            var result = MessageBox.Show($"Are you sure you want to cancel order {orderId}? An email might be sent to the courier if applicable.",
+                                         "Cancel Order",
+                                         MessageBoxButton.YesNo,
+                                         MessageBoxImage.Warning);
+
+            if (result != MessageBoxResult.Yes)
+                return;
+
+            try
+            {
+                bl.Order.CancelOrder(123456789, orderId);
+
+            }
+            catch (BO.BlDoesNotExistException ex)
+            {
+                MessageBox.Show($"Error: Order {orderId} not found or could not be cancelled. {ex.Message}");
+            }
+            catch (BO.BlInvalidRequestException ex)
+            {
+                MessageBox.Show($"Cancellation failed: {ex.Message}");
+            }
+        }
         public IEnumerable<BO.OrderStatus> OrderStatuses => Enum.GetValues(typeof(BO.OrderStatus)).Cast<BO.OrderStatus>();
         public IEnumerable<BO.OrderType> OrderTypes => Enum.GetValues(typeof(BO.OrderType)).Cast<BO.OrderType>();
         public IEnumerable<BO.ScheduleStatus> ScheduleStatuses => Enum.GetValues(typeof(BO.ScheduleStatus)).Cast<BO.ScheduleStatus>();

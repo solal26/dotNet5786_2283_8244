@@ -36,7 +36,7 @@ namespace PL.Order
             DependencyProperty.Register("OrderList", typeof(IEnumerable<BO.OrderInList>), typeof(OrderListWindow), new PropertyMetadata(null));
 
     
-        public BO.OrderStatus oStatus { get; set; } = BO.OrderStatus.All;
+        public BO.OrderStatus oStatus { get; set; }
         public BO.OrderInListSort orderS { get; set; } 
         public BO.OrderInList? SelectedOrder { get; set; }
 
@@ -160,9 +160,10 @@ namespace PL.Order
 
 
         }
-        public OrderListWindow()
+        public OrderListWindow(BO.OrderStatus? orderStatus = null, BO.ScheduleStatus? scheduleStatus = null)
         {
             InitializeComponent();
+            oStatus= orderStatus ?? BO.OrderStatus.All;
         }
     }
 }
