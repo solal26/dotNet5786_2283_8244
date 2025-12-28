@@ -39,7 +39,7 @@ namespace PL.Order
         public BO.OrderInListSort orderS { get; set; } 
         public BO.OrderInList? SelectedOrder { get; set; }
         public BO.ScheduleStatus? sStatus { get; set; } 
-        public string selectedFilterType { get; set; } = "Order Status";
+        public string selectedFilterType { get; set; } 
 
 
         private void FilterType_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -201,7 +201,15 @@ namespace PL.Order
         {
             InitializeComponent();
             if (orderStatus != null)
+            {
                 oStatus = orderStatus.Value;
+                selectedFilterType = "Order Status";
+            }
+            if (scheduleStatus != null)
+            {
+                sStatus = scheduleStatus.Value;
+                selectedFilterType = "Schedule Status";
+            }
         }
     }
 }
