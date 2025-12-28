@@ -15,20 +15,7 @@
 
     <!-- ================= RESOURCES ================= -->
     <Window.Resources>
-
-        <local:OrderStatusToVisibilityConverter
-            x:Key="OrderStatusToVisibilityConverter"/>
-
-        <!-- OrderStatus enum -->
-        <ObjectDataProvider x:Key="OrderStatusKey"
-                            MethodName="GetValues"
-                            ObjectType="{x:Type BO:OrderStatus}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="BO:OrderStatus"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-
-        <!-- OrderInListSort enum -->
+        <local:OrderStatusToVisibilityConverter x:Key="OrderStatusToVisibilityConverter"/>
         <ObjectDataProvider x:Key="OrderInListSortKey"
                             MethodName="GetValues"
                             ObjectType="{x:Type BO:OrderInListSort}">
@@ -36,20 +23,27 @@
                 <x:Type TypeName="BO:OrderInListSort"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
-
     </Window.Resources>
 
     <!-- ================= LAYOUT ================= -->
     <Grid>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <!-- Filter + Sort -->
             <RowDefinition Height="*"/>
+            <!-- Order List -->
             <RowDefinition Height="Auto"/>
+            <!-- Bottom Button -->
         </Grid.RowDefinitions>
 
-        <!-- ===== TOP BAR: FILTER + SORT ===== -->
+        <!-- ===== TOP BAR: FILTER TYPE + FILTER VALUE + SORT ===== -->
         <Grid Grid.Row="0" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Filter Type -->
+                <RowDefinition Height="Auto"/>
+                <!-- Filter Value -->
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="180"/>
@@ -58,25 +52,22 @@
                 <ColumnDefinition Width="180"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Filter -->
-            <Label Content="Filter by Order Status:"
-                   Grid.Column="0"
-                   VerticalAlignment="Center"
-                   FontSize="16"/>
+            <!-- Filter Type -->
+            <Label Content="Filter by:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" FontSize="16"/>
+            <ComboBox x:Name="FilterTypeComboBox" Grid.Row="0" Grid.Column="1" Height="32"
+                      SelectionChanged="FilterType_SelectionChanged">
+                <ComboBoxItem Content="Order Status"/>
+                <ComboBoxItem Content="Schedule Status"/>
+            </ComboBox>
 
-            <ComboBox Grid.Column="1"
-                      ItemsSource="{Binding Source={StaticResource OrderStatusKey}}"
-                      SelectedValue="{Binding Path=oStatus, Mode=TwoWay}"
-                      SelectionChanged="ChooseStatus"
-                      Height="32"/>
+            <!-- Filter Value -->
+            <Label Content="Value:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" FontSize="16"/>
+            <ComboBox x:Name="FilterValueComboBox" Grid.Row="1" Grid.Column="1" Height="32"
+                      SelectionChanged="FilterValue_SelectionChanged"/>
 
             <!-- Sort -->
-            <Label Content="Sort by:"
-                   Grid.Column="3"
-                   VerticalAlignment="Center"
-                   FontSize="16"/>
-
-            <ComboBox Grid.Column="4"
+            <Label Content="Sort by:" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" FontSize="16"/>
+            <ComboBox Grid.Row="1" Grid.Column="4"
                       ItemsSource="{Binding Source={StaticResource OrderInListSortKey}}"
                       SelectedValue="{Binding Path=orderS, Mode=TwoWay}"
                       SelectionChanged="ChooseSort"

@@ -1,18 +1,17 @@
-﻿using BlApi;
+﻿using System;
 using System;
 using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
+using BlApi;
 using BO;
 
 
@@ -35,24 +34,62 @@ namespace PL.Order
         public static readonly DependencyProperty OrderListProperty =
             DependencyProperty.Register("OrderList", typeof(IEnumerable<BO.OrderInList>), typeof(OrderListWindow), new PropertyMetadata(null));
 
-    
-        public BO.OrderStatus oStatus { get; set; }
+
+        public BO.OrderStatus oStatus { get; set; } = BO.OrderStatus.All;
         public BO.OrderInListSort orderS { get; set; } 
         public BO.OrderInList? SelectedOrder { get; set; }
+        public BO.ScheduleStatus? sStatus { get; set; } 
+        public string selectedFilterType { get; set; } = "Order Status";
 
 
+        private void FilterType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (FilterTypeComboBox.SelectedItem is ComboBoxItem selected)
+            {
+                selectedFilterType = (string)selected.Content;
+                if ((string)selected.Content == "Order Status")
+                {
+                    FilterValueComboBox.ItemsSource = Enum.GetValues(typeof(BO.OrderStatus))
+                                                          .Cast<BO.OrderStatus>();
+                                                       
+                }
+                else 
+                {
+                    FilterValueComboBox.ItemsSource = Enum.GetValues(typeof(BO.ScheduleStatus))
+                                                          .Cast<BO.ScheduleStatus>();
+                }
+                FilterValueComboBox.SelectedIndex = 0;
+            }
+        }
+        private void FilterValue_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (FilterValueComboBox.SelectedItem != null)
+            {
+                if (selectedFilterType == "Order Status")
+                    oStatus = (BO.OrderStatus)FilterValueComboBox.SelectedItem;
+                else
+                    sStatus = (BO.ScheduleStatus)FilterValueComboBox.SelectedItem;
 
-        // Main method to query the BL for the list
+                queryOrderList();
+            }
+        }
+
+
         private void queryOrderList()
         {
             BO.OrderInListFilter? filterField = null;
             BO.OrderInListSort? so = orderS;
             object? filterValue = null;
 
-            if (oStatus != BO.OrderStatus.All)
+            if (selectedFilterType == "Order Status" && oStatus != BO.OrderStatus.All)
             {
                 filterField = BO.OrderInListFilter.OrderStatus;
                 filterValue = oStatus;
+            }
+            else if (selectedFilterType == "Schedule Status" && sStatus != null)
+            {
+                filterField = BO.OrderInListFilter.ScheduleStatus;
+                filterValue = sStatus;
             }
 
             try
@@ -163,7 +200,8 @@ namespace PL.Order
         public OrderListWindow(BO.OrderStatus? orderStatus = null, BO.ScheduleStatus? scheduleStatus = null)
         {
             InitializeComponent();
-            oStatus= orderStatus ?? BO.OrderStatus.All;
+            if (orderStatus != null)
+                oStatus = orderStatus.Value;
         }
     }
 }

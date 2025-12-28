@@ -77,20 +77,28 @@
             </StackPanel>
 
             <!-- הסיכום בצד ימין -->
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Margin="20,0,0,0">
-                <TextBlock Text="Orders Summary" FontWeight="Bold" FontSize="16" Margin="0,0,0,5" HorizontalAlignment="Right"/>
+            <StackPanel Orientation="Vertical"
+            HorizontalAlignment="Right"
+            Margin="20,0,0,0">
+
+                <TextBlock Text="Orders Summary"
+               FontWeight="Bold"
+               FontSize="16"
+               Margin="0,0,0,5"
+               HorizontalAlignment="Right"/>
+
                 <ItemsControl ItemsSource="{Binding OrdersSummary}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Button Content="{Binding DisplayText}"
-                            Margin="0,2"
-                            Click="SummaryButton_Click"
-                            HorizontalAlignment="Right"/>
+                        Tag="{Binding Tag}"
+                        Margin="0,2"
+                        Click="SummaryButton_Click"
+                        HorizontalAlignment="Right"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </StackPanel>
         </StackPanel>
-
     </Grid>
 </Window>

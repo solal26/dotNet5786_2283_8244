@@ -312,36 +312,37 @@ internal static class OrderManager
     /// </summary>
     internal static int[] GetordersSummary()
     {
-
         var allOrders = s_dal.Order.ReadAll(o => true);
 
         int orderStatusCount = Enum.GetValues(typeof(BO.OrderStatus)).Length;
         int scheduleStatusCount = Enum.GetValues(typeof(BO.ScheduleStatus)).Length;
 
-        int[] summaryArray = new int[orderStatusCount + scheduleStatusCount];
+        int[] summaryArray = new int[(orderStatusCount - 1) + scheduleStatusCount];
 
+   
         var orderStatusGroups = allOrders
-          .GroupBy(o => CalculateOrderStatus(o.OrderId))
-          .Select(g => new { Status = g.Key, Count = g.Count() });
+            .GroupBy(o => CalculateOrderStatus(o.OrderId))
+            .Where(g => g.Key != BO.OrderStatus.All)  
+            .Select(g => new { Status = g.Key, Count = g.Count() });
 
         foreach (var g in orderStatusGroups)
         {
-            summaryArray[(int)g.Status] = g.Count;
+            summaryArray[(int)g.Status] = g.Count;  
         }
 
-
+      
         var scheduleStatusGroups = allOrders
             .GroupBy(o => CalculateScheduleStatus(o.OrderId))
             .Select(g => new { Schedule = g.Key, Count = g.Count() });
 
         foreach (var g in scheduleStatusGroups)
         {
-            summaryArray[orderStatusCount + (int)g.Schedule] = g.Count;
+            summaryArray[(orderStatusCount - 1) + (int)g.Schedule] = g.Count;
         }
 
         return summaryArray;
-
     }
+
 
     /// <summary>
     /// Calculates the logical status of an order (Open, InProgress, Delivered, Refused, Cancelled).

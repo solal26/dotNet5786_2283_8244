@@ -188,50 +188,58 @@ namespace PL
 
         private void LoadOrderSummary()
         {
-            int[] summary = s_bl.Order.GetOrdersSummary(123456789); // הפונקציה שלך
+            int[] summary = s_bl.Order.GetOrdersSummary(123456789);
 
             int orderStatusCount = Enum.GetValues(typeof(BO.OrderStatus)).Length;
             int scheduleStatusCount = Enum.GetValues(typeof(BO.ScheduleStatus)).Length;
 
             var list = new List<object>();
 
-            // סטטוס הזמנה – כל סוגים
-            for (int i = 0; i < orderStatusCount; i++)
+            // OrderStatus
+            for (int i = 0; i <orderStatusCount; i++)
             {
                 var status = (BO.OrderStatus)i;
+                if (status == BO.OrderStatus.All)
+                    continue;
                 list.Add(new
                 {
                     DisplayText = $"{status}: {summary[i]}",
-                    OrderStatus = status,
-                    ScheduleStatus = (BO.ScheduleStatus?)null
+                    Tag = status
                 });
             }
 
-            // סטטוס עמידה בזמנים – כל סוגים
+            // ScheduleStatus
             for (int i = 0; i < scheduleStatusCount; i++)
             {
                 var status = (BO.ScheduleStatus)i;
                 list.Add(new
                 {
-                    DisplayText = $"{status}: {summary[orderStatusCount + i]}",
-                    OrderStatus = (BO.OrderStatus?)null,
-                    ScheduleStatus = status
+                    DisplayText = $"{status}: {summary[orderStatusCount-1 + i]}",
+                    Tag = status
                 });
             }
 
             OrdersSummary = list;
         }
-
         private void SummaryButton_Click(object sender, RoutedEventArgs e)
         {
-            dynamic item = (sender as Button)?.DataContext;
-            if (item == null) return;
+            var button = sender as Button;
+            if (button?.Tag == null)
+                return;
 
-            BO.OrderStatus? orderStatus = item.OrderStatus;
-            BO.ScheduleStatus? scheduleStatus = item.ScheduleStatus;
+            // אם זה OrderStatus
+            if (button.Tag is BO.OrderStatus orderStatus)
+            {
+                new OrderListWindow(orderStatus).Show();
+                return;
+            }
 
-            var window = new OrderListWindow(orderStatus, scheduleStatus);
-            window.Show();
+            // אם זה ScheduleStatus
+            if (button.Tag is BO.ScheduleStatus scheduleStatus)
+            {
+                new OrderListWindow(null, scheduleStatus).Show();
+                return;
+            }
         }
 
 
