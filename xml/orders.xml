@@ -597,4 +597,16 @@
     <OrderInitiation>2025-12-13T16:56:53</OrderInitiation>
     <VerbalDescription>important order, be careful</VerbalDescription>
   </Order>
+  <Order>
+    <OrderId>1052</OrderId>
+    <TypeOfOrder>ExpressOrder</TypeOfOrder>
+    <ShippingAddress>14 Rothschild Blvd, Tel Aviv,Israel</ShippingAddress>
+    <Latitude>32.0627986</Latitude>
+    <Longitude>34.7706529</Longitude>
+    <CustomerName>shalom</CustomerName>
+    <CustomerPhone>0588764565</CustomerPhone>
+    <Weight>2.5</Weight>
+    <OrderInitiation>2025-12-13T16:56:53</OrderInitiation>
+    <VerbalDescription>shalom</VerbalDescription>
+  </Order>
 </ArrayOfOrder>
