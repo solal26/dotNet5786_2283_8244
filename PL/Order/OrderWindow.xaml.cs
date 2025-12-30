@@ -69,6 +69,7 @@ namespace PL.Order
                 else   // מצב עדכון
                 {
                     bl.Order.UpdateOrder(123456789, CurrentOrder);
+                    this.Close();
                     MessageBox.Show("Order updated successfully");
                 }
 

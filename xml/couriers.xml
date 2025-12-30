@@ -144,28 +144,6 @@
     <Distance>6</Distance>
   </Courier>
   <Courier>
-    <Id>207455161</Id>
-    <Name>Nava</Name>
-    <PhoneNumber>0579622075</PhoneNumber>
-    <Email>nava5428@gmail.com</Email>
-    <Code>3385</Code>
-    <Active>false</Active>
-    <TimeBegin>2025-12-07T16:15:53</TimeBegin>
-    <typeofshipment>OnFoot</typeofshipment>
-    <Distance>1</Distance>
-  </Courier>
-  <Courier>
-    <Id>230909877</Id>
-    <Name>Oren</Name>
-    <PhoneNumber>0522731578</PhoneNumber>
-    <Email>oren8885@gmail.com</Email>
-    <Code>3956</Code>
-    <Active>false</Active>
-    <TimeBegin>2025-12-07T16:38:53</TimeBegin>
-    <typeofshipment>OnFoot</typeofshipment>
-    <Distance>6</Distance>
-  </Courier>
-  <Courier>
     <Id>349904410</Id>
     <Name>Yael</Name>
     <PhoneNumber>0524419905</PhoneNumber>
@@ -230,5 +208,27 @@
     <TimeBegin>2025-12-13T16:56:53</TimeBegin>
     <typeofshipment>Car</typeofshipment>
     <Distance>40</Distance>
+  </Courier>
+  <Courier>
+    <Id>230909877</Id>
+    <Name>Oren</Name>
+    <PhoneNumber>0522731578</PhoneNumber>
+    <Email>oren8885@gmail.com</Email>
+    <Code>3956</Code>
+    <Active>false</Active>
+    <TimeBegin>2025-12-07T16:38:53</TimeBegin>
+    <typeofshipment>OnFoot</typeofshipment>
+    <Distance>6</Distance>
+  </Courier>
+  <Courier>
+    <Id>207455161</Id>
+    <Name>Nava</Name>
+    <PhoneNumber>0579622075</PhoneNumber>
+    <Email>nava5428@gmail.com</Email>
+    <Code>3385</Code>
+    <Active>false</Active>
+    <TimeBegin>2025-12-07T16:15:53</TimeBegin>
+    <typeofshipment>OnFoot</typeofshipment>
+    <Distance>1</Distance>
   </Courier>
 </ArrayOfCourier>

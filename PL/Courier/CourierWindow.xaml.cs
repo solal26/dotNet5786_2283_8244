@@ -70,6 +70,7 @@ namespace PL.Courier
                 else   // מצב עדכון
                 {
                     bl.Courier.UpdateCourier(CurrentCourier.Id, CurrentCourier);
+                    this.Close();
                     MessageBox.Show("Courier updated successfully");
                 }
 

@@ -272,6 +272,7 @@ internal static class CourierManager
             Active = boCourier.Active,
             Distance = boCourier.MaxDeliveryDistance,
             TimeBegin = boCourier.StartDate,
+            Code = boCourier.Password,
             typeofshipment = (DO.TypeOfShipment)boCourier.DeliveryType, // Type casting of ENUM
 
             // Non-modifiable fields keep their original DO value
