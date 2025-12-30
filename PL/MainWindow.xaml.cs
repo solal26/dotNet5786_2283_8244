@@ -42,15 +42,7 @@ namespace PL
         typeof(Config),
         typeof(MainWindow)
 );
-        private void btnMaxDeliveryTime_Click(object sender, RoutedEventArgs e)
-        {
-            s_bl.Admin.SetConfig(Configuration);
-        }
 
-        private void btnInactivityRange_Click(object sender, RoutedEventArgs e)
-        {
-            s_bl.Admin.SetConfig(Configuration);
-        }
 
         private void btnAddOneMinute_Click(object sender, RoutedEventArgs e)
         {
@@ -241,7 +233,57 @@ namespace PL
                 return;
             }
         }
+       
+
+        private void UpdateCompanyAddress_Click(object sender, RoutedEventArgs e)
+        {
+            s_bl.Admin.SetConfig(Configuration);
+        }
+
+        private void UpdateMaxRange_Click(object sender, RoutedEventArgs e)
+        {
+            s_bl.Admin.SetConfig(Configuration);
+        }
+
+        private void UpdateAvgCarSpeed_Click(object sender, RoutedEventArgs e)
+        {
+            s_bl.Admin.SetConfig(Configuration);
+        }
+
+        private void UpdateAvgMotorBikeSpeed_Click(object sender, RoutedEventArgs e)
+        {
+            s_bl.Admin.SetConfig(Configuration);
+        }
+
+        private void UpdateAvgBicycleSpeed_Click(object sender, RoutedEventArgs e)
+        {
+            s_bl.Admin.SetConfig(Configuration);
+        }
+
+        private void UpdateAvgWalkingSpeed_Click(object sender, RoutedEventArgs e)
+        {
+            s_bl.Admin.SetConfig(Configuration);
+        }
+
+        private void UpdateMaxDeliveryTime_Click(object sender, RoutedEventArgs e)
+        {
+            s_bl.Admin.SetConfig(Configuration);
+        }
+
+        private void UpdateRiskRange_Click(object sender, RoutedEventArgs e)
+        {
+            s_bl.Admin.SetConfig(Configuration);
+        }
+
+        private void UpdateInactivityRange_Click(object sender, RoutedEventArgs e)
+        {
+            s_bl.Admin.SetConfig(Configuration);
+        }
 
 
+
+        
+
+    
     }
 }
