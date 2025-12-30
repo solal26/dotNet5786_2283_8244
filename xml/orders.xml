@@ -586,15 +586,15 @@
     <VerbalDescription>important order, be careful</VerbalDescription>
   </Order>
   <Order>
-    <OrderId>1045</OrderId>
-    <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>David HaMelech 34, Tel Aviv,Israel</ShippingAddress>
-    <Latitude>32.079648</Latitude>
-    <Longitude>34.786145</Longitude>
-    <CustomerName>Eli Horowitz</CustomerName>
-    <CustomerPhone>0566936282</CustomerPhone>
-    <Weight>13.26</Weight>
-    <OrderInitiation>2025-12-07T14:19:53</OrderInitiation>
-    <VerbalDescription>Fragile, handle with care</VerbalDescription>
+    <OrderId>1052</OrderId>
+    <TypeOfOrder>ExpressOrder</TypeOfOrder>
+    <ShippingAddress>14 Rothschild Blvd, Tel Aviv,Israel</ShippingAddress>
+    <Latitude>32.0627986</Latitude>
+    <Longitude>34.7706529</Longitude>
+    <CustomerName>shalom</CustomerName>
+    <CustomerPhone>0588764565</CustomerPhone>
+    <Weight>2.5</Weight>
+    <OrderInitiation>2025-12-13T16:56:53</OrderInitiation>
+    <VerbalDescription>shalom</VerbalDescription>
   </Order>
 </ArrayOfOrder>
