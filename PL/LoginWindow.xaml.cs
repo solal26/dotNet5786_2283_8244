@@ -32,7 +32,7 @@ namespace PL
             try
             {
                 if (s_bl.Courier.Login(int.Parse(Username), Password)=="Admin")
-                    new AdminChoiceWindow(int.Parse(Username)).Show();
+                    new MainWindow().Show();
                 else
                     
                     new Courier.MainCourierWindow(int.Parse(Username)).Show();
