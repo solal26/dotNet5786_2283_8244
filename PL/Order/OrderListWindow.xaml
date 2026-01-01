@@ -6,16 +6,65 @@
         xmlns:local="clr-namespace:PL.Courier"
         xmlns:BO="clr-namespace:BO;assembly=BL"
         mc:Ignorable="d"
-        Title="Order Management List"
+        Title="Order Management"
         Height="640"
         Width="1000"
-        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        Background="#F3F4F6"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Loaded="Window_Loaded"
         Closed="Window_Closed">
 
     <!-- ================= RESOURCES ================= -->
     <Window.Resources>
+
+        <!-- ===== COLORS ===== -->
+        <SolidColorBrush x:Key="BlueBrush" Color="#2563EB"/>
+        <SolidColorBrush x:Key="RedBrush" Color="#DC2626"/>
+        <SolidColorBrush x:Key="BorderBrushColor" Color="#CBD5E1"/>
+
+        <!-- ===== TEXTBOX / COMBOBOX ===== -->
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <!-- ===== PRIMARY BUTTON (ADD) ===== -->
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource BlueBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Padding" Value="14,6"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ===== DANGER BUTTON (CANCEL) ===== -->
+        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="{StaticResource RedBrush}"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+
+        <!-- ===== CONVERTERS ===== -->
         <local:OrderStatusToVisibilityConverter x:Key="OrderStatusToVisibilityConverter"/>
+
         <ObjectDataProvider x:Key="OrderInListSortKey"
                             MethodName="GetValues"
                             ObjectType="{x:Type BO:OrderInListSort}">
@@ -23,102 +72,134 @@
                 <x:Type TypeName="BO:OrderInListSort"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+
     </Window.Resources>
 
-    <!-- ================= LAYOUT ================= -->
-    <Grid>
+    <!-- ================= MAIN LAYOUT ================= -->
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Filter + Sort -->
             <RowDefinition Height="*"/>
-            <!-- Order List -->
             <RowDefinition Height="Auto"/>
-            <!-- Bottom Button -->
         </Grid.RowDefinitions>
 
-        <!-- ===== TOP BAR: FILTER TYPE + FILTER VALUE + SORT ===== -->
-        <Grid Grid.Row="0" Margin="20">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
+        <!-- ================= FILTER CARD ================= -->
+        <Border Grid.Row="0"
+                Background="White"
+                CornerRadius="12"
+                Padding="16"
+                Margin="0,0,0,15">
+
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="12"
+                                  ShadowDepth="3"
+                                  Opacity="0.15"/>
+            </Border.Effect>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+
                 <!-- Filter Type -->
-                <RowDefinition Height="Auto"/>
+                <TextBlock Text="Filter by"
+                           Grid.Row="0"
+                           Grid.Column="0"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"/>
+
+                <ComboBox x:Name="FilterTypeComboBox"
+                          Grid.Row="0"
+                          Grid.Column="1"
+                          SelectionChanged="FilterType_SelectionChanged">
+                    <ComboBoxItem Content="Order Status"/>
+                    <ComboBoxItem Content="Schedule Status"/>
+                </ComboBox>
+
                 <!-- Filter Value -->
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="180"/>
-                <ColumnDefinition Width="40"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="180"/>
-            </Grid.ColumnDefinitions>
+                <TextBlock Text="Value"
+                           Grid.Row="1"
+                           Grid.Column="0"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"/>
 
-            <!-- Filter Type -->
-            <Label Content="Filter by:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" FontSize="16"/>
-            <ComboBox x:Name="FilterTypeComboBox" Grid.Row="0" Grid.Column="1" Height="32"
-                      SelectionChanged="FilterType_SelectionChanged">
-                <ComboBoxItem Content="Order Status"/>
-                <ComboBoxItem Content="Schedule Status"/>
-            </ComboBox>
+                <ComboBox x:Name="FilterValueComboBox"
+                          Grid.Row="1"
+                          Grid.Column="1"
+                          SelectionChanged="FilterValue_SelectionChanged"/>
 
-            <!-- Filter Value -->
-            <Label Content="Value:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" FontSize="16"/>
-            <ComboBox x:Name="FilterValueComboBox" Grid.Row="1" Grid.Column="1" Height="32"
-                      SelectionChanged="FilterValue_SelectionChanged"/>
+                <!-- Sort -->
+                <TextBlock Text="Sort by"
+                           Grid.Row="1"
+                           Grid.Column="3"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"/>
 
-            <!-- Sort -->
-            <Label Content="Sort by:" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" FontSize="16"/>
-            <ComboBox Grid.Row="1" Grid.Column="4"
-                      ItemsSource="{Binding Source={StaticResource OrderInListSortKey}}"
-                      SelectedValue="{Binding Path=orderS, Mode=TwoWay}"
-                      SelectionChanged="ChooseSort"
-                      Height="32"/>
-        </Grid>
+                <ComboBox Grid.Row="1"
+                          Grid.Column="4"
+                          ItemsSource="{Binding Source={StaticResource OrderInListSortKey}}"
+                          SelectedValue="{Binding Path=orderS, Mode=TwoWay}"
+                          SelectionChanged="ChooseSort"/>
+            </Grid>
+        </Border>
 
-        <!-- ===== ORDER LIST ===== -->
-        <DataGrid Grid.Row="1"
-                  ItemsSource="{Binding Path=OrderList}"
-                  IsReadOnly="True"
-                  AutoGenerateColumns="False"
-                  EnableRowVirtualization="True"
-                  RowDetailsVisibilityMode="VisibleWhenSelected"
-                  SelectedItem="{Binding SelectedOrder}"
-                  MouseDoubleClick="lsvOrderList_MouseDoubleClick"
-                  ColumnWidth="*"
-                  Margin="10">
+        <!-- ================= ORDER LIST ================= -->
+        <Border Grid.Row="1"
+                Background="White"
+                CornerRadius="12"
+                Padding="10">
 
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding OrderId}" Header="Order ID"/>
-                <DataGridTextColumn Binding="{Binding OrderStatus}" Header="Status"/>
-                <DataGridTextColumn Binding="{Binding DeliveryId, TargetNullValue='None'}" Header="Delivery ID"/>
-                <DataGridTextColumn Binding="{Binding Type}" Header="Order Type"/>
-                <DataGridTextColumn Binding="{Binding ScheduleStatus}" Header="Schedule Status"/>
-                <DataGridTextColumn Binding="{Binding AirDistance, StringFormat='{}{0:F1} km'}" Header="Distance"/>
-                <DataGridTextColumn Binding="{Binding TimeRemaining, StringFormat='{}{0:hh\\:mm}'}" Header="Remaining Time"/>
-                <DataGridTextColumn Binding="{Binding TotalCompletionTime, StringFormat='{}{0:hh\\:mm}'}" Header="Handling Time"/>
-                <DataGridTextColumn Binding="{Binding TotalDeliveries}" Header="Total Shipments"/>
+            <DataGrid ItemsSource="{Binding OrderList}"
+                      IsReadOnly="True"
+                      AutoGenerateColumns="False"
+                      EnableRowVirtualization="True"
+                      ColumnWidth="*"
+                      SelectedItem="{Binding SelectedOrder}"
+                      MouseDoubleClick="lsvOrderList_MouseDoubleClick">
 
-                <DataGridTemplateColumn Header="Cancel Order">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Content="Cancel"
-                                    Visibility="{Binding OrderStatus,
-                                                 Converter={StaticResource OrderStatusToVisibilityConverter}}"
-                                    Click="btnCancelOrder_Click"
-                                    Tag="{Binding OrderId}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding OrderId}" Header="ID"/>
+                    <DataGridTextColumn Binding="{Binding OrderStatus}" Header="Status"/>
+                    <DataGridTextColumn Binding="{Binding DeliveryId, TargetNullValue='—'}" Header="Delivery"/>
+                    <DataGridTextColumn Binding="{Binding Type}" Header="Type"/>
+                    <DataGridTextColumn Binding="{Binding ScheduleStatus}" Header="Schedule"/>
+                    <DataGridTextColumn Binding="{Binding AirDistance, StringFormat='{}{0:F1} km'}" Header="Distance"/>
+                    <DataGridTextColumn Binding="{Binding TimeRemaining, StringFormat='{}{0:hh\\:mm}'}" Header="Remaining"/>
+                    <DataGridTextColumn Binding="{Binding TotalCompletionTime, StringFormat='{}{0:hh\\:mm}'}" Header="Handling"/>
+                    <DataGridTextColumn Binding="{Binding TotalDeliveries}" Header="Shipments"/>
 
-        </DataGrid>
+                    <DataGridTemplateColumn Header="Cancel">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Cancel"
+                                        Style="{StaticResource DangerButton}"
+                                        Visibility="{Binding OrderStatus,
+                                            Converter={StaticResource OrderStatusToVisibilityConverter}}"
+                                        Click="btnCancelOrder_Click"
+                                        Tag="{Binding OrderId}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
 
-        <!-- ===== BOTTOM BUTTON ===== -->
+        <!-- ================= ADD BUTTON ================= -->
         <Button Grid.Row="2"
                 Content="Add New Order"
-                Height="50"
-                Width="150"
-                Margin="10"
+                Style="{StaticResource PrimaryButton}"
+                Width="180"
                 HorizontalAlignment="Center"
+                Margin="0,15,0,0"
                 Click="btnAddOrder_Click"/>
 
     </Grid>
