@@ -6,121 +6,173 @@
         xmlns:local="clr-namespace:PL.Courier"
         xmlns:BO="clr-namespace:BO;assembly=BL"
         mc:Ignorable="d"
-        Title="CourierListWindow"
+        Title="Couriers"
         Height="640"
-        Width="800"
+        Width="900"
+        Background="#F3F4F6"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         Loaded="Window_Loaded"
         Closed="Window_Closed">
 
+    <!-- ================= RESOURCES ================= -->
     <Window.Resources>
+
+        <!-- Colors -->
+        <SolidColorBrush x:Key="BlueColor" Color="#2563EB"/>
+        <SolidColorBrush x:Key="RedColor" Color="#DC2626"/>
+
+        <!-- Card -->
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="20"/>
+        </Style>
+
+        <!-- Text -->
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Buttons -->
+        <Style x:Key="BlueButton" TargetType="Button">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="14,4"/>
+            <Setter Property="Background" Value="{StaticResource BlueColor}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <Style x:Key="RedButton" TargetType="Button">
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="10,2"/>
+            <Setter Property="Background" Value="{StaticResource RedColor}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <!-- Converter -->
         <local:NullCurrentOrderToVisibilityConverter
             x:Key="NullCurrentOrderToVisibilityConverter"/>
 
+        <!-- Enum Provider -->
         <ObjectDataProvider x:Key="CourierSortByInListKey"
-                     MethodName="GetValues"
-                     ObjectType="{x:Type BO:CourierSortBy}">
+                            MethodName="GetValues"
+                            ObjectType="{x:Type BO:CourierSortBy}">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="BO:CourierSortBy"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+
     </Window.Resources>
 
-    <!-- External Grid -->
+    <!-- ================= ROOT ================= -->
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        <Border Style="{StaticResource CardStyle}"
+                Width="860"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
 
-        <!-- ===== Upper Grid : Filter + Sort ===== -->
-        <Grid Grid.Row="0" Margin="10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="180"/>
-                <ColumnDefinition Width="30"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="180"/>
-            </Grid.ColumnDefinitions>
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="20"
+                                  ShadowDepth="4"
+                                  Opacity="0.2"/>
+            </Border.Effect>
 
-            <!-- Filter -->
-            <Label Content="Filter by delivery type"
-                   Grid.Column="0"
-                   VerticalAlignment="Center"
-                   Margin="0,0,5,0"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            <ComboBox Grid.Column="1"
-                      ItemsSource="{Binding Source={StaticResource Deliverytypekey}}"
-                      SelectedValue="{Binding Path=dtype, Mode=TwoWay}"
-                      SelectionChanged="ChooseDelivery"
-                      VerticalAlignment="Center"/>
+                <!-- ===== HEADER ===== -->
+                <TextBlock Text="Couriers Management"
+                           FontSize="26"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,20"/>
 
-            <!-- Sort -->
-            <Label Content="Sort by"
-                   Grid.Column="3"
-                   VerticalAlignment="Center"
-                   Margin="0,0,5,0"/>
+                <!-- ===== FILTERS ===== -->
+                <Grid Grid.Row="1" Margin="0,0,0,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-            <ComboBox Grid.Column="4"
-                      ItemsSource="{Binding Source={StaticResource CourierSortByInListKey}}"
-                      SelectedItem="{Binding courierSortBy, Mode=TwoWay}"
-                      SelectionChanged="ChooseSort"
-                      VerticalAlignment="Center"/>
-        </Grid>
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                Margin="0,0,0,10">
 
-        <!-- ===== DataGrid ===== -->
-        <DataGrid Grid.Row="1"
-                  ItemsSource="{Binding CourierList}"
-                  IsReadOnly="True"
-                  AutoGenerateColumns="False"
-                  EnableRowVirtualization="True"
-                  RowDetailsVisibilityMode="VisibleWhenSelected"
-                  SelectedItem="{Binding SelectedCourier}"
-                  MouseDoubleClick="lsvCourierList_MouseDoubleClick">
+                        <TextBlock Text="Delivery Type" Margin="0,0,6,0"/>
+                        <ComboBox Width="160"
+                                  ItemsSource="{Binding Source={StaticResource Deliverytypekey}}"
+                                  SelectedValue="{Binding dtype}"
+                                  SelectionChanged="ChooseDelivery"/>
 
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Id}" Header="Id" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding FullName}" Header="Name" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding DeliveryType}" Header="Type of Delivery" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding StartDate}" Header="Start Date" Width="Auto"/>
+                        <TextBlock Text="Sort By" Margin="20,0,6,0"/>
+                        <ComboBox Width="160"
+                                  ItemsSource="{Binding Source={StaticResource CourierSortByInListKey}}"
+                                  SelectedItem="{Binding courierSortBy}"
+                                  SelectionChanged="ChooseSort"/>
+                    </StackPanel>
 
-                <DataGridTemplateColumn Header="Is Active" Width="Auto">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <CheckBox IsEnabled="False"
-                                      IsChecked="{Binding Active}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                    <!-- ===== DATAGRID ===== -->
+                    <DataGrid Grid.Row="1"
+                              ItemsSource="{Binding CourierList}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              SelectedItem="{Binding SelectedCourier}"
+                              MouseDoubleClick="lsvCourierList_MouseDoubleClick">
 
-                <DataGridTextColumn Binding="{Binding DeliveredOnTime}" Header="Delivered On Time" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding DeliveredLate}" Header="Delivered Late" Width="Auto"/>
-                <DataGridTextColumn Header="Current Order"
-                                    Binding="{Binding CurrentOrderId, TargetNullValue='No current order'}"
-                                    Width="Auto"/>
+                        <DataGrid.Columns>
 
-                <DataGridTemplateColumn Header="Delete" Width="Auto">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Content="Delete"
-                                    Click="btnDeleteCourier_Click"
-                                    Tag="{Binding Id}"
-                                    Visibility="{Binding CurrentOrderId,
-                                        Converter={StaticResource NullCurrentOrderToVisibilityConverter}}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+                            <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="Auto"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding FullName}" Width="*"/>
+                            <DataGridTextColumn Header="Type" Binding="{Binding DeliveryType}" Width="Auto"/>
+                            <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate}" Width="Auto"/>
 
-        <!-- ===== Add Button ===== -->
-        <Button Grid.Row="2"
-                Content="Add"
-                HorizontalAlignment="Center"
-                Height="50"
-                Width="100"
-                Margin="0,10"
-                Click="btnAddCourier_Click"/>
+                            <DataGridTemplateColumn Header="Active" Width="Auto">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding Active}" IsEnabled="False"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTextColumn Header="On Time" Binding="{Binding DeliveredOnTime}" Width="Auto"/>
+                            <DataGridTextColumn Header="Late" Binding="{Binding DeliveredLate}" Width="Auto"/>
+
+                            <DataGridTemplateColumn Header="Delete" Width="Auto">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Delete"
+                                                Style="{StaticResource RedButton}"
+                                                Tag="{Binding Id}"
+                                                Click="btnDeleteCourier_Click"
+                                                Visibility="{Binding CurrentOrderId,
+                                                    Converter={StaticResource NullCurrentOrderToVisibilityConverter}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+
+                <!-- ===== ADD BUTTON ===== -->
+                <Button Grid.Row="2"
+                        Content="Add Courier"
+                        Width="180"
+                        HorizontalAlignment="Center"
+                        Margin="0,15,0,0"
+                        Style="{StaticResource BlueButton}"
+                        Click="btnAddCourier_Click"/>
+
+            </Grid>
+        </Border>
     </Grid>
 </Window>

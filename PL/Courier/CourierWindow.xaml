@@ -5,120 +5,212 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Courier"
         mc:Ignorable="d"
-        Title="CourierWindow" Height="616" Width="441"
+        Title="Courier"
+        Height="620"
+        Width="520"
+        WindowStartupLocation="CenterScreen"
+        Background="#F3F4F6"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Loaded="Window_Loaded"
         Closed="Window_Closed">
 
+    <!-- ========= Resources ========= -->
     <Window.Resources>
+
         <local:ModeToReadOnlyConverter x:Key="ModeToReadOnlyConverter"/>
         <local:ModeToVisibilityConverter x:Key="ModeToVisibilityConverter"/>
         <local:NullCurrentOrderToVisibilityConverter x:Key="NullCurrentOrderToVisibilityConverter"/>
-      
+
+        <!-- TextBox style -->
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#CBD5E1"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border CornerRadius="6"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ComboBox / DatePicker -->
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+
+        <Style TargetType="DatePicker">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+
+        <!-- Primary (Add / Update) -->
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#2563EB"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="8">
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Danger (Delete) -->
+        <Style x:Key="DangerButton" TargetType="Button"
+               BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#DC2626"/>
+        </Style>
+
     </Window.Resources>
 
-    <Grid Height="487" VerticalAlignment="Top">
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="425"/>
-        </Grid.RowDefinitions>
+    <!-- ========= Layout ========= -->
+    <Grid>
+        <Border Width="460"
+                Padding="28"
+                Background="White"
+                CornerRadius="14"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
 
-        <Grid Grid.Row="1" HorizontalAlignment="Left" Margin="90,0,0,0" Width="271">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="25*"/>
-                <RowDefinition Height="25*"/>
-                <RowDefinition Height="25*"/>
-                <RowDefinition Height="25*"/>
-                <RowDefinition Height="25*"/>
-                <RowDefinition Height="25*"/>
-                <RowDefinition Height="25*"/>
-                <RowDefinition Height="25*"/>
-                <RowDefinition Height="25*"/>
-                <RowDefinition Height="25*"/>
-                <RowDefinition Height="25*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="18"
+                                  ShadowDepth="4"
+                                  Opacity="0.2"/>
+            </Border.Effect>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="140*"/>
-                <ColumnDefinition Width="168*"/>
-            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            <Label Content="Id Number:" Grid.Row="0" FontSize="10" VerticalAlignment="Center"/>
-            <TextBox Text="{Binding CurrentCourier.Id}"
-                     IsReadOnly="{Binding _isAddMode, Converter={StaticResource ModeToReadOnlyConverter}}"
-                     Grid.ColumnSpan="2"
-                     Margin="123,0,0,0"
-                     FontSize="10" Height="15"/>
+                <!-- Title -->
+                <TextBlock Grid.Row="0"
+                           Text="Courier Details"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,20"/>
 
-            <Label Content="Full name:" Grid.Row="1" FontSize="10" VerticalAlignment="Center"/>
-            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding CurrentCourier.FullName}" FontSize="10" Height="15"/>
+                <!-- Form -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-            <Label Content="Phone Number:" Grid.Row="2" FontSize="10" VerticalAlignment="Center"/>
-            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding CurrentCourier.Phone}" FontSize="10" Height="15"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-            <Label Content="Email:" Grid.Row="3" FontSize="10" VerticalAlignment="Center"/>
-            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding CurrentCourier.Email}" FontSize="10" Height="15"/>
+                    <TextBlock Text="ID Number" Grid.Row="0"/>
+                    <TextBox Grid.Row="0" Grid.Column="1"
+                             Text="{Binding CurrentCourier.Id}"
+                             IsReadOnly="{Binding _isAddMode, Converter={StaticResource ModeToReadOnlyConverter}}"/>
 
-            <Label Content="Password:" Grid.Row="4" FontSize="10" VerticalAlignment="Center"/>
-            <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding CurrentCourier.Password}" FontSize="10" Height="15"/>
+                    <TextBlock Text="Full Name" Grid.Row="1"/>
+                    <TextBox Grid.Row="1" Grid.Column="1"
+                             Text="{Binding CurrentCourier.FullName}"/>
 
-            <Label Content="Is Active:" Grid.Row="5" FontSize="10" VerticalAlignment="Center"/>
-            <CheckBox Grid.Column="1" Grid.Row="5" IsChecked="{Binding CurrentCourier.Active}"/>
+                    <TextBlock Text="Phone Number" Grid.Row="2"/>
+                    <TextBox Grid.Row="2" Grid.Column="1"
+                             Text="{Binding CurrentCourier.Phone}"/>
 
-            <Label Content="Max Delivery Distance:" Grid.Row="6" FontSize="10" VerticalAlignment="Center"/>
-            <TextBox Grid.Column="1" Grid.Row="6" Text="{Binding CurrentCourier.MaxDeliveryDistance}" FontSize="10" Height="15"/>
+                    <TextBlock Text="Email" Grid.Row="3"/>
+                    <TextBox Grid.Row="3" Grid.Column="1"
+                             Text="{Binding CurrentCourier.Email}"/>
 
-            <Label Content="Type of Delivery:" Grid.Row="7" FontSize="10" VerticalAlignment="Center"/>
-            <ComboBox Grid.Column="1" Grid.Row="7"
-                      ItemsSource="{Binding DeliveryTypes}"
-                      SelectedItem="{Binding CurrentCourier.DeliveryType, Mode=TwoWay}"
-                      FontSize="10" Height="23"/>
+                    <TextBlock Text="Password" Grid.Row="4"/>
+                    <TextBox Grid.Row="4" Grid.Column="1"
+                             Text="{Binding CurrentCourier.Password}"/>
 
-            <Label Content="Start Date:" Grid.Row="8" FontSize="10" VerticalAlignment="Center"/>
-            <DatePicker Grid.Column="1" Grid.Row="8"
-                        SelectedDate="{Binding CurrentCourier.StartDate}"
-                        IsEnabled="False"
-                        FontSize="10" Height="23"/>
+                    <TextBlock Text="Active" Grid.Row="5"/>
+                    <CheckBox Grid.Row="5" Grid.Column="1"
+                              VerticalAlignment="Center"
+                              IsChecked="{Binding CurrentCourier.Active}"/>
 
-            <Label Content="Delivered On Time:"
-                   Grid.Row="9" FontSize="10"
-                   Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}"/>
+                    <TextBlock Text="Max Delivery Distance" Grid.Row="6"/>
+                    <TextBox Grid.Row="6" Grid.Column="1"
+                             Text="{Binding CurrentCourier.MaxDeliveryDistance}"/>
 
-            <TextBox Grid.Column="1" Grid.Row="9"
-                     Text="{Binding CurrentCourier.DeliveredOnTime}"
-                     FontSize="10" Height="15"
-                     Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}"/>
+                    <TextBlock Text="Type of Delivery" Grid.Row="7"/>
+                    <ComboBox Grid.Row="7" Grid.Column="1"
+                              ItemsSource="{Binding DeliveryTypes}"
+                              SelectedItem="{Binding CurrentCourier.DeliveryType}"/>
 
-            <Label Content="Delivered Late:"
-                   Grid.Row="10" FontSize="10"
-                   Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}"/>
+                    <TextBlock Text="Start Date" Grid.Row="8"/>
+                    <DatePicker Grid.Row="8" Grid.Column="1"
+                                SelectedDate="{Binding CurrentCourier.StartDate}"
+                                IsEnabled="False"/>
 
-            <TextBox Grid.Column="1" Grid.Row="10"
-                     Text="{Binding CurrentCourier.DeliveredLate}"
-                     FontSize="10" Height="15"
-                     Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}"/>
+                    <TextBlock Text="Delivered On Time"
+                               Grid.Row="9"
+                               Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}"/>
+                    <TextBox Grid.Row="9" Grid.Column="1"
+                             Text="{Binding CurrentCourier.DeliveredOnTime}"
+                             Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}"/>
 
-            <StackPanel Grid.Row="11"
-            Grid.ColumnSpan="2"
-            Orientation="Horizontal"
-            HorizontalAlignment="Center"
-            Margin="0,15,0,0">
+                    <TextBlock Text="Delivered Late"
+                               Grid.Row="10"
+                               Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}"/>
+                    <TextBox Grid.Row="10" Grid.Column="1"
+                             Text="{Binding CurrentCourier.DeliveredLate}"
+                             Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}"/>
+                </Grid>
 
-                <Button Content="{Binding ButtonText}"
-            Click="btnAddUpdate_Click"
-            Width="75"
-            Height="26"/>
+                <!-- Buttons -->
+                <StackPanel Grid.Row="2"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Margin="0,20,0,0">
 
-                <Button Content="Delete"
-            Click="btnDeleteCourier_Click"
-            Width="75"
-            Height="26"
-            Margin="15,0,0,0"
-            Visibility="{Binding CurrentCourier.CurrentOrder,
-            Converter={StaticResource NullCurrentOrderToVisibilityConverter}}"/>
-            </StackPanel>
+                    <Button Content="{Binding ButtonText}"
+                            Style="{StaticResource PrimaryButton}"
+                            Click="btnAddUpdate_Click"/>
 
-        </Grid>
+                    <Button Content="Delete"
+                            Style="{StaticResource DangerButton}"
+                            Margin="15,0,0,0"
+                            Click="btnDeleteCourier_Click"
+                            Visibility="{Binding CurrentCourier.CurrentOrder,
+                            Converter={StaticResource NullCurrentOrderToVisibilityConverter}}"/>
+                </StackPanel>
+
+            </Grid>
+        </Border>
     </Grid>
 </Window>
