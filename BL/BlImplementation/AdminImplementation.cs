@@ -21,6 +21,7 @@ internal class AdminImplementation : IAdmin
     /// </remarks>
     public void ForwardClock(TimeUnit unit)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         var now = AdminManager.Now;
         DateTime newTime = unit switch
         {
@@ -56,6 +57,7 @@ internal class AdminImplementation : IAdmin
     /// </remarks>
     public void InitializeDB()
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         AdminManager.InitializeDB();
     }
 
@@ -67,6 +69,7 @@ internal class AdminImplementation : IAdmin
     /// </remarks>
     public void ResetDB()
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         AdminManager.ResetDB();
     }
 
@@ -74,8 +77,19 @@ internal class AdminImplementation : IAdmin
     /// Replace runtime configuration with the provided <paramref name="config"/>.
     /// </summary>
     /// <param name="config">Configuration values to apply.</param>
-    public void SetConfig(Config config) =>
+    public void SetConfig(Config config)
+    {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         AdminManager.SetConfig(config);
+    }
+    public void StartSimulator(int interval)  //stage 7
+    {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
+        AdminManager.Start(interval); //stage 7
+    }
+    public void StopSimulator() { //stage 7
+        AdminManager.Stop(); //stage 7
+    }
 
     #region Stage 5
     public void AddClockObserver(Action clockObserver) =>

@@ -231,4 +231,15 @@
     <typeofshipment>Car</typeofshipment>
     <Distance>50</Distance>
   </Courier>
+  <Courier>
+    <Id>340862284</Id>
+    <Name>Solal Toledano</Name>
+    <PhoneNumber>0584290119</PhoneNumber>
+    <Email>solal@gmail.com</Email>
+    <Code>1234</Code>
+    <Active>true</Active>
+    <TimeBegin>2026-05-01T18:30:03</TimeBegin>
+    <typeofshipment>Car</typeofshipment>
+    <Distance>45</Distance>
+  </Courier>
 </ArrayOfCourier>

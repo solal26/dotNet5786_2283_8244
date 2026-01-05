@@ -36,12 +36,12 @@ internal static class AdminManager //stage 4
 
         //TO_DO: //stage 4
         CourierManager.PeriodicCouriersUpdates();//stage 4. to be removed in stage 7 and replaced as below
-        
 
-        //TO_DO: //stage 7
-        //if (_periodicTask is null || _periodicTask.IsCompleted) //stage 7
-        //    _periodicTask = Task.Run(() => StudentManager.PeriodicStudentsUpdates(oldClock, newClock));
-        //...
+
+    //TO_DO: //stage 7
+        if (_periodicTask is null || _periodicTask.IsCompleted) //stage 7
+            _periodicTask = Task.Run(() => CourierManager.PeriodicCouriersUpdates());
+        
         if (ClockUpdatedObservers == null)
             return;
 

@@ -19,6 +19,7 @@ internal class CourierImplementation : BlApi.ICourier
     /// </summary>
     public void AddCourier(int requesterId, BO.Courier courier)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         bool permission = CourierManager.HasPermission(requesterId);
         if (!permission)
             throw new BlUnauthorizedAccessException("Requester does not have permission to add a courier.");
@@ -31,6 +32,7 @@ internal class CourierImplementation : BlApi.ICourier
     /// </summary>
     public void DeleteCourier(int requesterId, int courierId)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         CourierManager.DeleteCourier(requesterId, courierId);
     }
 
@@ -84,6 +86,7 @@ internal class CourierImplementation : BlApi.ICourier
     /// </summary>
     public void UpdateCourier(int requesterId, BO.Courier boCourier)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         CourierManager.UpdateCourier(requesterId, boCourier);
     }
     public IEnumerable<BO.CourierInList> GetListOfCourier(int requesterId, BO.DeliveryType filter , BO.CourierSortBy? sortBy = null)

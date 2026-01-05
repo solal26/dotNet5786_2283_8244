@@ -19,6 +19,7 @@ internal class OrderImplementation : BlApi.IOrder
     /// </summary>
     public void AddOrder(int requesterId, BO.Order order)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         bool permission = CourierManager.HasPermission(requesterId);
         if (!permission)
             throw new BlUnauthorizedAccessException("Requester does not have permission to add this order.");
@@ -32,6 +33,7 @@ internal class OrderImplementation : BlApi.IOrder
     /// </summary>
     public void UpdateOrder(int requesterId, BO.Order order)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         OrderManager.UpdateOrder(requesterId, order);
     }
 
@@ -40,6 +42,7 @@ internal class OrderImplementation : BlApi.IOrder
     /// </summary>
     public void CancelOrder(int requesterId, int orderId)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         bool permission = CourierManager.HasPermission(requesterId);
         if (!permission)
             throw new BlUnauthorizedAccessException("Requester does not have permission to add this order.");
@@ -53,6 +56,7 @@ internal class OrderImplementation : BlApi.IOrder
     /// </summary>
     public void ChooseOrderForDelivery(int requesterId, int courierId, int orderId)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         if (!CourierManager.HasPermission(requesterId, courierId))
             throw new BlUnauthorizedAccessException("Requester does not have permission to assign this order.");
 
@@ -64,6 +68,7 @@ internal class OrderImplementation : BlApi.IOrder
     /// </summary>
     public void CompleteOrderDelivery(int requesterId, int courierId, int deliveryId)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         bool permission = CourierManager.HasPermission(requesterId, courierId);
         if (!permission)
             throw new BlUnauthorizedAccessException("Requester does not have permission to add this order.");
@@ -76,6 +81,7 @@ internal class OrderImplementation : BlApi.IOrder
     /// </summary>
     public void DeleteOrder(int requesterId, int orderId)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         throw new BlInvalidRequestException($"Order ID={orderId} cannot be deleted from the system. Orders can only be cancelled or completed.");
 
     }
