@@ -1,8 +1,9 @@
-﻿using System;
+﻿using DalApi;
+using DO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using DalApi;
-using DO;
+using System.Runtime.CompilerServices;
 
 namespace Dal
 {
@@ -11,6 +12,7 @@ namespace Dal
     internal class DeliveryImplementation : IDelivery
     {
         // Create: assign a new delivery id and add a copy to the data store.
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void Create(Delivery item)
         {
             int newId = Config.NextDeliveryId;
@@ -19,17 +21,20 @@ namespace Dal
         }
 
         // Read: return the delivery with the given id or null if not found.
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Delivery? Read(int id)
         {
             return DataSource.Deliveries.FirstOrDefault(d => d.Id == id);
         }
 
         // ReadAll: return a snapshot copy of all deliveries.
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Delivery> ReadAll(Func<Delivery, bool>? filter = null) => filter == null
       ? DataSource.Deliveries.Select(item => item)
          : DataSource.Deliveries.Where(filter);
 
         // Update: replace an existing delivery matched by id; throws if not present.
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void Update(Delivery item)
         {
             if (Read(item.Id) is null)
@@ -40,6 +45,7 @@ namespace Dal
         }
 
         // Delete: remove a delivery by id; throws if not present.
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void Delete(int id)
         {
             if (Read(id) is null)
@@ -49,11 +55,13 @@ namespace Dal
         }
 
         // DeleteAll: clear all delivery records (used for reset/testing).
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeleteAll()
         {
             DataSource.Deliveries.Clear();
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Delivery? Read(Func<Delivery, bool> filter) => DataSource.Deliveries.FirstOrDefault(filter);
       
     }

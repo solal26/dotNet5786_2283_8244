@@ -597,4 +597,16 @@
     <OrderInitiation>2025-12-13T16:56:53</OrderInitiation>
     <VerbalDescription>shalom</VerbalDescription>
   </Order>
+  <Order>
+    <OrderId>1053</OrderId>
+    <TypeOfOrder>ExpressOrder</TypeOfOrder>
+    <ShippingAddress>ben gurion 5, tel aviv, Israel</ShippingAddress>
+    <Latitude>32.0957864</Latitude>
+    <Longitude>34.8219133</Longitude>
+    <CustomerName>michal cohen</CustomerName>
+    <CustomerPhone>0527384716</CustomerPhone>
+    <Weight>35</Weight>
+    <OrderInitiation>2025-12-13T16:56:53</OrderInitiation>
+    <VerbalDescription>test order</VerbalDescription>
+  </Order>
 </ArrayOfOrder>

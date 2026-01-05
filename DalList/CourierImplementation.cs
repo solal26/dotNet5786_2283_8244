@@ -2,12 +2,14 @@
 using DalApi;
 using DO;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 // Simple in-memory CRUD repository for Courier entities.
 // Operates on the shared DataSource.Couriers list and is intended for demo/tests.
 internal class CourierImplementation : ICourier
 {
     // Create: add a new courier if the id is not already present.
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Create(Courier item)
     {
         // Check if an object with the same ID already exists
@@ -19,6 +21,7 @@ internal class CourierImplementation : ICourier
     }
 
     // Read: return the courier with the given id or null if not found.
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Courier? Read(int id)
     {
         // Search for the object by ID
@@ -26,11 +29,13 @@ internal class CourierImplementation : ICourier
     }
 
     // ReadAll: return a snapshot copy of all couriers (prevents external mutation).
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<Courier> ReadAll(Func<Courier, bool>? filter = null) => filter == null
          ? DataSource.Couriers.Select(item => item)
-            :DataSource.Couriers.Where(filter);  
+            :DataSource.Couriers.Where(filter);
 
     // Update: replace an existing courier matched by id; throws if not found.
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(Courier item)
     {
         var existing = Read(item.Id);
@@ -43,6 +48,7 @@ internal class CourierImplementation : ICourier
     }
 
     // Delete: remove a courier by id; throws if the courier does not exist.
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         var existing = Read(id);
@@ -54,12 +60,13 @@ internal class CourierImplementation : ICourier
     }
 
     // DeleteAll: clear all courier records (used for reset/testing).
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void DeleteAll()
     {
         // Clear the entire list
         DataSource.Couriers.Clear();
     }
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Courier? Read(Func<Courier, bool> filter)=> DataSource.Couriers.FirstOrDefault(filter);
    
 }
