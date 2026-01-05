@@ -1,7 +1,8 @@
-﻿using DalApi;
-using DO;
+﻿using System;
+using System.Runtime.CompilerServices;
 using System.Xml.Linq;
-using System;
+using DalApi;
+using DO;
 
 namespace Dal
 {
@@ -16,6 +17,7 @@ namespace Dal
         /// Build a DO.Order from an XML element.
         /// Handles missing or malformed values with sensible defaults or exceptions where appropriate.
         /// </summary>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         static Order getOrder(XElement s)
         {
             // Map XML element children to the Order record properties.
@@ -38,6 +40,7 @@ namespace Dal
         /// Read a single order by id from the orders XML.
         /// Returns null if not found.
         /// </summary>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Order? Read(int id)
         {
             // Load XML root and find the element with matching Id (note: code checks "Id" element here).
@@ -49,6 +52,7 @@ namespace Dal
         /// <summary>
         /// Create a new order: assign a generated OrderId, append the element and save XML.
         /// </summary>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void Create(Order item)
         {
             XElement ordersRootElem = XMLTools.LoadListFromXMLElement(Config.s_orders_xml);
@@ -61,6 +65,7 @@ namespace Dal
         /// <summary>
         /// Delete an order by id. Throws DalDoesNotExistException when not found.
         /// </summary>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void Delete(int id)
         {
             XElement ordersRootElem = XMLTools.LoadListFromXMLElement(Config.s_orders_xml);
@@ -74,6 +79,7 @@ namespace Dal
         /// <summary>
         /// Remove all orders from the XML store.
         /// </summary>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeleteAll()
         {
             XElement ordersRootElem = XMLTools.LoadListFromXMLElement(Config.s_orders_xml);
@@ -84,6 +90,7 @@ namespace Dal
         /// <summary>
         /// Read first order matching the provided predicate.
         /// </summary>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Order? Read(Func<Order, bool> filter)
         {
             // Enumerate XML elements, map to Order objects and apply filter.
@@ -94,6 +101,7 @@ namespace Dal
         /// Read all orders optionally filtered by predicate.
         /// Not implemented yet.
         /// </summary>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Order> ReadAll(Func<Order, bool>? filter = null)
         {
             XElement ordersRootElem = XMLTools.LoadListFromXMLElement(Config.s_orders_xml);
@@ -106,6 +114,7 @@ namespace Dal
         /// Create an XElement representing an Order for persistence.
         /// Produces child elements for all non-null order properties.
         /// </summary>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public static XElement createOrderElement(Order order)
         {
             return new XElement("Order",
@@ -128,6 +137,7 @@ namespace Dal
         /// Update an existing order: replace its XML element with the new data.
         /// Throws DalDoesNotExistException if the order does not exist.
         /// </summary>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void Update(Order item)
         {
             XElement ordersRootElem = XMLTools.LoadListFromXMLElement(Config.s_orders_xml);

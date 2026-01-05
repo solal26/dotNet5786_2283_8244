@@ -22,16 +22,25 @@ public static class Initialization
 
     private static readonly (string Address, double Lat, double Lon)[] addresses =
     {
-        
-        ("14 Rothschild Blvd, Tel Aviv,Israel", 32.06672, 34.77403),
-        ("59 Ibn Gabirol St, Tel Aviv,Israel", 32.07206, 34.78138),
-        ("34 David HaMelech St, Tel Aviv,Israel", 32.06999, 34.77224),
-        ("45 King George St, Jerusalem,Israel", 31.77196, 35.21766),
-        ("28 Jaffa St, Jerusalem,Israel", 31.76832, 35.21371),
-        ("15 Ben Gurion Blvd, Haifa,Israel", 32.81669, 34.98957),
-        ("10 HaAtzmaut St, Haifa,Israel", 32.81421, 34.98912),
-        ("22 Herzl St, Beersheba,Israel", 31.25179, 34.79146),
-        ("9 Jerusalem Blvd, Beersheba,Israel", 31.25693, 34.79332)
+
+        ("Rothschild Blvd 14, Tel Aviv, Israel", 32.06672, 34.77403),
+        ("Ibn Gabirol St 59, Tel Aviv, Israel", 32.07206, 34.78138),
+        ("David HaMelech St 34, Tel Aviv, Israel", 32.06999, 34.77224),
+        ("King George St 45, Jerusalem, Israel", 31.77196, 35.21766),
+        ("Jaffa St 28, Jerusalem, Israel", 31.76832, 35.21371),
+        ("Ben Gurion Blvd 15, Haifa, Israel", 32.81669, 34.98957),
+        ("HaAtzmaut St 10, Haifa, Israel", 32.81421, 34.98912),
+        ("Herzl St 22, Beersheba, Israel", 31.25179, 34.79146),
+        ("Jerusalem Blvd 9, Beersheba, Israel", 31.25693, 34.79332),
+        ("Dizengoff St 100, Tel Aviv, Israel", 32.07538, 34.77567),
+        ("Allenby St 65, Tel Aviv, Israel", 32.06785, 34.77049),
+        ("Bograshov St 21, Tel Aviv, Israel", 32.07719, 34.77391),
+        ("Hillel St 12, Jerusalem, Israel", 31.78106, 35.21994),
+        ("Agron St 24, Jerusalem, Israel", 31.77944, 35.21803),
+        ("Moriah Blvd 87, Haifa, Israel", 32.80394, 34.98627),
+        ("Horev St 15, Haifa, Israel", 32.79354, 34.98321),
+        ("Rager Blvd 45, Beersheba, Israel", 31.25877, 34.80021),
+        ("Henrietta Szold St 8, Beersheba, Israel", 31.26291, 34.78944)
     };
 
     /// <summary>

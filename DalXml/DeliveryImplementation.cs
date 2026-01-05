@@ -1,9 +1,10 @@
 ﻿namespace Dal;
-using DalApi;
-using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using DalApi;
+using DO;
 
 /// <summary>
 /// XML-backed DAL implementation for <see cref="Delivery"/> entities.
@@ -21,6 +22,7 @@ internal class DeliveryImplementation : IDelivery
     /// Creates a new delivery record.
     /// </summary>
     /// <param name="item">Delivery to create. The method assigns a new <see cref="Delivery.Id"/> from <see cref="Config.NextDeliveryId"/>.</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Create(Delivery item)
     {
         List<Delivery> deliveries = XMLTools.LoadListFromXMLSerializer<Delivery>(Config.s_deliveries_xml);
@@ -33,6 +35,7 @@ internal class DeliveryImplementation : IDelivery
     /// Deletes the delivery with the specified id.
     /// </summary>
     /// <param name="id">Identifier of the delivery to delete.</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         List<Delivery> deliveries = XMLTools.LoadListFromXMLSerializer<Delivery>(Config.s_deliveries_xml);
@@ -43,6 +46,7 @@ internal class DeliveryImplementation : IDelivery
     /// <summary>
     /// Removes all delivery records from storage.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void DeleteAll()
     {
         List<Delivery> deliveries = XMLTools.LoadListFromXMLSerializer<Delivery>(Config.s_deliveries_xml);
@@ -55,6 +59,7 @@ internal class DeliveryImplementation : IDelivery
     /// </summary>
     /// <param name="id">Identifier of the delivery to read.</param>
     /// <returns>The matching <see cref="Delivery"/> or <c>null</c> if not found.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Delivery? Read(int id)
     {
         List<Delivery> deliveries = XMLTools.LoadListFromXMLSerializer<Delivery>(Config.s_deliveries_xml);
@@ -66,6 +71,7 @@ internal class DeliveryImplementation : IDelivery
     /// </summary>
     /// <param name="filter">Predicate used to find the delivery.</param>
     /// <returns>The first matching <see cref="Delivery"/> or <c>null</c> if none match.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Delivery? Read(Func<Delivery, bool> filter)
     {
         List<Delivery> deliveries = XMLTools.LoadListFromXMLSerializer<Delivery>(Config.s_deliveries_xml);
@@ -77,6 +83,7 @@ internal class DeliveryImplementation : IDelivery
     /// </summary>
     /// <param name="filter">Optional predicate to filter returned deliveries. If <c>null</c>, all deliveries are returned.</param>
     /// <returns>An enumerable of deliveries matching the filter (or all deliveries when the filter is null).</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<Delivery> ReadAll(Func<Delivery, bool>? filter = null)
     {
         List<Delivery> deliveries = XMLTools.LoadListFromXMLSerializer<Delivery>(Config.s_deliveries_xml);
@@ -87,6 +94,7 @@ internal class DeliveryImplementation : IDelivery
     /// Updates an existing delivery record.
     /// </summary>
     /// <param name="item">Delivery containing updated values. The <see cref="Delivery.Id"/> identifies the record to update.</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(Delivery item)
     {
         List<Delivery> deliveries = XMLTools.LoadListFromXMLSerializer<Delivery>(Config.s_deliveries_xml);
