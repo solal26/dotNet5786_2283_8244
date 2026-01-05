@@ -218,9 +218,9 @@ namespace BlTest
         /// <summary>
         /// Displays current configuration values from the BL admin facade.
         /// </summary>
-        static void GetConfiguration()
+        static async Task GetConfiguration()
         {
-            var config = s_bl.Admin.GetConfig();
+            var config =await s_bl.Admin.GetConfig();
             Console.WriteLine("\n=== Current Configuration ===");
             Console.WriteLine($"Clock: {config.Clock}");
             Console.WriteLine($"Manager ID: {config.ManagerId}");
@@ -241,9 +241,9 @@ namespace BlTest
         /// Prompts the user and applies configuration updates via BL admin facade.
         /// Press Enter to keep current values.
         /// </summary>
-        static void SetConfiguration()
+        static async Task SetConfiguration()
         {
-            var currentConfig = s_bl.Admin.GetConfig();
+            var currentConfig = await s_bl.Admin.GetConfig();
             Console.WriteLine("\n=== Set New Configuration ===");
             Console.WriteLine("(Press Enter to keep current value)");
 

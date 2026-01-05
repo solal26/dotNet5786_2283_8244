@@ -52,8 +52,8 @@ internal static class AdminManager //stage 4
     /// <summary>
     /// Method for providing current configuration variables values for any BL class that may need it
     /// </summary>
-    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
-    internal static BO.Config GetConfig() //stage 4
+    //[MethodImpl(MethodImplOptions.Synchronized)] //stage 7
+    internal static async Task< BO.Config > GetConfig() //stage 4
     => new BO.Config()
     {
         MaxRange = s_dal.Config.MaxRange,
@@ -61,8 +61,8 @@ internal static class AdminManager //stage 4
         ManagerId = s_dal.Config.ManagerId,
         ManagerPassword = s_dal.Config.ManagerPassword,
         CompanyAddress = s_dal.Config.CompanyAddress,
-        Latitude = OrderManager.ValidateAddress(s_dal.Config.CompanyAddress).Latitude,
-        Longitude = OrderManager.ValidateAddress(s_dal.Config.CompanyAddress).Longitude,
+        Latitude = (await OrderManager.ValidateAddress(s_dal.Config.CompanyAddress)).Latitude,
+        Longitude = (await OrderManager.ValidateAddress(s_dal.Config.CompanyAddress)).Longitude,
         AvgCarSpeed = s_dal.Config.AvgCarSpeed,
         AvgMotorBikeSpeed = s_dal.Config.AvgMotorBikeSpeed,
         AvgBicycleSpeed = s_dal.Config.AvgBicycleSpeed,

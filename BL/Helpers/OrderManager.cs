@@ -30,7 +30,7 @@ internal static class OrderManager
     /// <param name="boOrder">Business-layer order to add.</param>
     /// <exception cref="ArgumentNullException">When <paramref name="boOrder"/> is null.</exception>
     /// <exception cref="BlAlreadyExistsException">When DAL reports duplicate id.</exception>
-    internal static void AddOrdeDo(BO.Order boOrder)
+    internal static async Task AddOrdeDo(BO.Order boOrder)
     {
         if (boOrder == null)
             throw new ArgumentNullException(nameof(boOrder));
@@ -46,8 +46,8 @@ internal static class OrderManager
             OrderId = 0,
             typeOfOrder = (TypeOfOrder)boOrder.Type,
             ShippingAddress = boOrder.FullAddress,
-            Latitude = ValidateAddress(boOrder.FullAddress).Latitude,
-            Longitude = ValidateAddress(boOrder.FullAddress).Longitude,
+            Latitude =(await ValidateAddress(boOrder.FullAddress)).Latitude,
+            Longitude = (await ValidateAddress(boOrder.FullAddress)).Longitude,
             CustomerName = boOrder.CustomerName,
             CustomerPhone = boOrder.CustomerPhone,
             weight = boOrder.Weight,
@@ -71,7 +71,7 @@ internal static class OrderManager
     /// </summary>
     /// <param name="requesterId">Id of the user attempting the update (must be manager).</param>
     /// <param name="boOrder">Updated business order data.</param>
-    internal static void UpdateOrder(int requesterId, BO.Order boOrder)
+    internal static async Task UpdateOrder(int requesterId, BO.Order boOrder)
     {
         // 1. Permission Check: Only the Manager can update an Order
         if (requesterId != s_dal.Config.ManagerId)
@@ -110,7 +110,7 @@ internal static class OrderManager
         CourierManager.ValidateWeight(boOrder.Weight);
         CourierManager.ValidatePhone(boOrder.CustomerPhone);
         ValidateFullAddress(boOrder.FullAddress);//
-        ValidateAddress(boOrder.FullAddress);
+        await ValidateAddress(boOrder.FullAddress);
 
 
         // 5. Create the updated DO object
@@ -119,8 +119,8 @@ internal static class OrderManager
             typeOfOrder = (DO.TypeOfOrder)boOrder.Type,
             VerbalDescription = boOrder.Description,
             ShippingAddress = boOrder.FullAddress,
-            Latitude = ValidateAddress(boOrder.FullAddress).Latitude,
-            Longitude =ValidateAddress(boOrder.FullAddress).Longitude,
+            Latitude = (await ValidateAddress(boOrder.FullAddress)).Latitude,
+            Longitude =(await ValidateAddress(boOrder.FullAddress)).Longitude,
             CustomerName = boOrder.CustomerName,
             CustomerPhone = boOrder.CustomerPhone,
             // Map other BO fields to DO fields
@@ -144,7 +144,7 @@ internal static class OrderManager
     /// - Synchronous call that blocks the calling thread. Consider converting to async/await and adding User-Agent and retries.
     /// - Throws <see cref="BlInvalidAddressException"/> when no results are returned.
     /// </remarks>
-    public static (double Latitude, double Longitude) ValidateAddress(string address)
+    public static async Task< (double Latitude, double Longitude)> ValidateAddress(string address)
     {
         if (string.IsNullOrWhiteSpace(address))
             throw new BlNullPropertyException("Address cannot be empty");
@@ -154,7 +154,7 @@ internal static class OrderManager
         if (!client.DefaultRequestHeaders.Contains("User-Agent"))
             client.DefaultRequestHeaders.Add("User-Agent", "MyDeliveryApp/1.0");
 
-        var response = client.GetStringAsync(url).Result; // סינכרוני
+        var response = await client.GetStringAsync(url);
         var jsonDoc = JsonDocument.Parse(response);
 
         var root = jsonDoc.RootElement;

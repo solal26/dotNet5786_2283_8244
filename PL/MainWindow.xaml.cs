@@ -3,6 +3,7 @@ using PL.Courier;
 using PL.Order;
 using System.Configuration;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -74,15 +75,15 @@ namespace PL
             CurrentTime = s_bl.Admin.GetClock();
         }
 
-        private void configObserver()
+        private async void configObserver()
         {
-            Configuration = s_bl.Admin.GetConfig();
+            Configuration = await s_bl.Admin.GetConfig();
         }
 
-        private void MainWindow_Loaded(object Sender, RoutedEventArgs e)
+        private async void MainWindow_Loaded(object Sender, RoutedEventArgs e)
         {
             CurrentTime = s_bl.Admin.GetClock();
-            Configuration = s_bl.Admin.GetConfig();
+            Configuration = await s_bl.Admin.GetConfig();
             s_bl.Admin.AddClockObserver(clockObserver);
             s_bl.Admin.AddConfigObserver(configObserver);
             s_bl.Order.AddObserver(LoadOrderSummary);

@@ -1,5 +1,7 @@
 ﻿
 
+using BO;
+
 namespace BlApi;
 
 public interface IAdmin
@@ -9,7 +11,7 @@ public interface IAdmin
     void InitializeDB();
     DateTime GetClock();
     void ForwardClock(BO.TimeUnit unit);
-    BO.Config GetConfig();
+    Task<Config> GetConfig();
     void SetConfig(BO.Config config);
 
 

@@ -3,6 +3,7 @@ using BlApi;
 using BO;
 using Helpers;
 using System;
+using System.Threading.Tasks;
 
 /// <summary>
 /// BL façade implementing administrative operations (clock, configuration and DB initialization/reset).
@@ -45,7 +46,7 @@ internal class AdminImplementation : IAdmin
     /// Read current runtime configuration.
     /// </summary>
     /// <returns>Business-layer <see cref="Config"/> instance from <see cref="AdminManager"/>.</returns>
-    public Config GetConfig() => AdminManager.GetConfig();
+    public async Task<Config> GetConfig() =>  await AdminManager.GetConfig();
 
     /// <summary>
     /// Initialize the demo database and seed sample data.
