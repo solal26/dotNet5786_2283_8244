@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PL.Helpers;
+using PL.Order;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +13,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using PL.Order;
 
 namespace PL.Courier
 {
@@ -30,17 +31,29 @@ namespace PL.Courier
         public static readonly DependencyProperty ClosedDeliveryInListProperty =
             DependencyProperty.Register("ClosedDeliveryList", typeof(IEnumerable<BO.ClosedDeliveryInList>), typeof(DeliveryHistoryWindow), new PropertyMetadata(null));
 
-        private void queryClosedDeliveryInList()
-             => ClosedDeliveryList = s_bl.Order.GetClosedDeliveries(CurrentCourier.Id, CurrentCourier.Id);
-
+        private readonly ObserverMutex _mutex = new(); //stage 7
         private void ClosedDeliveryInListObserver()
-            => queryClosedDeliveryInList();
+        {
 
+            #region Stage 7 (for multithreading)
+            if (_mutex.CheckAndSetLoadInProgressOrRestartRequired())
+                return;
+            _ = Dispatcher.BeginInvoke(async () =>
+            {
+
+                ClosedDeliveryList = s_bl.Order.GetClosedDeliveries(CurrentCourier.Id, CurrentCourier.Id);
+                if (await _mutex.UnsetLoadInProgressAndCheckRestartRequested())
+                    ClosedDeliveryInListObserver();
+            });
+            #endregion Stage 7 (for multithreading)
+        }
+     
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             s_bl.Order.AddObserver(ClosedDeliveryInListObserver);
-            queryClosedDeliveryInList();
+            ClosedDeliveryInListObserver();
         }
+
         private void Window_Closed(object sender, EventArgs e)
             => s_bl.Order.RemoveObserver(ClosedDeliveryInListObserver);
 

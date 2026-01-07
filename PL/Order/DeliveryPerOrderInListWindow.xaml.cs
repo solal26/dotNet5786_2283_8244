@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PL.Courier;
+using PL.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +13,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using PL.Courier;
 
 namespace PL.Order
 {
@@ -30,16 +31,31 @@ namespace PL.Order
         public static readonly DependencyProperty DeliveryPerOrderListProperty =
             DependencyProperty.Register("DeliveryPerOrderList", typeof(IEnumerable<BO.DeliveryPerOrderInList>), typeof(DeliveryPerOrderInListWindow), new PropertyMetadata(null));
 
-        private void queryDeliveryPerOrderList()
-             => DeliveryPerOrderList = s_bl.Order.GetDeliveriesForOrder(123456789, CurrentOrder.Id);
+     
 
+
+        private readonly ObserverMutex _mutex = new(); //stage 7
         private void DeliveryPerOrderListObserver()
-            => queryDeliveryPerOrderList();
+        {
+            if (_mutex.CheckAndSetLoadInProgressOrRestartRequired())
+                return;
+            _ = Dispatcher.BeginInvoke(async () =>
+            {
+
+                DeliveryPerOrderList = s_bl.Order.GetDeliveriesForOrder(123456789, CurrentOrder.Id);
+
+                // Check if a restart was requested while we were working
+                if (await _mutex.UnsetLoadInProgressAndCheckRestartRequested())
+                    DeliveryPerOrderListObserver();
+            });
+        }
+        
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             s_bl.Order.AddObserver(DeliveryPerOrderListObserver);
-            queryDeliveryPerOrderList();
+            DeliveryPerOrderListObserver();
+            
         }
         private void Window_Closed(object sender, EventArgs e)
             => s_bl.Order.RemoveObserver(DeliveryPerOrderListObserver);

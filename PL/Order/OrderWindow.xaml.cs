@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PL.Courier;
+using PL.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +13,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using PL.Courier;
 
 namespace PL.Order
 {
@@ -109,11 +110,25 @@ namespace PL.Order
         public IEnumerable<BO.OrderStatus> OrderStatuses => Enum.GetValues(typeof(BO.OrderStatus)).Cast<BO.OrderStatus>();
         public IEnumerable<BO.OrderType> OrderTypes => Enum.GetValues(typeof(BO.OrderType)).Cast<BO.OrderType>();
         public IEnumerable<BO.ScheduleStatus> ScheduleStatuses => Enum.GetValues(typeof(BO.ScheduleStatus)).Cast<BO.ScheduleStatus>();
+
+        private readonly ObserverMutex _mutex = new(); //stage 7
+
         private void OrderObserver()
         {
-            int id = CurrentOrder!.Id;
-            CurrentOrder = null;
-            CurrentOrder = bl.Order.GetOrder(123456789, id);
+            #region Stage 7 (for multithreading)
+            if (_mutex.CheckAndSetLoadInProgressOrRestartRequired())
+                return;
+            _ = Dispatcher.BeginInvoke(async () =>
+            {
+
+
+                int id = CurrentOrder!.Id;
+                CurrentOrder = null;
+                CurrentOrder = bl.Order.GetOrder(123456789, id);
+                // Check if a restart was requested while we were working
+                if (await _mutex.UnsetLoadInProgressAndCheckRestartRequested())
+                    OrderObserver();
+            });
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -143,3 +158,4 @@ namespace PL.Order
         }
     }
 }
+#endregion
