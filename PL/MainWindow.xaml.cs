@@ -1,8 +1,10 @@
 ﻿using BO;
 using PL.Courier;
+using PL.Helpers;
 using PL.Order;
 using System.Configuration;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -70,14 +72,40 @@ namespace PL
             s_bl.Admin.ForwardClock(BO.TimeUnit.Year);
         }
 
+        private readonly ObserverMutex _clockMutex = new(); //stage 7
         private void clockObserver()
         {
-            CurrentTime = s_bl.Admin.GetClock();
+            #region Stage 7 (for multithreading)
+            if (_clockMutex.CheckAndSetLoadInProgressOrRestartRequired())
+                return;
+            _ = Dispatcher.BeginInvoke(async () =>
+            {
+
+                CurrentTime = s_bl.Admin.GetClock();
+
+                // Check if a restart was requested while we were working
+                if (await _clockMutex.UnsetLoadInProgressAndCheckRestartRequested())
+                    clockObserver();
+            });
+            #endregion Stage 7 (for multithreading)
+
         }
 
+
+        private readonly ObserverMutex configMutex = new(); //stage 7
         private async void configObserver()
         {
-            Configuration = await s_bl.Admin.GetConfig();
+            if (configMutex.CheckAndSetLoadInProgressOrRestartRequired())
+                return;    
+            await Dispatcher.BeginInvoke(async () =>
+            {
+                Configuration = await s_bl.Admin.GetConfig();
+                // Check if a restart was requested while we were working
+                if (await configMutex.UnsetLoadInProgressAndCheckRestartRequested())
+                    configObserver();
+            });
+                
+
         }
 
         private async void MainWindow_Loaded(object Sender, RoutedEventArgs e)
