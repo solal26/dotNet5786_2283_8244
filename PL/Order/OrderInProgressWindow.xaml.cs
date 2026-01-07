@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using PL.Courier;
+using PL.Helpers;
 
 namespace PL.Order
 {
@@ -22,7 +24,6 @@ namespace PL.Order
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         public BO.Courier? CurrentCourier { get; set; }
-        //public BO.OrderInProgress? Orderinprogress { get; set; }
         public BO.OrderInProgress? Orderinprogress
         {
             get => (BO.OrderInProgress?)GetValue(OrderinprogressProperty);
@@ -35,12 +36,21 @@ namespace PL.Order
                 typeof(OrderInProgressWindow),
                 new PropertyMetadata(null));
 
-        private void queryOrderinprogress()
-             => Orderinprogress = CurrentCourier.CurrentOrder;
 
+        private readonly ObserverMutex _mutex = new(); //stage 7
         private void OrderinprogressObserver()
-            => queryOrderinprogress();
+        {
+            if (_mutex.CheckAndSetLoadInProgressOrRestartRequired())
+                return;
+            _ = Dispatcher.BeginInvoke(async () =>
+            {
+                Orderinprogress = CurrentCourier.CurrentOrder;
 
+                // Check if a restart was requested while we were working
+                if (await _mutex.UnsetLoadInProgressAndCheckRestartRequested())
+                    OrderinprogressObserver();
+            });
+        }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             s_bl.Courier.AddObserver(OrderinprogressObserver);

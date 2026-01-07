@@ -13,6 +13,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using BlApi;
 using BO;
+using PL.Helpers;
 
 
 namespace PL.Order
@@ -22,7 +23,7 @@ namespace PL.Order
     /// </summary>
     public partial class OrderListWindow : Window
     {
-        // 1. Access to the Business Logic (BL) Layer
+    
         static readonly IBl s_bl = Factory.Get();
         private const int RequesterId = 123456789;
 
@@ -70,85 +71,71 @@ namespace PL.Order
                 else
                     sStatus = (BO.ScheduleStatus)FilterValueComboBox.SelectedItem;
 
-                queryOrderList();
+                orderListObserver();
             }
         }
-
-
-        private void queryOrderList()
-        {
-            BO.OrderInListFilter? filterField = null;
-            BO.OrderInListSort? so = orderS;
-            object? filterValue = null;
-
-            if (selectedFilterType == "Order Status" && oStatus != BO.OrderStatus.All)
-            {
-                filterField = BO.OrderInListFilter.OrderStatus;
-                filterValue = oStatus;
-            }
-            else if (selectedFilterType == "Schedule Status" && sStatus != null)
-            {
-                filterField = BO.OrderInListFilter.ScheduleStatus;
-                filterValue = sStatus;
-            }
-
-            try
-            {
-                OrderList = s_bl.Order.GetOrdersList(
-                    requesterId: RequesterId,
-                    filterField: filterField,
-                    filterValue: filterValue,
-                    sortBy: so
-                );
-            }
-            catch (BO.BlUnauthorizedAccessException ex)
-            {
-                MessageBox.Show(ex.Message, "Permission Denied", MessageBoxButton.OK, MessageBoxImage.Stop);
-                OrderList = new List<BO.OrderInList>();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading orders: {ex.Message}", "Loading Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                OrderList = new List<BO.OrderInList>();
-            }
-        }
-
         // Handler for the filter change (ComboBox SelectionChanged)
-        private void ChooseStatus(object sender, SelectionChangedEventArgs e)
-        {
-            queryOrderList();
-        }
-        private void ChooseSort(object sender, SelectionChangedEventArgs e)
-        {
-            queryOrderList();
-        }
+        private void ChooseStatus(object sender, SelectionChangedEventArgs e)=> orderListObserver();
+        private void ChooseSort(object sender, SelectionChangedEventArgs e)=> orderListObserver();
 
-        // Observer callback method (called by the BL upon changes)
+        private readonly ObserverMutex _mutex = new(); //stage 7
         private void orderListObserver()
-            => queryOrderList();
+        {
+            if (_mutex.CheckAndSetLoadInProgressOrRestartRequired())
+                return;
+            _ = Dispatcher.BeginInvoke(async () =>
+            {
+                BO.OrderInListFilter? filterField = null;
+                BO.OrderInListSort? so = orderS;
+                object? filterValue = null;
 
-        
+                if (selectedFilterType == "Order Status" && oStatus != BO.OrderStatus.All)
+                {
+                    filterField = BO.OrderInListFilter.OrderStatus;
+                    filterValue = oStatus;
+                }
+                else if (selectedFilterType == "Schedule Status" && sStatus != null)
+                {
+                    filterField = BO.OrderInListFilter.ScheduleStatus;
+                    filterValue = sStatus;
+                }
 
+                try
+                {
+                    OrderList = s_bl.Order.GetOrdersList(
+                        requesterId: RequesterId,
+                        filterField: filterField,
+                        filterValue: filterValue,
+                        sortBy: so
+                    );
+                }
+                catch (BO.BlUnauthorizedAccessException ex)
+                {
+                    MessageBox.Show(ex.Message, "Permission Denied", MessageBoxButton.OK, MessageBoxImage.Stop);
+                    OrderList = new List<BO.OrderInList>();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading orders: {ex.Message}", "Loading Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    OrderList = new List<BO.OrderInList>();
+                }
+
+                // Check if a restart was requested while we were working
+                if (await _mutex.UnsetLoadInProgressAndCheckRestartRequested())
+                    orderListObserver();
+            });
+        }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // Subscribe to the Observer for external updates
             s_bl.Order.AddObserver(orderListObserver);
-            queryOrderList(); // Initial loading of the list
+            orderListObserver();
         }
-
         private void Window_Closed(object sender, EventArgs e)
-            // Unsubscribe from the Observer to prevent memory leaks
             => s_bl.Order.RemoveObserver(orderListObserver);
-
-
-    
-
-        // Double-click to open the "Single Order Management" (OrderWindow)
         private void lsvOrderList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (SelectedOrder != null)
             {
-                // Open the details window in Update mode, passing the Order ID
                 new OrderWindow(SelectedOrder.OrderId).Show();
             }
         }
@@ -156,9 +143,7 @@ namespace PL.Order
         // Click on the "Add New Order" button
         private void btnAddOrder_Click(object sender, RoutedEventArgs e)
         {
-            // Open the details window in Add mode (default ID 0)
             new OrderWindow().Show();
-            // The Observer will handle list update once the addition is successful.
         }
 
         // Click on the "Cancel" button (as per requirement)

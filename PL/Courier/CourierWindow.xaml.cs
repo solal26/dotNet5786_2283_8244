@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using PL.Order;
-
+using PL.Helpers;
 namespace PL.Courier
 {
     /// <summary>
@@ -81,7 +81,7 @@ namespace PL.Courier
                 MessageBox.Show(ex.Message);
             }
         }
-        public IEnumerable<BO.DeliveryType> DeliveryTypes => Enum.GetValues(typeof(BO.DeliveryType)).Cast<BO.DeliveryType>();
+        //public IEnumerable<BO.DeliveryType> DeliveryTypes => Enum.GetValues(typeof(BO.DeliveryType)).Cast<BO.DeliveryType>();
 
         public CourierWindow(int courierId = 0)
         {
@@ -94,14 +94,21 @@ namespace PL.Courier
            : bl.Courier.GetCourier(courierId, courierId);
             
         }
-
+        private readonly ObserverMutex _mutex = new(); //stage 7
         private void CourierObserver()
         {
-            int id = CurrentCourier!.Id;
-            CurrentCourier = null;
-            CurrentCourier = bl.Courier.GetCourier(id, id);
+            if (_mutex.CheckAndSetLoadInProgressOrRestartRequired())
+                return;
+            _ = Dispatcher.BeginInvoke(async () =>
+            {
+                int id = CurrentCourier!.Id;
+                CurrentCourier = null;
+                CurrentCourier = bl.Courier.GetCourier(id, id);
+                // Check if a restart was requested while we were working
+                if (await _mutex.UnsetLoadInProgressAndCheckRestartRequested())
+                    CourierObserver();
+            });
         }
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
            
