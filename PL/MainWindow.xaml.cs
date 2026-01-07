@@ -33,6 +33,23 @@ namespace PL
         public static readonly DependencyProperty CurrentTimeProperty =
             DependencyProperty.Register("CurrentTime", typeof(DateTime), typeof(MainWindow));
 
+        public int  Interval
+        {
+            get { return (int)GetValue(IntervalProperty); }
+            set { SetValue(IntervalProperty, value); }
+        }
+        public static readonly DependencyProperty IntervalProperty =
+            DependencyProperty.Register("Interval", typeof(int), typeof(MainWindow));
+
+        public bool IsRunning
+        {
+            get { return (bool)GetValue(IsRunningProperty); }
+            set { SetValue(IsRunningProperty, value); }
+        }
+        public static readonly DependencyProperty IsRunningProperty =
+            DependencyProperty.Register("Interval", typeof(bool), typeof(MainWindow));
+
+
         public Config Configuration
         {
             get { return (Config)GetValue(ConfigurationProperty); }
@@ -309,10 +326,22 @@ namespace PL
             s_bl.Admin.SetConfig(Configuration);
         }
 
+        private void BtnRun_Click(object sender, RoutedEventArgs e)
+        {
+            if(IsRunning)
+            {
+                s_bl.Admin.StopSimulator();
+                IsRunning = true;
+           
+            }
+            else
+            {
+                s_bl.Admin.StartSimulator(Interval);
+                IsRunning = false;
+            }
 
+        }
 
         
-
-    
     }
 }

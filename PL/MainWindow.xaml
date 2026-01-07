@@ -271,6 +271,11 @@
             <Button Content="Reset DB" Click="btnReset_Click" Style="{StaticResource ActionButton}"/>
 
         </StackPanel>
+        <Button Content="{Binding }" HorizontalAlignment="Left" Margin="66,20,0,0" VerticalAlignment="Top" Width="99" Height="60" Click="BtnRun_Click"/>
+        <!--<Button Content="Binding" Click="BtnRun_Click"/>-->
+        <!--</Button>-->
+        <TextBox TextWrapping="Wrap" Text="{Binding Interval}" Margin="116,102,466,32" TextChanged="TextBox_TextChanged"/>
+        <Label Content="Progress rate:" HorizontalAlignment="Left" Margin="0,102,0,0" VerticalAlignment="Top" Width="111"/>
 
     </Grid>
 </Window>
