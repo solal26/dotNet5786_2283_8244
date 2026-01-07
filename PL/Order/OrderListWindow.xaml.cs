@@ -74,8 +74,6 @@ namespace PL.Order
                 orderListObserver();
             }
         }
-        // Handler for the filter change (ComboBox SelectionChanged)
-        private void ChooseStatus(object sender, SelectionChangedEventArgs e)=> orderListObserver();
         private void ChooseSort(object sender, SelectionChangedEventArgs e)=> orderListObserver();
 
         private readonly ObserverMutex _mutex = new(); //stage 7
