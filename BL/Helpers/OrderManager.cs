@@ -51,13 +51,14 @@ internal static class OrderManager
             CustomerName = boOrder.CustomerName,
             CustomerPhone = boOrder.CustomerPhone,
             weight = boOrder.Weight,
-            OrderInitiation = s_dal.Config.Clock,
+            OrderInitiation = AdminManager.Now,
             VerbalDescription = boOrder.Description
         };
 
         try
         {
-            s_dal.Order.Create(doOrder);
+            lock (AdminManager.BlMutex) //stage 7
+                s_dal.Order.Create(doOrder);
         }
         catch (DalAlreadyExistsException ex)
         {
@@ -74,16 +75,16 @@ internal static class OrderManager
     internal static async Task UpdateOrder(int requesterId, BO.Order boOrder)
     {
         // 1. Permission Check: Only the Manager can update an Order
-        if (requesterId != s_dal.Config.ManagerId)
-        {
-            throw new BlUnauthorizedAccessException($"Requester ID={requesterId} is not authorized to update Order ID={boOrder.Id}. Only the administrator is allowed.");
-        }
+        lock (AdminManager.BlMutex) //stage 7
+            if (requesterId != s_dal.Config.ManagerId) 
+                throw new BlUnauthorizedAccessException($"Requester ID={requesterId} is not authorized to update Order ID={boOrder.Id}. Only the administrator is allowed.");
 
         // 2. Existence Check and retrieving the existing DO object
         DO.Order doOrder;
         try
         {
-            doOrder = s_dal.Order.Read(boOrder.Id) ?? throw new BO.BlDoesNotExistException($"Order ID={boOrder.Id} does not exist.");
+            lock (AdminManager.BlMutex) //stage 7
+                doOrder = s_dal.Order.Read(boOrder.Id) ?? throw new BO.BlDoesNotExistException($"Order ID={boOrder.Id} does not exist.");
         }
         catch (DO.DalDoesNotExistException ex)
         {
@@ -91,9 +92,10 @@ internal static class OrderManager
         }
 
         // 3. Status Check: Order must be 'Open' to be updated
-
+        bool isClosed = false;
         // Check if the Order has any deliveries that resulted in a final closure
-        bool isClosed = s_dal.Delivery.ReadAll(d =>
+        lock (AdminManager.BlMutex) //stage 7
+            isClosed = s_dal.Delivery.ReadAll(d =>
         d.OrderId == boOrder.Id &&
         d.endcour == DO.Endofcourier.Delivered
     ).Any();
@@ -109,7 +111,7 @@ internal static class OrderManager
         CourierManager.ValidateName(boOrder.CustomerName);
         CourierManager.ValidateWeight(boOrder.Weight);
         CourierManager.ValidatePhone(boOrder.CustomerPhone);
-        ValidateFullAddress(boOrder.FullAddress);//
+        ValidateFullAddress(boOrder.FullAddress);
         await ValidateAddress(boOrder.FullAddress);
 
 
@@ -127,7 +129,8 @@ internal static class OrderManager
         };
 
         // 6. Call DAL for update
-        s_dal.Order.Update(updatedOrder);
+        lock (AdminManager.BlMutex) //stage 7
+            s_dal.Order.Update(updatedOrder);
         Observers.NotifyListUpdated();  //stage 5
         Observers.NotifyItemUpdated(boOrder.Id);
 
@@ -191,8 +194,9 @@ internal static class OrderManager
     /// <param name="orderId">Order identifier to cancel.</param>
     internal static void CancelOrderDo(int orderId)
     {
-
-        var order = s_dal.Order.Read(orderId);
+        var order = new DO.Order();
+        lock (AdminManager.BlMutex) //stage 7
+            order = s_dal.Order.Read(orderId);
         if (order == null)
             throw new BlDoesNotExistException($"Order with ID {orderId} not found.");
 
@@ -205,8 +209,10 @@ internal static class OrderManager
         {
             throw new BlInvalidRequestException("Cannot cancel an order that is already Delivered or canceled.");
         }
+        var deliveries= null as IEnumerable<DO.Delivery>;
 
-        var deliveries = s_dal.Delivery.ReadAll()
+        lock (AdminManager.BlMutex) //stage 7
+            deliveries = s_dal.Delivery.ReadAll()
                         .Where(d => d.OrderId == orderId)
                         .OrderBy(d => d.TimeBegin);
 
@@ -217,15 +223,16 @@ internal static class OrderManager
             {
                 OrderId = orderId,
                 CourierId = 0,
-                TimeBegin = s_dal.Config.Clock,
-                TimeEnd = s_dal.Config.Clock,
+                TimeBegin = AdminManager.Now,
+                TimeEnd = AdminManager.Now,
                 typeofshipment = TypeOfShipment.Car,
                 endcour = Endofcourier.Canceled
             };
 
             try
             {
-                s_dal.Delivery.Create(dummyDelivery);
+                lock (AdminManager.BlMutex) //stage 7
+                    s_dal.Delivery.Create(dummyDelivery);
             }
             catch (DalAlreadyExistsException ex)
             {
@@ -241,12 +248,13 @@ internal static class OrderManager
 
             var updatedDelivery = activeDelivery with
             {
-                TimeEnd = s_dal.Config.Clock,
+                TimeEnd = AdminManager.Now,
                 endcour = Endofcourier.Canceled
             };
             try
             {
-                s_dal.Delivery.Update(updatedDelivery);
+                lock (AdminManager.BlMutex) //stage 7
+                    s_dal.Delivery.Update(updatedDelivery);
             }
             catch (DalAlreadyExistsException ex)
             {
@@ -267,7 +275,8 @@ internal static class OrderManager
         DO.Delivery doDelivery;
         try
         {
-            doDelivery = s_dal.Delivery.Read(deliveryId)
+            lock (AdminManager.BlMutex) //stage 7
+                doDelivery = s_dal.Delivery.Read(deliveryId)
                          ?? throw new BO.BlDoesNotExistException($"Delivery ID={deliveryId} does not exist.");
         }
         catch (DO.DalDoesNotExistException ex)
@@ -289,8 +298,6 @@ internal static class OrderManager
             throw new BO.BlInvalidRequestException($"Delivery ID={deliveryId} is already completed.");
         }
 
-        // Update DO.Delivery fields
-
         // Get the current system time
         DateTime finishTime = AdminManager.Now;
 
@@ -300,8 +307,8 @@ internal static class OrderManager
             TimeEnd = finishTime          // Update the completion time using system clock
         };
 
-
-        s_dal.Delivery.Update(updatedDelivery);
+        lock (AdminManager.BlMutex) //stage 7
+            s_dal.Delivery.Update(updatedDelivery);
         Observers.NotifyItemUpdated(updatedDelivery.Id); //stage 5
         Observers.NotifyListUpdated();  //stage 5
         Observers.NotifyItemUpdated(courierId);
@@ -312,7 +319,9 @@ internal static class OrderManager
     /// </summary>
     internal static int[] GetordersSummary()
     {
-        var allOrders = s_dal.Order.ReadAll(o => true);
+        var allOrders = null as IEnumerable<DO.Order>;
+        lock (AdminManager.BlMutex) //stage 7
+            allOrders = s_dal.Order.ReadAll(o => true);
 
         int orderStatusCount = Enum.GetValues(typeof(BO.OrderStatus)).Length;
         int scheduleStatusCount = Enum.GetValues(typeof(BO.ScheduleStatus)).Length;
@@ -352,15 +361,18 @@ internal static class OrderManager
 
         try
         {
-            var order = s_dal.Order.Read(orderId);
+            var order = new DO.Order();
+            lock (AdminManager.BlMutex) //stage 7
+                order = s_dal.Order.Read(orderId);
         }
         catch (DalAlreadyExistsException ex)
         {
             throw new BlDoesNotExistException("order does not exist.", ex);
         }
 
-
-        var deliveries = s_dal.Delivery.ReadAll()
+        var deliveries = null as List<DO.Delivery>;
+        lock (AdminManager.BlMutex) //stage 7
+            deliveries = s_dal.Delivery.ReadAll()
                             .Where(d => d.OrderId == orderId)
                             .OrderByDescending(d => d.TimeBegin)
                             .ToList();
@@ -387,19 +399,22 @@ internal static class OrderManager
     /// </summary>
     internal static BO.ScheduleStatus CalculateScheduleStatus(int orderId)
     {
-        var order = s_dal.Order.Read(orderId);
-        if (order == null)
-            throw new BlDoesNotExistException($"Order with ID {orderId} not found.");
+        lock (AdminManager.BlMutex)
+        {
+            var order = s_dal.Order.Read(orderId);
+            if (order == null)
+                throw new BlDoesNotExistException($"Order with ID {orderId} not found.");
 
-        DateTime maxDeliveryTime = order.OrderInitiation.Add(s_dal.Config.MaxDeliveryTime);
-        TimeSpan timeRemaining = maxDeliveryTime - s_dal.Config.Clock;
+            DateTime maxDeliveryTime = order.OrderInitiation.Add(s_dal.Config.MaxDeliveryTime);
+            TimeSpan timeRemaining = maxDeliveryTime - s_dal.Config.Clock;
 
-        if (timeRemaining > s_dal.Config.RiskRange)
-            return BO.ScheduleStatus.OnTime;
-        else if (timeRemaining > TimeSpan.Zero)
-            return BO.ScheduleStatus.InRisk;
-        else
-            return BO.ScheduleStatus.Late;
+            if (timeRemaining > s_dal.Config.RiskRange)
+                return BO.ScheduleStatus.OnTime;
+            else if (timeRemaining > TimeSpan.Zero)
+                return BO.ScheduleStatus.InRisk;
+            else
+                return BO.ScheduleStatus.Late;
+        }
     }
 
     /// <summary>
@@ -407,30 +422,34 @@ internal static class OrderManager
     /// </summary>
     internal static void ChooseOrderForDeliveryDo(int courierId, int orderId)
     {
-        var docourier = s_dal.Courier.Read(courierId);
-        var doOrder = s_dal.Order.Read(orderId);
-        if (doOrder == null)
-            throw new BlDoesNotExistException($"Order with ID {orderId} not found.");
-        if (docourier == null)
-            throw new BlDoesNotExistException($"Courier with ID {courierId} not found.");
-
+        var docourier = null as DO.Courier;
+        lock (AdminManager.BlMutex)
+        {
+            docourier = s_dal.Courier.Read(courierId);
+            var doOrder = s_dal.Order.Read(orderId);
+            if (doOrder == null)
+                throw new BlDoesNotExistException($"Order with ID {orderId} not found.");
+            if (docourier == null)
+                throw new BlDoesNotExistException($"Courier with ID {courierId} not found.");
+        }
 
         var orderStatus = CalculateOrderStatus(orderId);
         if (orderStatus != BO.OrderStatus.Open)
             throw new BlInvalidRequestException("Cannot choose this order: it's not open for delivery.");
-
-        var existingDelivery = s_dal.Delivery.ReadAll()
+        lock (AdminManager.BlMutex)
+        {//stage 7
+            var existingDelivery = s_dal.Delivery.ReadAll()
             .FirstOrDefault(d => d.OrderId == orderId && d.TimeEnd == null);
 
-        if (existingDelivery != null)
-            throw new BlInvalidRequestException("Cannot choose this order: it is already in progress.");
-
+            if (existingDelivery != null)
+                throw new BlInvalidRequestException("Cannot choose this order: it is already in progress.");
+        }
         var newDelivery = new DO.Delivery
         {
             Id = 0,
             OrderId = orderId,
             CourierId = courierId,
-            TimeBegin = s_dal.Config.Clock,
+            TimeBegin = AdminManager.Now,
             TimeEnd = null,
             endcour = null,
             typeofshipment = docourier.typeofshipment
@@ -438,7 +457,8 @@ internal static class OrderManager
 
         try
         {
-            s_dal.Delivery.Create(newDelivery);
+            lock (AdminManager.BlMutex) //stage 7
+                s_dal.Delivery.Create(newDelivery);
         }
         catch (DalAlreadyExistsException ex)
         {
@@ -447,7 +467,8 @@ internal static class OrderManager
         Observers.NotifyListUpdated();
         Observers.NotifyItemUpdated(courierId);
     }
-
+    ///////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////
     /// <summary>
     /// Returns closed deliveries for a courier, optionally filtered and sorted.
     /// </summary>
