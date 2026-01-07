@@ -32,22 +32,27 @@ namespace PL.Courier
         public static readonly DependencyProperty CourierListProperty =
             DependencyProperty.Register("CourierList", typeof(IEnumerable<BO.CourierInList>), typeof(CourierListWindow), new PropertyMetadata(null));
         public BO.DeliveryType dtype { get; set; } = BO.DeliveryType.All;
-        public BO.CourierSortBy courierSortBy { get; set; } 
-        private void ChooseDelivery(object sender, SelectionChangedEventArgs e)
-        {
-            CourierList = s_bl.Courier.GetListOfCourier(0, dtype, courierSortBy);
-        }
-        private void ChooseSort(object sender, SelectionChangedEventArgs e)
-        {
-            CourierList = s_bl.Courier.GetListOfCourier(0, dtype, courierSortBy);
-        }
+        public BO.CourierSortBy courierSortBy { get; set; }
+        private void ChooseDelivery(object sender, SelectionChangedEventArgs e) => courierListObserver();
 
-        private void queryCourierList()
-             => CourierList = s_bl.Courier.GetListOfCourier(0, dtype, courierSortBy);
-        
+
+        private void ChooseSort(object sender, SelectionChangedEventArgs e) => courierListObserver();
+
+
+        private readonly ObserverMutex _mutex = new(); //stage 7
+
         private void courierListObserver()
-            => queryCourierList();
- 
+        {
+            if (_mutex.CheckAndSetLoadInProgressOrRestartRequired())
+                return;
+            _ = Dispatcher.BeginInvoke(async () =>
+            {
+                CourierList = s_bl.Courier.GetListOfCourier(0, dtype, courierSortBy);
+                // Check if a restart was requested while we were working
+                if (await _mutex.UnsetLoadInProgressAndCheckRestartRequested())
+                    courierListObserver();
+            });
+        }
         private void Window_Loaded(object sender, RoutedEventArgs e)
              => s_bl.Courier.AddObserver(courierListObserver);
 
