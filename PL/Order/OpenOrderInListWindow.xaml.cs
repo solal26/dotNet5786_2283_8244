@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using PL.Courier;
+using PL.Helpers;
 
 namespace PL.Order
 {
@@ -30,18 +31,27 @@ namespace PL.Order
         }
         public static readonly DependencyProperty OpenOrderListProperty =
             DependencyProperty.Register("OpenOrderList", typeof(IEnumerable<BO.OpenOrderInList>), typeof(OpenOrderInListWindow), new PropertyMetadata(null));
-       
 
-        private void queryOpenOrderList()
-             => OpenOrderList = s_bl.Order.GetOpenOrdersForCourier(CurrentCourier.Id, CurrentCourier.Id);
 
+        private readonly ObserverMutex _mutex = new(); //stage 7
         private void OpenOrderListObserver()
-            => queryOpenOrderList();
+        {
+            if (_mutex.CheckAndSetLoadInProgressOrRestartRequired())
+                return;
+            _ = Dispatcher.BeginInvoke(async () =>
+            {
+                OpenOrderList = s_bl.Order.GetOpenOrdersForCourier(CurrentCourier.Id, CurrentCourier.Id);
 
+                // Check if a restart was requested while we were working
+                if (await _mutex.UnsetLoadInProgressAndCheckRestartRequested())
+                    OpenOrderListObserver();
+            });
+
+        }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             s_bl.Order.AddObserver(OpenOrderListObserver);
-            queryOpenOrderList();
+            OpenOrderListObserver();
         }
         private void Window_Closed(object sender, EventArgs e)
             => s_bl.Order.RemoveObserver(OpenOrderListObserver);
@@ -89,13 +99,3 @@ namespace PL.Order
         
     }
 }
-//private void ChooseDelivery(object sender, SelectionChangedEventArgs e)
-//{
-//    OpenOrderList = s_bl.Order.GetOpenOrdersForCourier(CurrentCourier.Id, CurrentCourier.Id);
-//}
-//private void queryOpenOrderList()
-//{
-//    var list = s_bl.Order.GetOpenOrdersForCourier(CurrentCourier.Id, CurrentCourier.Id);
-//    MessageBox.Show($"Orders found: {list.Count()}");
-//    OpenOrderList = list;
-//}

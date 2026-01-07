@@ -1,8 +1,8 @@
-﻿using PL.Order;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,6 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using PL.Helpers;
+using PL.Order;
 
 namespace PL.Courier
 {
@@ -100,7 +102,7 @@ namespace PL.Courier
                 MessageBox.Show(ex.Message);
             }
         }
-        public IEnumerable<BO.DeliveryType> DeliveryTypes => Enum.GetValues(typeof(BO.DeliveryType)).Cast<BO.DeliveryType>();
+        //public IEnumerable<BO.DeliveryType> DeliveryTypes => Enum.GetValues(typeof(BO.DeliveryType)).Cast<BO.DeliveryType>();
 
         public MainCourierWindow(int courierId)
         {
@@ -111,19 +113,26 @@ namespace PL.Courier
            bl.Courier.GetCourier(courierId, courierId);
           
         }
-
+        private readonly ObserverMutex _mutex = new(); //stage 7
         private void CourierObserver()
         {
-            int id = CurrentCourier!.Id;
-            CurrentCourier = null;
-         
-            
-             CurrentCourier = bl.Courier.GetCourier(id, id);
-             ButtonText = CurrentCourier.CurrentOrder == null ? "New delivery" : "EndDelivery";
-             haveCurrentOlder = CurrentCourier!.CurrentOrder == null;
-           
-        }
+            if (_mutex.CheckAndSetLoadInProgressOrRestartRequired())
+                return;
+            _ = Dispatcher.BeginInvoke(async () =>
+            {
+                int id = CurrentCourier!.Id;
+                CurrentCourier = null;
 
+
+                CurrentCourier = bl.Courier.GetCourier(id, id);
+                ButtonText = CurrentCourier.CurrentOrder == null ? "New delivery" : "EndDelivery";
+                haveCurrentOlder = CurrentCourier!.CurrentOrder == null;
+
+                // Check if a restart was requested while we were working
+                if (await _mutex.UnsetLoadInProgressAndCheckRestartRequested())
+                    CourierObserver();
+            });
+        }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             
