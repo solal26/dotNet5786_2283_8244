@@ -47,7 +47,7 @@ namespace PL
             set { SetValue(IsRunningProperty, value); }
         }
         public static readonly DependencyProperty IsRunningProperty =
-            DependencyProperty.Register("Interval", typeof(bool), typeof(MainWindow));
+            DependencyProperty.Register("IsRunning", typeof(bool), typeof(MainWindow));
 
 
         public Config Configuration
@@ -132,7 +132,9 @@ namespace PL
             s_bl.Admin.AddClockObserver(clockObserver);
             s_bl.Admin.AddConfigObserver(configObserver);
             s_bl.Order.AddObserver(LoadOrderSummary);
+            buttonText= IsRunning ? "Stop Simulator" : "Run Simulator";
             LoadOrderSummary();
+            Interval = 1000;
         }
 
         private void MainWindow_Closed(object Sender, EventArgs e)
@@ -331,17 +333,33 @@ namespace PL
             if(IsRunning)
             {
                 s_bl.Admin.StopSimulator();
-                IsRunning = true;
-           
+                IsRunning = false;
+                buttonText = "Run Simulator";
+
             }
             else
             {
                 s_bl.Admin.StartSimulator(Interval);
-                IsRunning = false;
+                IsRunning = true;
+                buttonText = "Stop Simulator";
             }
 
         }
 
-        
+        public string buttonText
+        {
+            get { return (string)GetValue(buttonTextProperty); }
+            set { SetValue(buttonTextProperty, value); }
+        }       
+        public static readonly DependencyProperty buttonTextProperty =
+            DependencyProperty.Register(
+                "buttonText",
+                typeof(string),
+                typeof(MainWindow),
+                new PropertyMetadata("Run Simulator")
+            );
+
+
+
     }
 }

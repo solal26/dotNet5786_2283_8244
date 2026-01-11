@@ -95,4 +95,22 @@ namespace PL.Courier
 
 
     }
+
+    public class ModeEnableSimulatorConverter : IValueConverter
+    {
+        //returns true if in update mode (not add mode)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            bool is_running = (bool)value;
+
+
+            return !is_running;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
 }
