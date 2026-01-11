@@ -90,6 +90,10 @@ namespace PL.Courier
                 s_bl.Courier.DeleteCourier(courierId, courierId);
                 
             }
+            catch (BLTemporaryNotAvailableException ex_)
+            {
+                MessageBox.Show(ex_.Message);
+            }
             catch (BO.BlDoesNotExistException ex)
             {
                 MessageBox.Show(ex.Message);

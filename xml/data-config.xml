@@ -2,7 +2,7 @@
 <config>
   <NextOrderId>1050</NextOrderId>
   <NextDeliveryId>5016</NextDeliveryId>
-  <Clock>05/01/2026 18:30:03</Clock>
+  <Clock>12/01/2026 00:30:03</Clock>
   <ManagerId>123456789</ManagerId>
   <ManagerPassword>admin123</ManagerPassword>
   <CompanyAddress>Tel Aviv, Israel</CompanyAddress>

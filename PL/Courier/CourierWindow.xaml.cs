@@ -11,8 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using PL.Order;
+using BO;
 using PL.Helpers;
+using PL.Order;
 namespace PL.Courier
 {
     /// <summary>
@@ -76,6 +77,11 @@ namespace PL.Courier
 
                 Close();
             }
+            catch (BLTemporaryNotAvailableException ex_)
+            {
+                MessageBox.Show(ex_.Message);
+            }
+
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
@@ -144,6 +150,10 @@ namespace PL.Courier
                 this.Close();
 
 
+            }
+            catch (BLTemporaryNotAvailableException ex_)
+            {
+                MessageBox.Show(ex_.Message);
             }
             catch (BO.BlDoesNotExistException ex)
             {

@@ -175,9 +175,10 @@ namespace PL.Order
             {
                 MessageBox.Show($"Cancellation failed: {ex.Message}");
             }
-          
-
-
+            catch (BLTemporaryNotAvailableException ex_)
+            {
+                MessageBox.Show(ex_.Message);
+            }
 
         }
         public OrderListWindow(BO.OrderStatus? orderStatus = null, BO.ScheduleStatus? scheduleStatus = null)

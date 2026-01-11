@@ -1,6 +1,4 @@
-﻿using PL.Courier;
-using PL.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using BO;
+using PL.Courier;
+using PL.Helpers;
 
 namespace PL.Order
 {
@@ -76,10 +77,19 @@ namespace PL.Order
 
                 Close();
             }
-            catch (Exception ex)
+            catch (BO.BlDoesNotExistException ex)
             {
                 MessageBox.Show(ex.Message);
             }
+            catch (BO.BlUnauthorizedAccessException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch ( BLTemporaryNotAvailableException ex_)
+            {
+                MessageBox.Show(ex_.Message);
+            }
+
         }
         private void btnCancelOrder_Click(object sender, RoutedEventArgs e)
         {
@@ -106,6 +116,11 @@ namespace PL.Order
             {
                 MessageBox.Show($"Cancellation failed: {ex.Message}");
             }
+            catch (BLTemporaryNotAvailableException ex_)
+            {
+                MessageBox.Show(ex_.Message);
+            }
+
         }
         public IEnumerable<BO.OrderStatus> OrderStatuses => Enum.GetValues(typeof(BO.OrderStatus)).Cast<BO.OrderStatus>();
         public IEnumerable<BO.OrderType> OrderTypes => Enum.GetValues(typeof(BO.OrderType)).Cast<BO.OrderType>();

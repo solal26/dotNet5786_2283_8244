@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using BO;
 using PL.Helpers;
 using PL.Order;
 
@@ -75,6 +76,11 @@ namespace PL.Courier
                     bl.Order.CompleteOrderDelivery(CurrentCourier!.Id, CurrentCourier!.Id, CurrentCourier!.CurrentOrder.DeliveryId);
                     MessageBox.Show("Delivery ended successfully");
                 }
+                catch (BLTemporaryNotAvailableException ex_)
+                {
+                    MessageBox.Show(ex_.Message);
+                }
+
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
@@ -97,12 +103,16 @@ namespace PL.Courier
 
 
             }
+            catch (BLTemporaryNotAvailableException ex_)
+            {
+                MessageBox.Show(ex_.Message);
+            }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
-        //public IEnumerable<BO.DeliveryType> DeliveryTypes => Enum.GetValues(typeof(BO.DeliveryType)).Cast<BO.DeliveryType>();
+        public IEnumerable<BO.DeliveryType> DeliveryTypes => Enum.GetValues(typeof(BO.DeliveryType)).Cast<BO.DeliveryType>();
 
         public MainCourierWindow(int courierId)
         {

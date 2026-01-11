@@ -142,6 +142,7 @@ namespace PL
             s_bl.Admin.RemoveClockObserver(clockObserver);
             s_bl.Admin.RemoveConfigObserver(configObserver);
             s_bl.Order.RemoveObserver(LoadOrderSummary);
+            s_bl.Admin.StopSimulator();
         }
 
         private void btnCouriers_Click(object sender, RoutedEventArgs e)
