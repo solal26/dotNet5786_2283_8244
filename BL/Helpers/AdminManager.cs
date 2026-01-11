@@ -39,8 +39,8 @@ internal static class AdminManager //stage 4
 
 
     //TO_DO: //stage 7
-        if (_periodicTask is null || _periodicTask.IsCompleted) //stage 7
-            _periodicTask = Task.Run(() => CourierManager.PeriodicCouriersUpdates());
+        /*if (_periodicTask is null || _periodicTask.IsCompleted)*/ //stage 7
+            _ = Task.Run(() => CourierManager.PeriodicCouriersUpdates());
         
         if (ClockUpdatedObservers == null)
             return;
@@ -249,8 +249,8 @@ internal static class AdminManager //stage 4
             //TO_DO: //stage 7
             //Add calls here to any logic simulation that was required in stage 7
             //for example: course registration simulation
-            //if (_simulateTask is null || _simulateTask.IsCompleted)//stage 7
-            //    _simulateTask = Task.Run(() => StudentManager.SimulateCourseRegistrationAndGrade());
+          /*  if (_simulateTask is null || _simulateTask.IsCompleted)*///stage 7
+                _ = Task.Run(() => CourierManager.SimulateCouriersWorkingAsync());
 
             //etc...
 

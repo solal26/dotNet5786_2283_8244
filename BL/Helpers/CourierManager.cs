@@ -333,8 +333,11 @@ internal static class CourierManager
     /// <summary>
     /// Periodic update toggling couriers active/inactive according to inactivity rules and current deliveries.
     /// </summary>
+    private static readonly AsyncMutex s_periodicMutex = new(); //stage 7
     internal static void PeriodicCouriersUpdates()
     {
+        if (s_periodicMutex.CheckAndSetInProgress())
+            return;
         DateTime now = AdminManager.Now;
         TimeSpan inactivityLimit = s_dal.Config.InactivityRange;
 
@@ -401,7 +404,9 @@ internal static class CourierManager
 
             // Notify that the list itself has changed (e.g., for filtering/sorting refresh)
             Observers.NotifyListUpdated();
+
         }
+        s_periodicMutex.UnsetInProgress();
     }
 
     /// <summary>
@@ -628,6 +633,13 @@ internal static class CourierManager
 
             throw new UnauthorizedAccessException("Username or password is incorrect.");
         }
+    }
+    private static readonly AsyncMutex s_simulationMutex = new(); //stage 7
+    internal static async Task SimulateCouriersWorkingAsync()
+    { 
+            if (s_simulationMutex.CheckAndSetInProgress())
+            return;
+        s_simulationMutex.UnsetInProgress();
     }
 }
 
