@@ -6,9 +6,9 @@
   <ManagerId>123456789</ManagerId>
   <ManagerPassword>admin123</ManagerPassword>
   <CompanyAddress>Tel Aviv, Israel</CompanyAddress>
-  <Latitude>32.08088</Latitude>
-  <Longitude>34.78902</Longitude>
-  <MaxRange>30</MaxRange>
+  <Latitude>32.0852997</Latitude>
+  <Longitude>34.7818064</Longitude>
+  <MaxRange>50</MaxRange>
   <AvgCarSpeed>60</AvgCarSpeed>
   <AvgMotorBikeSpeed>45</AvgMotorBikeSpeed>
   <AvgBicycleSpeed>15</AvgBicycleSpeed>

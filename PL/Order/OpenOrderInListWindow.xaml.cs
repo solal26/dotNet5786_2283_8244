@@ -25,6 +25,7 @@ namespace PL.Order
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         public BO.Courier? CurrentCourier { get; set; }
         
+
         public IEnumerable<BO.OpenOrderInList> OpenOrderList
         {
             get { return (IEnumerable<BO.OpenOrderInList>)GetValue(OpenOrderListProperty); }
@@ -32,7 +33,7 @@ namespace PL.Order
         }
         public static readonly DependencyProperty OpenOrderListProperty =
             DependencyProperty.Register("OpenOrderList", typeof(IEnumerable<BO.OpenOrderInList>), typeof(OpenOrderInListWindow), new PropertyMetadata(null));
-
+       
 
         private readonly ObserverMutex _mutex = new(); //stage 7
         private void OpenOrderListObserver()

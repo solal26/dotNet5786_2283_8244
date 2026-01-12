@@ -237,7 +237,7 @@
     <PhoneNumber>0585485425</PhoneNumber>
     <Email>jvbjd@gmail.com</Email>
     <Code>1234</Code>
-    <Active>false</Active>
+    <Active>true</Active>
     <TimeBegin>2026-01-05T18:30:03</TimeBegin>
     <typeofshipment>Car</typeofshipment>
     <Distance>50</Distance>
