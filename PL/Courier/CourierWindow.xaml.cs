@@ -70,7 +70,7 @@ namespace PL.Courier
 
                 else   // מצב עדכון
                 {
-                    bl.Courier.UpdateCourier(CurrentCourier.Id, CurrentCourier);
+                    bl.Courier.UpdateCourier(123456789, CurrentCourier);
                     this.Close();
                     MessageBox.Show("Courier updated successfully");
                 }
@@ -87,7 +87,7 @@ namespace PL.Courier
                 MessageBox.Show(ex.Message);
             }
         }
-        //public IEnumerable<BO.DeliveryType> DeliveryTypes => Enum.GetValues(typeof(BO.DeliveryType)).Cast<BO.DeliveryType>();
+        public IEnumerable<BO.DeliveryType> DeliveryTypes => Enum.GetValues(typeof(BO.DeliveryType)).Cast<BO.DeliveryType>();
 
         public CourierWindow(int courierId = 0)
         {

@@ -12,18 +12,60 @@
     <Window.Resources>
         <local:ModeToVisibilityConverter x:Key="ModeToVisibilityOrderConverter"/>
         <local:ModeToVisibilityActiveConverter x:Key="ModeToVisibilityActiveConverter"/>
+
+        <!-- סגנונות עיצוביים בלבד -->
+        <Style x:Key="ModernLabel" TargetType="Label">
+            <Setter Property="Foreground" Value="#2C3E50"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style x:Key="ModernTextBox" TargetType="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#3498DB"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="5,3"/>
+        </Style>
+
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background" Value="#3498DB"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="5"
+                                Padding="10,5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#2980B9"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
-    <Grid Height="487" VerticalAlignment="Top" >
+
+    <Grid Height="487" VerticalAlignment="Top">
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#E8F4F8" Offset="0"/>
+                <GradientStop Color="#FFFFFF" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="478"/>
-
         </Grid.RowDefinitions>
 
-
-        <Grid HorizontalAlignment="Left"  Margin="25,0,0,0" Width="452" Height="428" VerticalAlignment="Center" Grid.Row="1"  >
+        <!-- הגריד המרכזי - בדיוק כמו המקור -->
+        <Grid HorizontalAlignment="Left" Margin="25,0,0,0" Width="452" Height="428" VerticalAlignment="Center" Grid.Row="1">
             <Grid.RowDefinitions>
-
                 <RowDefinition Height="25*"/>
                 <RowDefinition Height="25*"/>
                 <RowDefinition Height="25*"/>
@@ -42,44 +84,72 @@
                 <ColumnDefinition Width="87*"/>
                 <ColumnDefinition Width="89*"/>
             </Grid.ColumnDefinitions>
-            <Label Content="Id Number:" HorizontalAlignment="Left" FontSize="20" Width="113" Margin="0,0,0,4" Grid.Row="1" RenderTransformOrigin="0.628,-0.68" Grid.ColumnSpan="3" />
-            <TextBox Text="{Binding CurrentCourier.Id}"  IsReadOnly="True"  HorizontalAlignment="Left" VerticalAlignment="Center"  FontSize="10" Height="15" Width="228" Grid.Column="2" Margin="55,0,0,0" Grid.Row="1" Grid.ColumnSpan="2"/>
-            <Label Content="Phone Number:" HorizontalAlignment="Left" Grid.Row="2" FontSize="20"  VerticalAlignment="Center" Width="113" Height="34" Grid.ColumnSpan="3" />
-            <TextBox Grid.Column="2"  Grid.Row="2"  Text="{Binding CurrentCourier.Phone}" VerticalAlignment="Center"  FontSize="10" Height="15" Margin="23,0,10,0" Grid.ColumnSpan="2"/>
-            <Label Content="Email:" HorizontalAlignment="Left" Grid.Row="3" FontSize="20"  VerticalAlignment="Center" Width="64" Height="34" />
-            <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding CurrentCourier.Email}" VerticalAlignment="Center"  FontSize="10" Height="15" Margin="23,0,10,0" Grid.ColumnSpan="2"/>
-            <Label Content="Password:" HorizontalAlignment="Left" Grid.Row="4" FontSize="20"  VerticalAlignment="Center" Width="96" Height="35" Grid.ColumnSpan="2" />
-            <TextBox Grid.Column="2" Grid.Row="4" Text="{Binding CurrentCourier.Password}" VerticalAlignment="Center"  FontSize="10" Height="15" Margin="23,0,10,0" Grid.ColumnSpan="2"/>
-            <Label Content="Is Active:" HorizontalAlignment="Left" Grid.Row="5" FontSize="20"  VerticalAlignment="Center" Width="96" Height="36" Grid.ColumnSpan="2" />
-            <CheckBox Grid.Column="2" IsEnabled="False" HorizontalAlignment="Left" Grid.Row="5" IsChecked="{Binding CurrentCourier.Active}"  VerticalAlignment="Center"  FontSize="10" Height="15" Width="16" Grid.ColumnSpan="2" Margin="168,0,0,0"/>
-            <Label Content="Max Delivery Distance:" HorizontalAlignment="Left" Grid.Row="6" FontSize="20"  VerticalAlignment="Center" Width="127" Height="36" Grid.ColumnSpan="3" />
-            <TextBox Grid.Column="2" Grid.Row="6"  Text="{Binding CurrentCourier.MaxDeliveryDistance}" VerticalAlignment="Center"  FontSize="10" Height="15" Margin="55,0,10,0" Grid.ColumnSpan="2"/>
-            <Label Content="Type of Delivery:" HorizontalAlignment="Left" Grid.Row="7" FontSize="20"  VerticalAlignment="Center" Width="160" Height="35" Grid.ColumnSpan="3" />
-            <ComboBox HorizontalAlignment="Left" IsEnabled="{Binding haveCurrentOlder}" Grid.Row="7"  VerticalAlignment="Center"  FontSize="20" Height="35" 
-                      ItemsSource="{Binding DeliveryTypes}"  SelectedItem="{Binding CurrentCourier.DeliveryType, Mode=TwoWay}" Width="148" Grid.Column="2" Grid.ColumnSpan="2" Margin="102,0,0,0"/>
-            <Label Content="Start Date:" HorizontalAlignment="Left" Grid.Row="8" FontSize="20"  VerticalAlignment="Center" Width="113" Height="36" Grid.ColumnSpan="3" />
-            <DatePicker HorizontalAlignment="Left" IsEnabled="False"  Grid.Row="8" VerticalAlignment="Top"   SelectedDate="{Binding CurrentCourier.StartDate}"  FontSize="10" Height="29" Width="128" Grid.Column="2" Grid.ColumnSpan="2" Margin="112,9,0,0"/>
-            <Label Content="Delivered On Time:"  HorizontalAlignment="Left" Grid.Row="8" FontSize="20"  VerticalAlignment="Top" Width="212" Height="34" Grid.ColumnSpan="3" Margin="0,39,0,0" Grid.RowSpan="2" />
-            <TextBox Grid.Column="2" Grid.Row="9" IsReadOnly="True" VerticalAlignment="Center" Text="{Binding CurrentCourier.DeliveredOnTime}"  FontSize="10" Height="15" Margin="102,0,0,0" Grid.ColumnSpan="2"/>
-            <Label Content="Delivered Late:"  HorizontalAlignment="Left" Grid.Row="10" FontSize="20"  VerticalAlignment="Center" Width="160" Height="34" Grid.ColumnSpan="3" />
-            <TextBox Grid.Column="2" Grid.Row="10" IsReadOnly="True" VerticalAlignment="Center" Text="{Binding CurrentCourier.DeliveredLate}"  FontSize="10" Height="15" Margin="55,0,0,0" Grid.ColumnSpan="2"/>
-            <Button Content="{Binding ButtonText}" Click="btnChooseOrEnd_Click" Visibility="{Binding CurrentCourier.Active ,Converter={StaticResource ModeToVisibilityActiveConverter}}" Grid.Column="3" Margin="235,0,-178,0" RenderTransformOrigin="0.509,0.543" Height="45" VerticalAlignment="Center" />
 
+            <Label Content="Id Number:" Style="{StaticResource ModernLabel}" HorizontalAlignment="Left" FontSize="20" Width="113" Margin="0,0,0,4" Grid.Row="1" RenderTransformOrigin="0.628,-0.68" Grid.ColumnSpan="3"/>
+            <TextBox Text="{Binding CurrentCourier.Id}" IsReadOnly="True" Style="{StaticResource ModernTextBox}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Height="28" Width="228" Grid.Column="2" Margin="55,0,0,0" Grid.Row="1" Grid.ColumnSpan="2"/>
 
+            <Label Content="Phone Number:" Style="{StaticResource ModernLabel}" HorizontalAlignment="Left" Grid.Row="2" FontSize="20" VerticalAlignment="Center" Width="170" Height="34" Grid.ColumnSpan="3"/>
+            <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding CurrentCourier.Phone}" Style="{StaticResource ModernTextBox}" VerticalAlignment="Center" FontSize="14" Height="28" Margin="70,0,10,0" Grid.ColumnSpan="2"/>
+
+            <Label Content="Email:" Style="{StaticResource ModernLabel}" HorizontalAlignment="Left" Grid.Row="3" FontSize="20" VerticalAlignment="Center" Width="64" Height="34"/>
+            <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding CurrentCourier.Email}" Style="{StaticResource ModernTextBox}" VerticalAlignment="Center" FontSize="14" Height="28" Margin="23,0,10,0" Grid.ColumnSpan="2"/>
+
+            <Label Content="Password:" Style="{StaticResource ModernLabel}" HorizontalAlignment="Left" Grid.Row="4" FontSize="20" VerticalAlignment="Center" Width="96" Height="35" Grid.ColumnSpan="2"/>
+            <TextBox Grid.Column="2" Grid.Row="4" Text="{Binding CurrentCourier.Password}" Style="{StaticResource ModernTextBox}" VerticalAlignment="Center" FontSize="14" Height="28" Margin="23,0,10,0" Grid.ColumnSpan="2"/>
+
+            <Label Content="Is Active:" Style="{StaticResource ModernLabel}" HorizontalAlignment="Left" Grid.Row="5" FontSize="20" VerticalAlignment="Center" Width="96" Height="36" Grid.ColumnSpan="2"/>
+            <CheckBox Grid.Column="2" IsEnabled="False" HorizontalAlignment="Left" Grid.Row="5" IsChecked="{Binding CurrentCourier.Active}" VerticalAlignment="Center" Height="20" Width="20" Grid.ColumnSpan="2" Margin="168,0,0,0"/>
+
+            <Label Content="Max Delivery Distance:" Style="{StaticResource ModernLabel}" HorizontalAlignment="Left" Grid.Row="6" FontSize="20" VerticalAlignment="Center" Width="226" Height="36" Grid.ColumnSpan="3"/>
+            <TextBox Grid.Column="2" Grid.Row="6" Text="{Binding CurrentCourier.MaxDeliveryDistance}" Style="{StaticResource ModernTextBox}" VerticalAlignment="Center" FontSize="14" Height="28" Margin="126,0,10,0" Grid.ColumnSpan="2"/>
+
+            <Label Content="Type of Delivery:" Style="{StaticResource ModernLabel}" HorizontalAlignment="Left" Grid.Row="7" FontSize="20" VerticalAlignment="Center" Width="160" Height="35" Grid.ColumnSpan="3"/>
+            <ComboBox HorizontalAlignment="Left" IsEnabled="{Binding haveCurrentOlder}" Grid.Row="7" VerticalAlignment="Center" FontSize="20" Height="35" 
+                      ItemsSource="{Binding DeliveryTypes}" SelectedItem="{Binding CurrentCourier.DeliveryType, Mode=TwoWay}" Width="148" Grid.Column="2" Grid.ColumnSpan="2" Margin="102,0,0,0"
+                      Background="White" BorderBrush="#3498DB" BorderThickness="2"/>
+
+            <Label Content="Start Date:" Style="{StaticResource ModernLabel}" HorizontalAlignment="Left" Grid.Row="8" FontSize="20" VerticalAlignment="Center" Width="113" Height="36" Grid.ColumnSpan="3"/>
+            <DatePicker HorizontalAlignment="Left" IsEnabled="False" Grid.Row="8" VerticalAlignment="Top" SelectedDate="{Binding CurrentCourier.StartDate}" FontSize="14" Height="32" Width="128" Grid.Column="2" Grid.ColumnSpan="2" Margin="114,7,0,0"
+                        Background="White" BorderBrush="#3498DB" BorderThickness="2"/>
+
+            <Label Content="Delivered On Time:" Style="{StaticResource ModernLabel}" HorizontalAlignment="Left" Grid.Row="8" FontSize="20" VerticalAlignment="Top" Width="212" Height="34" Grid.ColumnSpan="3" Margin="0,39,0,0" Grid.RowSpan="2"/>
+            <TextBox Grid.Column="2" Grid.Row="9" IsReadOnly="True" Style="{StaticResource ModernTextBox}" VerticalAlignment="Center" Text="{Binding CurrentCourier.DeliveredOnTime}" FontSize="14" Height="28" Margin="102,0,0,0" Grid.ColumnSpan="2"/>
+
+            <Label Content="Delivered Late:" Style="{StaticResource ModernLabel}" HorizontalAlignment="Left" Grid.Row="10" FontSize="20" VerticalAlignment="Center" Width="160" Height="34" Grid.ColumnSpan="3"/>
+            <TextBox Grid.Column="2" Grid.Row="10" IsReadOnly="True" Style="{StaticResource ModernTextBox}" VerticalAlignment="Center" Text="{Binding CurrentCourier.DeliveredLate}" FontSize="14" Height="28" Margin="55,0,0,0" Grid.ColumnSpan="2"/>
+
+            <!-- הכפתור הזה נשאר בדיוק במקום המקורי עם כל הלוגיקה -->
+            <Button Content="{Binding ButtonText}" Click="btnChooseOrEnd_Click" 
+                    Visibility="{Binding CurrentCourier.Active, Converter={StaticResource ModeToVisibilityActiveConverter}}" 
+                    Grid.Column="3" Margin="235,0,-178,0" RenderTransformOrigin="0.509,0.543" Height="45" VerticalAlignment="Center"
+                    Style="{StaticResource ModernButton}"/>
         </Grid>
-        <TextBox Text="{Binding CurrentCourier.FullName}" IsReadOnly="True" HorizontalAlignment="Left" Margin="180,10,0,0" Grid.Row="1" FontSize="30"  TextWrapping="Wrap" VerticalAlignment="Top" Width="291" Height="44"/>
-        <Label Content="WELCOME" HorizontalAlignment="Left" FontSize="30" Margin="25,6,0,0" Grid.Row="1" VerticalAlignment="Top" Width="155" Height="48"/>
-        <Button  Content="Update" Click="btnUpdate_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="535,396,0,0" Grid.Row="1" Height="42" RenderTransformOrigin="0.48,0.412"/>
-        <Button Content="DeliveryHistory" Click="btnDeliveryHistory_Click" HorizontalAlignment="Left" Margin="535,304,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120" Height="42"/>
-        <Button Content="My current order" Visibility="{Binding haveCurrentOlder, Converter={StaticResource ModeToVisibilityOrderConverter}}" Click="btnCurrenrOrder_Click" HorizontalAlignment="Left" Margin="535,118,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120" Height="42"/>
 
+        <!-- כותרת Welcome + שם -->
+        <Border HorizontalAlignment="Left" Margin="25,10,0,0" Grid.Row="1" VerticalAlignment="Top" 
+                Width="446" Height="54" CornerRadius="8" Padding="10">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop Color="#3498DB" Offset="0"/>
+                    <GradientStop Color="#2980B9" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Label Content="WELCOME" FontSize="26" Foreground="White" FontWeight="Bold" Height="45"/>
+                <TextBox Text="{Binding CurrentCourier.FullName}" IsReadOnly="True" FontSize="28" Width="260" 
+                         BorderThickness="0" Background="Transparent" Foreground="White" FontWeight="SemiBold" 
+                         VerticalContentAlignment="Center" Padding="5,0"/>
+            </StackPanel>
+        </Border>
 
+        <!-- כפתורים בצד - בדיוק במקומות המקוריים -->
+        <Button Content="Update" Click="btnUpdate_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="535,396,0,0" Grid.Row="1" Height="42" RenderTransformOrigin="0.48,0.412"
+                Style="{StaticResource ModernButton}" Background="#27AE60"/>
 
+        <Button Content="DeliveryHistory" Click="btnDeliveryHistory_Click" HorizontalAlignment="Left" Margin="535,304,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120" Height="42"
+                Style="{StaticResource ModernButton}"/>
 
-
-
-
-
-
+        <Button Content="My current order" Visibility="{Binding haveCurrentOlder, Converter={StaticResource ModeToVisibilityOrderConverter}}" Click="btnCurrenrOrder_Click" HorizontalAlignment="Left" Margin="535,118,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120" Height="42"
+                Style="{StaticResource ModernButton}"/>
     </Grid>
 </Window>
