@@ -17,14 +17,14 @@ internal class OrderImplementation : BlApi.IOrder
     /// <summary>
     /// Validate requester permission then create a new order via <see cref="OrderManager.AddOrdeDo"/>.
     /// </summary>
-    public void AddOrder(int requesterId, BO.Order order)
+    public async Task AddOrder(int requesterId, BO.Order order)
     {
         AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         bool permission = CourierManager.HasPermission(requesterId);
         if (!permission)
             throw new BlUnauthorizedAccessException("Requester does not have permission to add this order.");
 
-        OrderManager.AddOrdeDo(order);
+        await OrderManager.AddOrdeDo(order);
 
     }
 
@@ -66,13 +66,13 @@ internal class OrderImplementation : BlApi.IOrder
     /// <summary>
     /// Mark a delivery complete — ensures requester has permission then delegates to <see cref="OrderManager.CompleteOrderDeliveryDo"/>.
     /// </summary>
-    public void CompleteOrderDelivery(int requesterId, int courierId, int deliveryId)
+    public void CompleteOrderDelivery(int requesterId, int courierId, int deliveryId,DO.Endofcourier endcour)
     {
         AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         bool permission = CourierManager.HasPermission(requesterId, courierId);
         if (!permission)
             throw new BlUnauthorizedAccessException("Requester does not have permission to add this order.");
-        OrderManager.CompleteOrderDeliveryDo(courierId, deliveryId);
+        OrderManager.CompleteOrderDeliveryDo(courierId, deliveryId, endcour);
 
     }
 

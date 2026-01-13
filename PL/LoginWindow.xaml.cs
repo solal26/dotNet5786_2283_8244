@@ -42,6 +42,10 @@ namespace PL
             catch (UnauthorizedAccessException ex) { 
                 MessageBox.Show(ex.Message);
             }
+            catch(FormatException ex)
+            {
+                MessageBox.Show("Invalid ID format. Please enter a numeric ID.");
+            }
         }
         public LoginWindow()
         {

@@ -13,7 +13,6 @@
         <local:ModeToVisibilityConverter x:Key="ModeToVisibilityOrderConverter"/>
         <local:ModeToVisibilityActiveConverter x:Key="ModeToVisibilityActiveConverter"/>
 
-        <!-- סגנונות עיצוביים בלבד -->
         <Style x:Key="ModernLabel" TargetType="Label">
             <Setter Property="Foreground" Value="#2C3E50"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
@@ -63,7 +62,6 @@
             <RowDefinition Height="478"/>
         </Grid.RowDefinitions>
 
-        <!-- הגריד המרכזי - בדיוק כמו המקור -->
         <Grid HorizontalAlignment="Left" Margin="25,0,0,0" Width="452" Height="428" VerticalAlignment="Center" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="25*"/>
@@ -118,14 +116,17 @@
             <Label Content="Delivered Late:" Style="{StaticResource ModernLabel}" HorizontalAlignment="Left" Grid.Row="10" FontSize="20" VerticalAlignment="Center" Width="160" Height="34" Grid.ColumnSpan="3"/>
             <TextBox Grid.Column="2" Grid.Row="10" IsReadOnly="True" Style="{StaticResource ModernTextBox}" VerticalAlignment="Center" Text="{Binding CurrentCourier.DeliveredLate}" FontSize="14" Height="28" Margin="55,0,0,0" Grid.ColumnSpan="2"/>
 
-            <!-- הכפתור הזה נשאר בדיוק במקום המקורי עם כל הלוגיקה -->
             <Button Content="{Binding ButtonText}" Click="btnChooseOrEnd_Click" 
                     Visibility="{Binding CurrentCourier.Active, Converter={StaticResource ModeToVisibilityActiveConverter}}" 
                     Grid.Column="3" Margin="235,0,-178,0" RenderTransformOrigin="0.509,0.543" Height="45" VerticalAlignment="Center"
-                    Style="{StaticResource ModernButton}"/>
+                    Style="{StaticResource ModernButton}">
+                <Button.ContextMenu>
+                    <ContextMenu>
+                    </ContextMenu>
+                </Button.ContextMenu>
+            </Button>
         </Grid>
 
-        <!-- כותרת Welcome + שם -->
         <Border HorizontalAlignment="Left" Margin="25,10,0,0" Grid.Row="1" VerticalAlignment="Top" 
                 Width="446" Height="54" CornerRadius="8" Padding="10">
             <Border.Background>
@@ -142,7 +143,6 @@
             </StackPanel>
         </Border>
 
-        <!-- כפתורים בצד - בדיוק במקומות המקוריים -->
         <Button Content="Update" Click="btnUpdate_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="535,396,0,0" Grid.Row="1" Height="42" RenderTransformOrigin="0.48,0.412"
                 Style="{StaticResource ModernButton}" Background="#27AE60"/>
 

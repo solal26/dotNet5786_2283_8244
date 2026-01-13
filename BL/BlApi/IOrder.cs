@@ -73,7 +73,7 @@ public interface IOrder:IObservable
     /// </summary>
     /// <param name="requesterId">Id of the user creating the order (used for permission/audit).</param>
     /// <param name="order">Business order payload; Id is usually ignored/assigned by the DAL.</param>
-    void AddOrder(int requesterId, BO.Order order);
+    Task AddOrder(int requesterId, BO.Order order);
 
     /// <summary>
     /// Mark a delivery as completed by the courier.
@@ -81,7 +81,7 @@ public interface IOrder:IObservable
     /// <param name="requesterId">Id of the user requesting completion (usually the courier).</param>
     /// <param name="courierId">Courier identifier performing the completion; must match active assignment.</param>
     /// <param name="deliveryId">Delivery identifier to complete.</param>
-    void CompleteOrderDelivery(int requesterId, int courierId, int deliveryId);
+    void CompleteOrderDelivery(int requesterId, int courierId, int deliveryId,DO.Endofcourier endcour);
 
     /// <summary>
     /// Assigns (chooses) an open order for delivery by a courier and creates the delivery record.

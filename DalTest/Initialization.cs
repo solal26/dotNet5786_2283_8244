@@ -57,14 +57,14 @@ public static class Initialization
         s_dal!.Config.CompanyAddress = companyAddress.Address;
         s_dal!.Config.Latitude = companyAddress.Lat;
         s_dal!.Config.Longitude = companyAddress.Lon;
-        s_dal!.Config.MaxRange = 30;
+        s_dal!.Config.MaxRange = 200;
         s_dal!.Config.AvgCarSpeed = 60.0;
         s_dal!.Config.AvgMotorBikeSpeed = 45.0;
         s_dal!.Config.AvgBicycleSpeed = 15.0;
         s_dal!.Config.AvgWalkingSpeed = 5.0;
-        s_dal!.Config.MaxDeliveryTime = TimeSpan.FromHours(3);
-        s_dal!.Config.RiskRange = TimeSpan.FromHours(2);
-        s_dal!.Config.InactivityRange = TimeSpan.FromDays(1);
+        s_dal!.Config.MaxDeliveryTime = TimeSpan.FromDays(3);
+        s_dal!.Config.RiskRange = TimeSpan.FromDays(2);
+        s_dal!.Config.InactivityRange = TimeSpan.FromDays(4);
         s_dal!.Config.Clock = DateTime.Now;
     }
 

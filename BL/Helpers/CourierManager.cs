@@ -634,12 +634,112 @@ internal static class CourierManager
             throw new UnauthorizedAccessException("Username or password is incorrect.");
         }
     }
-    private static readonly AsyncMutex s_simulationMutex = new(); //stage 7
+    /*   private static readonly AsyncMutex s_simulationMutex = new();*/ //stage 7
+                                                                         //internal static async Task SimulateCouriersWorkingAsync()
+                                                                         //{ 
+                                                                         //        if (s_simulationMutex.CheckAndSetInProgress())
+                                                                         //        return;
+                                                                         //    s_simulationMutex.UnsetInProgress();
+                                                                         //}
+
+
+    private static readonly Random s_rand = new();
+    private static readonly AsyncMutex s_simulationMutex = new();
+
     internal static async Task SimulateCouriersWorkingAsync()
-    { 
-            if (s_simulationMutex.CheckAndSetInProgress())
+    {
+        // 1. הגנה מפני הרצה כפולה
+        if (s_simulationMutex.CheckAndSetInProgress())
             return;
-        s_simulationMutex.UnsetInProgress();
+
+        try
+        {
+            List<DO.Courier> activeCouriers;
+            // 2. קבלת רשימה קונקרטית תחת lock קצר למניעת Deferred Execution
+            lock (AdminManager.BlMutex)
+            {
+                activeCouriers = s_dal.Courier.ReadAll(c => c.Active).ToList();
+            }
+
+            foreach (var doCourier in activeCouriers)
+            {
+                // קבלת ההזמנה הנוכחית בטיפול (BO.OrderInProgress)
+                var currentOrder = GetCurrentOrder(doCourier.Id);
+
+                if (currentOrder == null)
+                {
+                    // --- מקרה א: שליח פנוי ---
+                    if (s_rand.NextDouble() < 0.15)
+                    {
+                        var openOrders = OrderManager.GetOpenOrdersForACourier(doCourier.Id, null, null).ToList();
+
+                        if (openOrders.Any() && s_rand.NextDouble() < 0.5)
+                        {
+                            var selectedOrder = openOrders[s_rand.Next(openOrders.Count)];
+
+                            lock (AdminManager.BlMutex)
+                            {
+                                OrderManager.ChooseOrderForDeliveryDo(doCourier.Id, selectedOrder.OrderId);
+                            }
+
+                            Observers.NotifyItemUpdated(doCourier.Id);
+                            OrderManager.Observers.NotifyItemUpdated(selectedOrder.OrderId);
+                        }
+                    }
+                }
+                else
+                {
+                    // --- מקרה ב: שליח בטיפול בהזמנה ---
+
+                    // שימוש בתכונה הקיימת ExpectedDeliveryTime (זמן הגעה משוער)
+                    // נוסיף גיוון רנדומלי קטן (למשל עיכוב או הקדמה של עד 5 דקות)
+                    DateTime randomizedFinishTime = currentOrder.ExpectedDeliveryTime.AddMinutes(s_rand.Next(-2, 6));
+
+                    // בדיקה אם זמן המערכת הנוכחי עבר את זמן הסיום המיועד
+                    if (AdminManager.Now >= randomizedFinishTime)
+                    {
+                        double dice = s_rand.NextDouble();
+                        DO.Endofcourier endStatus;
+
+                        if (dice < 0.85) // 85% הצלחה
+                            endStatus = DO.Endofcourier.Delivered;
+                        else if (dice < 0.92) // 7% לא היה בבית
+                            endStatus = DO.Endofcourier.NotHere;
+                        else if (dice < 0.96) // 4% סירב לקבל
+                            endStatus = DO.Endofcourier.Refused;
+                        else // 4% כשל מסיבה אחרת
+                            endStatus = DO.Endofcourier.Failed;
+                        // סיום טיפול בהזמנה
+                        lock (AdminManager.BlMutex)
+                        {
+                            OrderManager.CompleteOrderDeliveryDo(doCourier.Id, currentOrder.DeliveryId,endStatus);
+                        }
+
+                        Observers.NotifyItemUpdated(doCourier.Id);
+                        OrderManager.Observers.NotifyItemUpdated(currentOrder.OrderId);
+                    }
+                    else
+                    {
+                        // אם עדיין לא הגיע זמן הסיום - הסתברות של 10% לביטול ע"י מנהל
+                        if (s_rand.NextDouble() < 0.10)
+                        {
+                            lock (AdminManager.BlMutex)
+                            {
+                                OrderManager.CancelOrderDo(currentOrder.OrderId);
+                            }
+
+                            Observers.NotifyItemUpdated(doCourier.Id);
+                            OrderManager.Observers.NotifyItemUpdated(currentOrder.OrderId);
+                        }
+                    }
+                }
+            }
+        }
+        finally
+        {
+            // 3. שחרור ה-Mutex בסיום
+            s_simulationMutex.UnsetInProgress();
+        }
     }
 }
 

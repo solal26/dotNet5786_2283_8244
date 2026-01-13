@@ -269,7 +269,7 @@ internal static class OrderManager
     /// <summary>
     /// Completes a delivery: marks it delivered and sets TimeEnd.
     /// </summary>
-    internal static void CompleteOrderDeliveryDo(int courierId, int deliveryId)
+    internal static void CompleteOrderDeliveryDo(int courierId, int deliveryId,DO.Endofcourier _endcour)
     {
         //Read existing DO.Delivery object
         DO.Delivery doDelivery;
@@ -303,7 +303,7 @@ internal static class OrderManager
 
         DO.Delivery updatedDelivery = doDelivery with
         {
-            endcour = DO.Endofcourier.Delivered, // Set the completion type to "Supplied"
+            endcour = _endcour, // Set the completion type to "Supplied"
             TimeEnd = finishTime          // Update the completion time using system clock
         };
 

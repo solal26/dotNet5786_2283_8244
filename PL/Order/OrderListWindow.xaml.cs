@@ -126,10 +126,14 @@ namespace PL.Order
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             s_bl.Order.AddObserver(orderListObserver);
+            s_bl.Admin.AddClockObserver(orderListObserver);
             orderListObserver();
         }
         private void Window_Closed(object sender, EventArgs e)
-            => s_bl.Order.RemoveObserver(orderListObserver);
+        {
+            s_bl.Order.RemoveObserver(orderListObserver);
+            s_bl.Admin.RemoveClockObserver(orderListObserver);
+        }
         private void lsvOrderList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (SelectedOrder != null)

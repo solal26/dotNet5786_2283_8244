@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using System.Runtime.Intrinsics.Arm;
 using BO;
 
 namespace BlTest
@@ -607,8 +608,10 @@ namespace BlTest
 
             Console.Write("Enter Delivery ID: ");
             int deliveryId = int.Parse(Console.ReadLine() ?? "0");
+            Console.Write("Enter End Of delivery sort: ");
+            DO.Endofcourier sort = (DO.Endofcourier)int.Parse(Console.ReadLine() ?? "0");
 
-            s_bl.Order.CompleteOrderDelivery(s_currentUserId, courierId, deliveryId);
+            s_bl.Order.CompleteOrderDelivery(s_currentUserId, courierId, deliveryId,sort);
             Console.WriteLine("Delivery completed successfully!");
         }
         /// <summary>

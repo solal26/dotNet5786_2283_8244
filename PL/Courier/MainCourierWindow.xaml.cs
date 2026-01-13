@@ -62,28 +62,69 @@ namespace PL.Courier
                 new OrderInProgressWindow(CurrentCourier!.Id).Show();
             }
         }
+        //private void btnChooseOrEnd_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (ButtonText == "New delivery")
+        //    {
+
+        //        new OpenOrderInListWindow(CurrentCourier!.Id).Show();
+        //    }
+        //    else
+        //    {
+        //        try
+        //        {
+        //            bl.Order.CompleteOrderDelivery(CurrentCourier!.Id, CurrentCourier!.Id, CurrentCourier!.CurrentOrder.DeliveryId);
+        //            MessageBox.Show("Delivery ended successfully");
+        //        }
+        //        catch (BLTemporaryNotAvailableException ex_)
+        //        {
+        //            MessageBox.Show(ex_.Message);
+        //        }
+
+        //        catch (Exception ex)
+        //        {
+        //            MessageBox.Show(ex.Message);
+        //        }
+        //    }
+        //}
+
         private void btnChooseOrEnd_Click(object sender, RoutedEventArgs e)
         {
             if (ButtonText == "New delivery")
             {
-              
                 new OpenOrderInListWindow(CurrentCourier!.Id).Show();
             }
-            else
+            else // מצב End Delivery
             {
-                try
+                // גישה לכפתור ללא שימוש בשם שלו
+                Button btn = sender as Button;
+                if (btn != null && btn.ContextMenu != null)
                 {
-                    bl.Order.CompleteOrderDelivery(CurrentCourier!.Id, CurrentCourier!.Id, CurrentCourier!.CurrentOrder.DeliveryId);
-                    MessageBox.Show("Delivery ended successfully");
-                }
-                catch (BLTemporaryNotAvailableException ex_)
-                {
-                    MessageBox.Show(ex_.Message);
-                }
+                    // ניקוי ובנייה מחדש של האופציות
+                    btn.ContextMenu.Items.Clear();
 
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
+                    var statuses = Enum.GetValues(typeof(DO.Endofcourier))
+                                       .Cast<DO.Endofcourier>()
+                                       .Where(s => s != DO.Endofcourier.Canceled);
+
+                    foreach (var status in statuses)
+                    {
+                        MenuItem item = new MenuItem { Header = status.ToString() };
+                        item.Click += (s, args) =>
+                        {
+                            try
+                            {
+                                bl.Order.CompleteOrderDelivery(CurrentCourier.Id, CurrentCourier.Id,CurrentCourier.CurrentOrder.DeliveryId, status);
+                                MessageBox.Show($"Delivery finished successfully as: {status}");
+                            }
+                            catch (Exception ex) { MessageBox.Show(ex.Message); }
+                        };
+                        btn.ContextMenu.Items.Add(item);
+                    }
+
+                    // פתיחת התפריט בדיוק במיקום של הכפתור
+                    btn.ContextMenu.PlacementTarget = btn;
+                    btn.ContextMenu.IsOpen = true;
                 }
             }
         }

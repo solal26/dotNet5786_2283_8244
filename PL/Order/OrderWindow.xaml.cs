@@ -58,13 +58,13 @@ namespace PL.Order
                 MessageBox.Show("No last deliveris assigned");
             }
         }
-        private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
+        private async void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (_isAddMode)  // מצב הוספה
                 {
-                    bl.Order.AddOrder(123456789, CurrentOrder);
+                   await bl.Order.AddOrder(123456789, CurrentOrder);
                     this.Close();
                     MessageBox.Show("Order added successfully");
                 }
@@ -76,6 +76,14 @@ namespace PL.Order
                 }
 
                 Close();
+            }
+            catch (BO.BlInvalidAddressException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (BO.BlInvalidValueException ex)
+            {
+                MessageBox.Show(ex.Message);
             }
             catch (BO.BlDoesNotExistException ex)
             {
@@ -151,6 +159,7 @@ namespace PL.Order
 
             bl.Courier.AddObserver(CurrentOrder.Id, OrderObserver);
             bl.Order.AddObserver(CurrentOrder.Id, OrderObserver);
+            bl.Admin.AddClockObserver(OrderObserver);
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -158,6 +167,7 @@ namespace PL.Order
 
             bl.Courier.RemoveObserver(CurrentOrder.Id, OrderObserver);
             bl.Order.RemoveObserver(CurrentOrder.Id, OrderObserver);
+            bl.Admin.RemoveClockObserver(OrderObserver);
         }
     
 
