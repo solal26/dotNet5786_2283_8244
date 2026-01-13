@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <config>
   <NextOrderId>1050</NextOrderId>
-  <NextDeliveryId>5016</NextDeliveryId>
-  <Clock>12/01/2026 00:30:03</Clock>
+  <NextDeliveryId>5012</NextDeliveryId>
+  <Clock>13/01/2026 20:52:13</Clock>
   <ManagerId>123456789</ManagerId>
   <ManagerPassword>admin123</ManagerPassword>
   <CompanyAddress>Tel Aviv, Israel</CompanyAddress>
-  <Latitude>32.0852997</Latitude>
-  <Longitude>34.7818064</Longitude>
-  <MaxRange>50</MaxRange>
+  <Latitude>32.08088</Latitude>
+  <Longitude>34.78902</Longitude>
+  <MaxRange>200</MaxRange>
   <AvgCarSpeed>60</AvgCarSpeed>
   <AvgMotorBikeSpeed>45</AvgMotorBikeSpeed>
   <AvgBicycleSpeed>15</AvgBicycleSpeed>
   <AvgWalkingSpeed>5</AvgWalkingSpeed>
-  <MaxDeliveryTime>03:00:00</MaxDeliveryTime>
-  <RiskRange>02:00:00</RiskRange>
-  <InactivityRange>1.00:00:00</InactivityRange>
+  <MaxDeliveryTime>3.00:00:00</MaxDeliveryTime>
+  <RiskRange>2.00:00:00</RiskRange>
+  <InactivityRange>4.00:00:00</InactivityRange>
 </config>
