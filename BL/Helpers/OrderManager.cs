@@ -467,15 +467,15 @@ internal static class OrderManager
         Observers.NotifyListUpdated();
         Observers.NotifyItemUpdated(courierId);
     }
-    ///////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////
     /// <summary>
     /// Returns closed deliveries for a courier, optionally filtered and sorted.
     /// </summary>
     internal static IEnumerable<ClosedDeliveryInList> GetClosedDeliveriesForCourier(int courierId, OrderType? filterType, ClosedDeliveryInListSort? sortBy)
     {
-
-        var listToFilter = s_dal.Delivery.ReadAll(d =>
+        var listToFilter = null as IEnumerable<BO.ClosedDeliveryInList>;
+        lock (AdminManager.BlMutex)
+        {
+            listToFilter = s_dal.Delivery.ReadAll(d =>
             d.CourierId == courierId && d.TimeEnd.HasValue)
             .Select(doDelivery =>
             {
@@ -497,7 +497,7 @@ internal static class OrderManager
                     ActualDistance = doDelivery.Distance
                 };
             }).AsEnumerable();
-
+        }
 
         if (filterType.HasValue)
         {
@@ -539,39 +539,46 @@ internal static class OrderManager
     {
         try
         {
-            var doOrder = s_dal.Order.Read(orderId);
-            var Airdistance = CourierManager.CalculateAirDistance(doOrder.Latitude, doOrder.Longitude);
-            var deliveries = s_dal.Delivery.ReadAll()
-                            .Where(d => d.OrderId == orderId&&d.TimeEnd!=null)
-                            .OrderByDescending(d => d.TimeBegin)
-                            .ToList();
+            double Airdistance = 0;
+            var doOrder = new DO.Order();
+            var deliveries = null as List<DO.Delivery>;
+            lock (AdminManager.BlMutex)
+            {
+                doOrder = s_dal.Order.Read(orderId);
+                Airdistance = CourierManager.CalculateAirDistance(doOrder.Latitude, doOrder.Longitude);
+                deliveries = s_dal.Delivery.ReadAll()
+                                .Where(d => d.OrderId == orderId && d.TimeEnd != null)
+                                .OrderByDescending(d => d.TimeBegin)
+                                .ToList();
+            }
             var lastDelivery = deliveries.FirstOrDefault();
             var maxDeliveryTime = CourierManager.CalculateMaxDeliveryTime(doOrder.OrderInitiation);
-
-            var boOrder = new BO.Order
+            lock (AdminManager.BlMutex)
             {
-                Id = doOrder.OrderId,
-                CustomerName = doOrder.CustomerName,
-                CustomerPhone = doOrder.CustomerPhone,
-                FullAddress = doOrder.ShippingAddress,
-                Weight = doOrder.weight,
-                Description = doOrder.VerbalDescription,
-                Type = (BO.OrderType)doOrder.typeOfOrder,
-                OrderStatus = CalculateOrderStatus(doOrder.OrderId),
-                ScheduleStatus = CalculateScheduleStatus(doOrder.OrderId),
-                OpenTime = doOrder.OrderInitiation,
-                AirDistance = Airdistance,
+                var boOrder = new BO.Order
+                {
+                    Id = doOrder.OrderId,
+                    CustomerName = doOrder.CustomerName,
+                    CustomerPhone = doOrder.CustomerPhone,
+                    FullAddress = doOrder.ShippingAddress,
+                    Weight = doOrder.weight,
+                    Description = doOrder.VerbalDescription,
+                    Type = (BO.OrderType)doOrder.typeOfOrder,
+                    OrderStatus = CalculateOrderStatus(doOrder.OrderId),
+                    ScheduleStatus = CalculateScheduleStatus(doOrder.OrderId),
+                    OpenTime = doOrder.OrderInitiation,
+                    AirDistance = Airdistance,
 
-                ExpectedDeliveryTime =
+                    ExpectedDeliveryTime =
                     lastDelivery != null
                         ? CourierManager.CalculateExpectedDeliveryTime(lastDelivery.typeofshipment, Airdistance)
                         : null,
 
-                MaxDeliveryTime = maxDeliveryTime,
-                TimeRemaining = maxDeliveryTime - AdminManager.Now,
-                
-                Deliveries = deliveries
-                    //.Where(d => d.endcour != Endofcourier.Delivered)
+                    MaxDeliveryTime = maxDeliveryTime,
+                    TimeRemaining = maxDeliveryTime - AdminManager.Now,
+
+                    Deliveries = deliveries
+
                     .Select(d => new BO.DeliveryPerOrderInList
                     {
                         DeliveryId = d.Id,
@@ -582,12 +589,13 @@ internal static class OrderManager
                         EndType = d.endcour.HasValue ? (BO.DeliveryEndType?)d.endcour.Value : null,
                         EndTime = d.TimeEnd
                     })
-                    .ToList() is var deliveryList && deliveryList.Any() 
+                    .ToList() is var deliveryList && deliveryList.Any()
                         ? deliveryList
                         : null
 
-            };
-            return boOrder;
+                };
+                return boOrder;
+            }
         }
         catch (DO.DalDoesNotExistException ex)
         {
@@ -602,14 +610,19 @@ internal static class OrderManager
     /// </summary>
     internal static IEnumerable<OpenOrderInList> GetOpenOrdersForACourier(int courierId, OrderType? filterType, OpenOrderInListSort? sortBy)
     {
-        var doCourier = s_dal.Courier.Read(courierId);
+        var doCourier = null as DO.Courier;
+        lock (AdminManager.BlMutex)
+            doCourier = s_dal.Courier.Read(courierId);
 
-        var openOrders = s_dal.Order.ReadAll(o =>
+        var openOrders = null as IEnumerable<DO.Order>;
+        lock (AdminManager.BlMutex)
         {
-            bool hasDelivery = s_dal.Delivery.ReadAll(d => d.OrderId == o.OrderId).Any();
-            return !hasDelivery;
-        });
-
+            openOrders = s_dal.Order.ReadAll(o =>
+            {
+                bool hasDelivery = s_dal.Delivery.ReadAll(d => d.OrderId == o.OrderId).Any();
+                return !hasDelivery;
+            });
+        }
         
         var openOrdersList = openOrders
             .Select(o =>
@@ -681,9 +694,15 @@ internal static class OrderManager
     /// </summary>
     internal static IEnumerable<OrderInList> GetordersList(OrderInListFilter? filterField, object? filterValue, OrderInListSort? sortBy)
     {
-        var allOrders = s_dal.Order.ReadAll(o => true);
-        var allDeliveries = s_dal.Delivery.ReadAll(d => true);
-
+        var allOrders = null as IEnumerable<DO.Order>;
+        var allDeliveries = null as IEnumerable<DO.Delivery>;
+        lock (AdminManager.BlMutex)
+             allOrders = s_dal.Order.ReadAll(o => true);
+        lock (AdminManager.BlMutex)
+            allDeliveries = s_dal.Delivery.ReadAll(d => true);
+        TimeSpan m;
+        lock (AdminManager.BlMutex)
+            m = s_dal.Config.MaxDeliveryTime;
         var ordersWithLastDelivery = allOrders.Select(o =>
         {
             var deliveriesOfOrder = allDeliveries.Where(d => d.OrderId == o.OrderId).ToList();
@@ -700,7 +719,7 @@ internal static class OrderManager
             bool isClosed = lastDelivery?.endcour.HasValue ?? false;
 
             TimeSpan timeRemaining = !isClosed
-                ? o.OrderInitiation.Add(s_dal.Config.MaxDeliveryTime) - DateTime.Now
+                ? o.OrderInitiation.Add(m) - DateTime.Now
                 : TimeSpan.Zero;
 
             double airDistance = CourierManager.CalculateAirDistance(o.Latitude, o.Longitude);
@@ -749,10 +768,12 @@ internal static class OrderManager
     /// summary>
     internal static IEnumerable<BO.DeliveryPerOrderInList> GetDeliveriesForOrder(int orderId)
     {
+        var deliveries = null as IEnumerable<DO.Delivery>;
+        lock (AdminManager.BlMutex)
+            deliveries = s_dal.Delivery.ReadAll(d => d.OrderId == orderId);
 
-        var deliveries = s_dal.Delivery.ReadAll(d => d.OrderId == orderId);
-
-        return from DO.Delivery delivery in deliveries
+        lock (AdminManager.BlMutex)
+            return from DO.Delivery delivery in deliveries
                let courier = delivery.CourierId != null
                    ? s_dal.Courier.Read(delivery.CourierId)
                    : null
