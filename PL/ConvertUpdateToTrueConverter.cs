@@ -120,23 +120,18 @@ namespace PL.Courier
             if (values.Length < 2)
                 return Visibility.Collapsed;
 
-            // ערך ראשון = OrderStatus
             var status = values[0] as OrderStatus?;
 
-            // ערך שני = isAddMode
             bool isAddMode = false;
             if (values[1] is bool b)
                 isAddMode = b;
 
-            // אם במצב הוספה → נסתר
             if (isAddMode)
                 return Visibility.Collapsed;
 
-            // אם ההזמנה קיימת (סטטוס Open או InProgress) → מופיע
             if (status == OrderStatus.Open || status == OrderStatus.InProgress)
                 return Visibility.Visible;
 
-            // אחרת נסתר
             return Visibility.Collapsed;
         }
 
