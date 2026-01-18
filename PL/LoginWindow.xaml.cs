@@ -27,6 +27,10 @@ namespace PL
         public string Username { get; set; }
         public string Password { get; set; }
 
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            Password = ((PasswordBox)sender).Password;
+        }
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             try
