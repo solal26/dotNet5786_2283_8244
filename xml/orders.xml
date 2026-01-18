@@ -3,572 +3,578 @@
   <Order>
     <OrderId>1000</OrderId>
     <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>Agron St 24, Jerusalem, Israel</ShippingAddress>
-    <Latitude>31.77944</Latitude>
-    <Longitude>35.21803</Longitude>
-    <CustomerName>Michael Gold</CustomerName>
-    <CustomerPhone>0524424622</CustomerPhone>
-    <Weight>19.03</Weight>
-    <OrderInitiation>2026-01-13T18:52:13</OrderInitiation>
+    <ShippingAddress>Ben Gurion Blvd 15, Haifa, Israel</ShippingAddress>
+    <Latitude>32.81669</Latitude>
+    <Longitude>34.98957</Longitude>
+    <CustomerName>Noam Katz</CustomerName>
+    <CustomerPhone>0525764854</CustomerPhone>
+    <Weight>5.51</Weight>
+    <OrderInitiation>2026-01-18T12:05:18</OrderInitiation>
+    <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1001</OrderId>
     <TypeOfOrder>SingleOrder</TypeOfOrder>
-    <ShippingAddress>Rothschild Blvd 14, Tel Aviv, Israel</ShippingAddress>
-    <Latitude>32.06672</Latitude>
-    <Longitude>34.77403</Longitude>
-    <CustomerName>David Cohen</CustomerName>
-    <CustomerPhone>0537474101</CustomerPhone>
-    <Weight>10.36</Weight>
-    <OrderInitiation>2026-01-13T17:23:13</OrderInitiation>
+    <ShippingAddress>HaAtzmaut St 10, Haifa, Israel</ShippingAddress>
+    <Latitude>32.81421</Latitude>
+    <Longitude>34.98912</Longitude>
+    <CustomerName>Leah Stern</CustomerName>
+    <CustomerPhone>0569449568</CustomerPhone>
+    <Weight>4.47</Weight>
+    <OrderInitiation>2026-01-18T16:27:18</OrderInitiation>
+    <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1002</OrderId>
-    <TypeOfOrder>SingleOrder</TypeOfOrder>
-    <ShippingAddress>Herzl St 22, Beersheba, Israel</ShippingAddress>
-    <Latitude>31.25179</Latitude>
-    <Longitude>34.79146</Longitude>
-    <CustomerName>Sarah Levy</CustomerName>
-    <CustomerPhone>0529495360</CustomerPhone>
-    <Weight>5.63</Weight>
-    <OrderInitiation>2026-01-13T15:37:13</OrderInitiation>
+    <TypeOfOrder>BulkOrder</TypeOfOrder>
+    <ShippingAddress>Moriah Blvd 87, Haifa, Israel</ShippingAddress>
+    <Latitude>32.80394</Latitude>
+    <Longitude>34.98627</Longitude>
+    <CustomerName>Michael Gold</CustomerName>
+    <CustomerPhone>0584461487</CustomerPhone>
+    <Weight>4.55</Weight>
+    <OrderInitiation>2026-01-18T15:52:18</OrderInitiation>
   </Order>
   <Order>
     <OrderId>1003</OrderId>
-    <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>Ben Gurion Blvd 15, Haifa, Israel</ShippingAddress>
-    <Latitude>32.81669</Latitude>
-    <Longitude>34.98957</Longitude>
-    <CustomerName>Eli Horowitz</CustomerName>
-    <CustomerPhone>0512098297</CustomerPhone>
-    <Weight>6.59</Weight>
-    <OrderInitiation>2026-01-13T14:43:13</OrderInitiation>
-    <VerbalDescription>Fragile, handle with care</VerbalDescription>
+    <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <ShippingAddress>Horev St 15, Haifa, Israel</ShippingAddress>
+    <Latitude>32.79354</Latitude>
+    <Longitude>34.98321</Longitude>
+    <CustomerName>Michael Gold</CustomerName>
+    <CustomerPhone>0505850513</CustomerPhone>
+    <Weight>8.46</Weight>
+    <OrderInitiation>2026-01-18T10:49:18</OrderInitiation>
   </Order>
   <Order>
     <OrderId>1004</OrderId>
     <TypeOfOrder>SingleOrder</TypeOfOrder>
-    <ShippingAddress>Henrietta Szold St 8, Beersheba, Israel</ShippingAddress>
-    <Latitude>31.26291</Latitude>
-    <Longitude>34.78944</Longitude>
-    <CustomerName>Shira Klein</CustomerName>
-    <CustomerPhone>0581494145</CustomerPhone>
-    <Weight>2.15</Weight>
-    <OrderInitiation>2026-01-13T13:46:13</OrderInitiation>
+    <ShippingAddress>Herzl St 22, Beersheba, Israel</ShippingAddress>
+    <Latitude>31.25179</Latitude>
+    <Longitude>34.79146</Longitude>
+    <CustomerName>Leah Stern</CustomerName>
+    <CustomerPhone>0526309107</CustomerPhone>
+    <Weight>13.1</Weight>
+    <OrderInitiation>2026-01-18T14:09:18</OrderInitiation>
   </Order>
   <Order>
     <OrderId>1005</OrderId>
-    <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>Ibn Gabirol St 59, Tel Aviv, Israel</ShippingAddress>
-    <Latitude>32.07206</Latitude>
-    <Longitude>34.78138</Longitude>
-    <CustomerName>Yossi Azulay</CustomerName>
-    <CustomerPhone>0575949657</CustomerPhone>
-    <Weight>14.11</Weight>
-    <OrderInitiation>2026-01-13T15:00:13</OrderInitiation>
+    <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <ShippingAddress>Jaffa St 28, Jerusalem, Israel</ShippingAddress>
+    <Latitude>31.76832</Latitude>
+    <Longitude>35.21371</Longitude>
+    <CustomerName>Sarah Levy</CustomerName>
+    <CustomerPhone>0573274596</CustomerPhone>
+    <Weight>7.39</Weight>
+    <OrderInitiation>2026-01-18T12:45:18</OrderInitiation>
   </Order>
   <Order>
     <OrderId>1006</OrderId>
     <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>Jaffa St 28, Jerusalem, Israel</ShippingAddress>
-    <Latitude>31.76832</Latitude>
-    <Longitude>35.21371</Longitude>
-    <CustomerName>Shira Klein</CustomerName>
-    <CustomerPhone>0503464421</CustomerPhone>
-    <Weight>10.25</Weight>
-    <OrderInitiation>2026-01-13T13:38:13</OrderInitiation>
+    <ShippingAddress>King George St 45, Jerusalem, Israel</ShippingAddress>
+    <Latitude>31.77196</Latitude>
+    <Longitude>35.21766</Longitude>
+    <CustomerName>Sarah Levy</CustomerName>
+    <CustomerPhone>0578356389</CustomerPhone>
+    <Weight>18.02</Weight>
+    <OrderInitiation>2026-01-18T13:07:18</OrderInitiation>
   </Order>
   <Order>
     <OrderId>1007</OrderId>
-    <TypeOfOrder>SingleOrder</TypeOfOrder>
-    <ShippingAddress>Henrietta Szold St 8, Beersheba, Israel</ShippingAddress>
-    <Latitude>31.26291</Latitude>
-    <Longitude>34.78944</Longitude>
-    <CustomerName>David Cohen</CustomerName>
-    <CustomerPhone>0558742550</CustomerPhone>
-    <Weight>10.03</Weight>
-    <OrderInitiation>2026-01-13T11:01:13</OrderInitiation>
+    <TypeOfOrder>BulkOrder</TypeOfOrder>
+    <ShippingAddress>Hillel St 12, Jerusalem, Israel</ShippingAddress>
+    <Latitude>31.78106</Latitude>
+    <Longitude>35.21994</Longitude>
+    <CustomerName>Shira Klein</CustomerName>
+    <CustomerPhone>0582692186</CustomerPhone>
+    <Weight>8.94</Weight>
+    <OrderInitiation>2026-01-18T16:34:18</OrderInitiation>
   </Order>
   <Order>
     <OrderId>1008</OrderId>
-    <TypeOfOrder>SingleOrder</TypeOfOrder>
-    <ShippingAddress>Jaffa St 28, Jerusalem, Israel</ShippingAddress>
-    <Latitude>31.76832</Latitude>
-    <Longitude>35.21371</Longitude>
-    <CustomerName>Rina Ben</CustomerName>
-    <CustomerPhone>0591829726</CustomerPhone>
-    <Weight>13.83</Weight>
-    <OrderInitiation>2026-01-13T09:15:13</OrderInitiation>
+    <TypeOfOrder>BulkOrder</TypeOfOrder>
+    <ShippingAddress>David HaMelech St 34, Tel Aviv, Israel</ShippingAddress>
+    <Latitude>32.06999</Latitude>
+    <Longitude>34.77224</Longitude>
+    <CustomerName>Eli Horowitz</CustomerName>
+    <CustomerPhone>0525730718</CustomerPhone>
+    <Weight>15.04</Weight>
+    <OrderInitiation>2026-01-18T08:40:18</OrderInitiation>
     <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1009</OrderId>
-    <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>Jaffa St 28, Jerusalem, Israel</ShippingAddress>
-    <Latitude>31.76832</Latitude>
-    <Longitude>35.21371</Longitude>
-    <CustomerName>Michael Gold</CustomerName>
-    <CustomerPhone>0594446875</CustomerPhone>
-    <Weight>15.38</Weight>
-    <OrderInitiation>2026-01-13T13:41:13</OrderInitiation>
+    <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <ShippingAddress>Herzl St 22, Beersheba, Israel</ShippingAddress>
+    <Latitude>31.25179</Latitude>
+    <Longitude>34.79146</Longitude>
+    <CustomerName>Eli Horowitz</CustomerName>
+    <CustomerPhone>0551210742</CustomerPhone>
+    <Weight>19.43</Weight>
+    <OrderInitiation>2026-01-18T06:12:18</OrderInitiation>
     <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1010</OrderId>
     <TypeOfOrder>SingleOrder</TypeOfOrder>
-    <ShippingAddress>Jaffa St 28, Jerusalem, Israel</ShippingAddress>
-    <Latitude>31.76832</Latitude>
-    <Longitude>35.21371</Longitude>
+    <ShippingAddress>Hillel St 12, Jerusalem, Israel</ShippingAddress>
+    <Latitude>31.78106</Latitude>
+    <Longitude>35.21994</Longitude>
     <CustomerName>Noam Katz</CustomerName>
-    <CustomerPhone>0528511287</CustomerPhone>
-    <Weight>19.2</Weight>
-    <OrderInitiation>2026-01-13T11:50:13</OrderInitiation>
+    <CustomerPhone>0595437166</CustomerPhone>
+    <Weight>14.89</Weight>
+    <OrderInitiation>2026-01-18T16:09:18</OrderInitiation>
   </Order>
   <Order>
     <OrderId>1011</OrderId>
     <TypeOfOrder>SingleOrder</TypeOfOrder>
-    <ShippingAddress>Ibn Gabirol St 59, Tel Aviv, Israel</ShippingAddress>
-    <Latitude>32.07206</Latitude>
-    <Longitude>34.78138</Longitude>
-    <CustomerName>Rina Ben</CustomerName>
-    <CustomerPhone>0561048844</CustomerPhone>
-    <Weight>12.53</Weight>
-    <OrderInitiation>2026-01-13T17:17:13</OrderInitiation>
-    <VerbalDescription>Fragile, handle with care</VerbalDescription>
+    <ShippingAddress>Herzl St 22, Beersheba, Israel</ShippingAddress>
+    <Latitude>31.25179</Latitude>
+    <Longitude>34.79146</Longitude>
+    <CustomerName>Leah Stern</CustomerName>
+    <CustomerPhone>0509590606</CustomerPhone>
+    <Weight>12.05</Weight>
+    <OrderInitiation>2026-01-18T08:08:18</OrderInitiation>
   </Order>
   <Order>
     <OrderId>1012</OrderId>
     <TypeOfOrder>SingleOrder</TypeOfOrder>
-    <ShippingAddress>Rothschild Blvd 14, Tel Aviv, Israel</ShippingAddress>
-    <Latitude>32.06672</Latitude>
-    <Longitude>34.77403</Longitude>
-    <CustomerName>Rina Ben</CustomerName>
-    <CustomerPhone>0566407793</CustomerPhone>
-    <Weight>14.99</Weight>
-    <OrderInitiation>2026-01-13T14:35:13</OrderInitiation>
+    <ShippingAddress>Henrietta Szold St 8, Beersheba, Israel</ShippingAddress>
+    <Latitude>31.26291</Latitude>
+    <Longitude>34.78944</Longitude>
+    <CustomerName>Leah Stern</CustomerName>
+    <CustomerPhone>0539668491</CustomerPhone>
+    <Weight>20.63</Weight>
+    <OrderInitiation>2026-01-18T13:19:18</OrderInitiation>
+    <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1013</OrderId>
     <TypeOfOrder>SingleOrder</TypeOfOrder>
-    <ShippingAddress>Agron St 24, Jerusalem, Israel</ShippingAddress>
-    <Latitude>31.77944</Latitude>
-    <Longitude>35.21803</Longitude>
-    <CustomerName>Rina Ben</CustomerName>
-    <CustomerPhone>0593961235</CustomerPhone>
-    <Weight>12.67</Weight>
-    <OrderInitiation>2026-01-13T16:04:13</OrderInitiation>
+    <ShippingAddress>Ben Gurion Blvd 15, Haifa, Israel</ShippingAddress>
+    <Latitude>32.81669</Latitude>
+    <Longitude>34.98957</Longitude>
+    <CustomerName>Shira Klein</CustomerName>
+    <CustomerPhone>0508961662</CustomerPhone>
+    <Weight>5.66</Weight>
+    <OrderInitiation>2026-01-18T14:00:18</OrderInitiation>
   </Order>
   <Order>
     <OrderId>1014</OrderId>
-    <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>Jerusalem Blvd 9, Beersheba, Israel</ShippingAddress>
-    <Latitude>31.25693</Latitude>
-    <Longitude>34.79332</Longitude>
-    <CustomerName>Yossi Azulay</CustomerName>
-    <CustomerPhone>0537014687</CustomerPhone>
-    <Weight>18.04</Weight>
-    <OrderInitiation>2026-01-13T18:04:13</OrderInitiation>
+    <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <ShippingAddress>Bograshov St 21, Tel Aviv, Israel</ShippingAddress>
+    <Latitude>32.07719</Latitude>
+    <Longitude>34.77391</Longitude>
+    <CustomerName>Noam Katz</CustomerName>
+    <CustomerPhone>0593434419</CustomerPhone>
+    <Weight>18.71</Weight>
+    <OrderInitiation>2026-01-18T08:23:18</OrderInitiation>
     <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1015</OrderId>
-    <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>Jaffa St 28, Jerusalem, Israel</ShippingAddress>
-    <Latitude>31.76832</Latitude>
-    <Longitude>35.21371</Longitude>
-    <CustomerName>Noam Katz</CustomerName>
-    <CustomerPhone>0596510910</CustomerPhone>
-    <Weight>1.66</Weight>
-    <OrderInitiation>2026-01-13T15:36:13</OrderInitiation>
+    <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <ShippingAddress>Rothschild Blvd 14, Tel Aviv, Israel</ShippingAddress>
+    <Latitude>32.06672</Latitude>
+    <Longitude>34.77403</Longitude>
+    <CustomerName>Sarah Levy</CustomerName>
+    <CustomerPhone>0537168434</CustomerPhone>
+    <Weight>20.63</Weight>
+    <OrderInitiation>2026-01-18T12:47:18</OrderInitiation>
   </Order>
   <Order>
     <OrderId>1016</OrderId>
-    <TypeOfOrder>SingleOrder</TypeOfOrder>
-    <ShippingAddress>Rager Blvd 45, Beersheba, Israel</ShippingAddress>
-    <Latitude>31.25877</Latitude>
-    <Longitude>34.80021</Longitude>
-    <CustomerName>David Cohen</CustomerName>
-    <CustomerPhone>0583105985</CustomerPhone>
-    <Weight>8.7</Weight>
-    <OrderInitiation>2026-01-13T13:34:13</OrderInitiation>
-    <VerbalDescription>Fragile, handle with care</VerbalDescription>
+    <TypeOfOrder>BulkOrder</TypeOfOrder>
+    <ShippingAddress>Rothschild Blvd 14, Tel Aviv, Israel</ShippingAddress>
+    <Latitude>32.06672</Latitude>
+    <Longitude>34.77403</Longitude>
+    <CustomerName>Tamar Shalev</CustomerName>
+    <CustomerPhone>0558625171</CustomerPhone>
+    <Weight>16.14</Weight>
+    <OrderInitiation>2026-01-18T14:34:18</OrderInitiation>
   </Order>
   <Order>
     <OrderId>1017</OrderId>
-    <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>Dizengoff St 100, Tel Aviv, Israel</ShippingAddress>
-    <Latitude>32.07538</Latitude>
-    <Longitude>34.77567</Longitude>
-    <CustomerName>Sarah Levy</CustomerName>
-    <CustomerPhone>0532814638</CustomerPhone>
-    <Weight>20.64</Weight>
-    <OrderInitiation>2026-01-13T12:42:13</OrderInitiation>
+    <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <ShippingAddress>David HaMelech St 34, Tel Aviv, Israel</ShippingAddress>
+    <Latitude>32.06999</Latitude>
+    <Longitude>34.77224</Longitude>
+    <CustomerName>Michael Gold</CustomerName>
+    <CustomerPhone>0576860597</CustomerPhone>
+    <Weight>10.01</Weight>
+    <OrderInitiation>2026-01-18T11:16:18</OrderInitiation>
+    <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1018</OrderId>
-    <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>Rager Blvd 45, Beersheba, Israel</ShippingAddress>
-    <Latitude>31.25877</Latitude>
-    <Longitude>34.80021</Longitude>
-    <CustomerName>Sarah Levy</CustomerName>
-    <CustomerPhone>0569770250</CustomerPhone>
-    <Weight>18.13</Weight>
-    <OrderInitiation>2026-01-13T18:07:13</OrderInitiation>
-    <VerbalDescription>Fragile, handle with care</VerbalDescription>
+    <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <ShippingAddress>King George St 45, Jerusalem, Israel</ShippingAddress>
+    <Latitude>31.77196</Latitude>
+    <Longitude>35.21766</Longitude>
+    <CustomerName>Tamar Shalev</CustomerName>
+    <CustomerPhone>0504915788</CustomerPhone>
+    <Weight>5.54</Weight>
+    <OrderInitiation>2026-01-18T06:08:18</OrderInitiation>
   </Order>
   <Order>
     <OrderId>1019</OrderId>
     <TypeOfOrder>SingleOrder</TypeOfOrder>
-    <ShippingAddress>HaAtzmaut St 10, Haifa, Israel</ShippingAddress>
-    <Latitude>32.81421</Latitude>
-    <Longitude>34.98912</Longitude>
-    <CustomerName>Noam Katz</CustomerName>
-    <CustomerPhone>0556344835</CustomerPhone>
-    <Weight>9.85</Weight>
-    <OrderInitiation>2026-01-13T19:56:13</OrderInitiation>
+    <ShippingAddress>Hillel St 12, Jerusalem, Israel</ShippingAddress>
+    <Latitude>31.78106</Latitude>
+    <Longitude>35.21994</Longitude>
+    <CustomerName>Shira Klein</CustomerName>
+    <CustomerPhone>0547689237</CustomerPhone>
+    <Weight>2.71</Weight>
+    <OrderInitiation>2026-01-18T10:40:18</OrderInitiation>
     <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1020</OrderId>
     <TypeOfOrder>SingleOrder</TypeOfOrder>
-    <ShippingAddress>Jaffa St 28, Jerusalem, Israel</ShippingAddress>
-    <Latitude>31.76832</Latitude>
-    <Longitude>35.21371</Longitude>
-    <CustomerName>Eli Horowitz</CustomerName>
-    <CustomerPhone>0598277237</CustomerPhone>
-    <Weight>6.47</Weight>
-    <OrderInitiation>2026-01-13T18:19:13</OrderInitiation>
-    <VerbalDescription>Fragile, handle with care</VerbalDescription>
+    <ShippingAddress>Agron St 24, Jerusalem, Israel</ShippingAddress>
+    <Latitude>31.77944</Latitude>
+    <Longitude>35.21803</Longitude>
+    <CustomerName>Tamar Shalev</CustomerName>
+    <CustomerPhone>0576664397</CustomerPhone>
+    <Weight>1.41</Weight>
+    <OrderInitiation>2026-01-18T14:57:18</OrderInitiation>
   </Order>
   <Order>
     <OrderId>1021</OrderId>
-    <TypeOfOrder>SingleOrder</TypeOfOrder>
-    <ShippingAddress>HaAtzmaut St 10, Haifa, Israel</ShippingAddress>
-    <Latitude>32.81421</Latitude>
-    <Longitude>34.98912</Longitude>
-    <CustomerName>Leah Stern</CustomerName>
-    <CustomerPhone>0554205403</CustomerPhone>
-    <Weight>20.5</Weight>
-    <OrderInitiation>2026-01-13T18:54:13</OrderInitiation>
-    <VerbalDescription>Fragile, handle with care</VerbalDescription>
-  </Order>
-  <Order>
-    <OrderId>1022</OrderId>
-    <TypeOfOrder>SingleOrder</TypeOfOrder>
-    <ShippingAddress>Allenby St 65, Tel Aviv, Israel</ShippingAddress>
-    <Latitude>32.06785</Latitude>
-    <Longitude>34.77049</Longitude>
-    <CustomerName>Rina Ben</CustomerName>
-    <CustomerPhone>0551567281</CustomerPhone>
-    <Weight>8.27</Weight>
-    <OrderInitiation>2026-01-13T18:08:13</OrderInitiation>
-  </Order>
-  <Order>
-    <OrderId>1023</OrderId>
     <TypeOfOrder>BulkOrder</TypeOfOrder>
     <ShippingAddress>Jerusalem Blvd 9, Beersheba, Israel</ShippingAddress>
     <Latitude>31.25693</Latitude>
     <Longitude>34.79332</Longitude>
-    <CustomerName>Tamar Shalev</CustomerName>
-    <CustomerPhone>0585974017</CustomerPhone>
-    <Weight>12.63</Weight>
-    <OrderInitiation>2026-01-13T19:32:13</OrderInitiation>
-    <VerbalDescription>Fragile, handle with care</VerbalDescription>
+    <CustomerName>Michael Gold</CustomerName>
+    <CustomerPhone>0587322900</CustomerPhone>
+    <Weight>12.65</Weight>
+    <OrderInitiation>2026-01-18T05:53:18</OrderInitiation>
   </Order>
   <Order>
-    <OrderId>1024</OrderId>
+    <OrderId>1022</OrderId>
     <TypeOfOrder>SingleOrder</TypeOfOrder>
     <ShippingAddress>Herzl St 22, Beersheba, Israel</ShippingAddress>
     <Latitude>31.25179</Latitude>
     <Longitude>34.79146</Longitude>
-    <CustomerName>David Cohen</CustomerName>
-    <CustomerPhone>0572259471</CustomerPhone>
-    <Weight>5.28</Weight>
-    <OrderInitiation>2026-01-13T18:43:13</OrderInitiation>
+    <CustomerName>Eli Horowitz</CustomerName>
+    <CustomerPhone>0507480910</CustomerPhone>
+    <Weight>18.96</Weight>
+    <OrderInitiation>2026-01-18T08:09:18</OrderInitiation>
+  </Order>
+  <Order>
+    <OrderId>1023</OrderId>
+    <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <ShippingAddress>Ibn Gabirol St 59, Tel Aviv, Israel</ShippingAddress>
+    <Latitude>32.07206</Latitude>
+    <Longitude>34.78138</Longitude>
+    <CustomerName>Yossi Azulay</CustomerName>
+    <CustomerPhone>0553703371</CustomerPhone>
+    <Weight>10.22</Weight>
+    <OrderInitiation>2026-01-18T06:46:18</OrderInitiation>
+  </Order>
+  <Order>
+    <OrderId>1024</OrderId>
+    <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <ShippingAddress>David HaMelech St 34, Tel Aviv, Israel</ShippingAddress>
+    <Latitude>32.06999</Latitude>
+    <Longitude>34.77224</Longitude>
+    <CustomerName>Rina Ben</CustomerName>
+    <CustomerPhone>0519682773</CustomerPhone>
+    <Weight>12.79</Weight>
+    <OrderInitiation>2026-01-18T16:05:18</OrderInitiation>
     <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1025</OrderId>
     <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>Agron St 24, Jerusalem, Israel</ShippingAddress>
-    <Latitude>31.77944</Latitude>
-    <Longitude>35.21803</Longitude>
-    <CustomerName>Tamar Shalev</CustomerName>
-    <CustomerPhone>0549985077</CustomerPhone>
-    <Weight>8.07</Weight>
-    <OrderInitiation>2026-01-13T17:06:13</OrderInitiation>
+    <ShippingAddress>Allenby St 65, Tel Aviv, Israel</ShippingAddress>
+    <Latitude>32.06785</Latitude>
+    <Longitude>34.77049</Longitude>
+    <CustomerName>Noam Katz</CustomerName>
+    <CustomerPhone>0553639748</CustomerPhone>
+    <Weight>17.23</Weight>
+    <OrderInitiation>2026-01-18T12:49:18</OrderInitiation>
     <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1026</OrderId>
     <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>Horev St 15, Haifa, Israel</ShippingAddress>
-    <Latitude>32.79354</Latitude>
-    <Longitude>34.98321</Longitude>
-    <CustomerName>Yossi Azulay</CustomerName>
-    <CustomerPhone>0505605665</CustomerPhone>
-    <Weight>3.83</Weight>
-    <OrderInitiation>2026-01-13T16:06:13</OrderInitiation>
+    <ShippingAddress>Rager Blvd 45, Beersheba, Israel</ShippingAddress>
+    <Latitude>31.25877</Latitude>
+    <Longitude>34.80021</Longitude>
+    <CustomerName>Eli Horowitz</CustomerName>
+    <CustomerPhone>0523316854</CustomerPhone>
+    <Weight>13.14</Weight>
+    <OrderInitiation>2026-01-18T10:22:18</OrderInitiation>
+    <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1027</OrderId>
     <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>Jerusalem Blvd 9, Beersheba, Israel</ShippingAddress>
-    <Latitude>31.25693</Latitude>
-    <Longitude>34.79332</Longitude>
-    <CustomerName>Rina Ben</CustomerName>
-    <CustomerPhone>0502124354</CustomerPhone>
-    <Weight>2.05</Weight>
-    <OrderInitiation>2026-01-13T17:12:13</OrderInitiation>
+    <ShippingAddress>Dizengoff St 100, Tel Aviv, Israel</ShippingAddress>
+    <Latitude>32.07538</Latitude>
+    <Longitude>34.77567</Longitude>
+    <CustomerName>Noam Katz</CustomerName>
+    <CustomerPhone>0597638615</CustomerPhone>
+    <Weight>5.69</Weight>
+    <OrderInitiation>2026-01-18T07:26:18</OrderInitiation>
     <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1028</OrderId>
     <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <ShippingAddress>Jaffa St 28, Jerusalem, Israel</ShippingAddress>
+    <Latitude>31.76832</Latitude>
+    <Longitude>35.21371</Longitude>
+    <CustomerName>Noam Katz</CustomerName>
+    <CustomerPhone>0536287429</CustomerPhone>
+    <Weight>15.04</Weight>
+    <OrderInitiation>2026-01-18T14:13:18</OrderInitiation>
+    <VerbalDescription>Fragile, handle with care</VerbalDescription>
+  </Order>
+  <Order>
+    <OrderId>1029</OrderId>
+    <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <ShippingAddress>David HaMelech St 34, Tel Aviv, Israel</ShippingAddress>
+    <Latitude>32.06999</Latitude>
+    <Longitude>34.77224</Longitude>
+    <CustomerName>David Cohen</CustomerName>
+    <CustomerPhone>0551121128</CustomerPhone>
+    <Weight>7.66</Weight>
+    <OrderInitiation>2026-01-18T12:46:18</OrderInitiation>
+  </Order>
+  <Order>
+    <OrderId>1030</OrderId>
+    <TypeOfOrder>BulkOrder</TypeOfOrder>
+    <ShippingAddress>Allenby St 65, Tel Aviv, Israel</ShippingAddress>
+    <Latitude>32.06785</Latitude>
+    <Longitude>34.77049</Longitude>
+    <CustomerName>Leah Stern</CustomerName>
+    <CustomerPhone>0561854152</CustomerPhone>
+    <Weight>20.5</Weight>
+    <OrderInitiation>2026-01-18T10:09:18</OrderInitiation>
+  </Order>
+  <Order>
+    <OrderId>1031</OrderId>
+    <TypeOfOrder>BulkOrder</TypeOfOrder>
     <ShippingAddress>Allenby St 65, Tel Aviv, Israel</ShippingAddress>
     <Latitude>32.06785</Latitude>
     <Longitude>34.77049</Longitude>
     <CustomerName>Noam Katz</CustomerName>
-    <CustomerPhone>0523523832</CustomerPhone>
-    <Weight>19.98</Weight>
-    <OrderInitiation>2026-01-13T12:39:13</OrderInitiation>
-  </Order>
-  <Order>
-    <OrderId>1029</OrderId>
-    <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>Hillel St 12, Jerusalem, Israel</ShippingAddress>
-    <Latitude>31.78106</Latitude>
-    <Longitude>35.21994</Longitude>
-    <CustomerName>Yossi Azulay</CustomerName>
-    <CustomerPhone>0552058124</CustomerPhone>
-    <Weight>1.33</Weight>
-    <OrderInitiation>2026-01-13T12:12:13</OrderInitiation>
+    <CustomerPhone>0516919371</CustomerPhone>
+    <Weight>15.9</Weight>
+    <OrderInitiation>2026-01-18T10:04:18</OrderInitiation>
     <VerbalDescription>Fragile, handle with care</VerbalDescription>
-  </Order>
-  <Order>
-    <OrderId>1030</OrderId>
-    <TypeOfOrder>SingleOrder</TypeOfOrder>
-    <ShippingAddress>Allenby St 65, Tel Aviv, Israel</ShippingAddress>
-    <Latitude>32.06785</Latitude>
-    <Longitude>34.77049</Longitude>
-    <CustomerName>Yossi Azulay</CustomerName>
-    <CustomerPhone>0523093183</CustomerPhone>
-    <Weight>12.4</Weight>
-    <OrderInitiation>2026-01-13T11:10:13</OrderInitiation>
-    <VerbalDescription>Fragile, handle with care</VerbalDescription>
-  </Order>
-  <Order>
-    <OrderId>1031</OrderId>
-    <TypeOfOrder>SingleOrder</TypeOfOrder>
-    <ShippingAddress>Ben Gurion Blvd 15, Haifa, Israel</ShippingAddress>
-    <Latitude>32.81669</Latitude>
-    <Longitude>34.98957</Longitude>
-    <CustomerName>Yossi Azulay</CustomerName>
-    <CustomerPhone>0509065589</CustomerPhone>
-    <Weight>2.63</Weight>
-    <OrderInitiation>2026-01-13T20:08:13</OrderInitiation>
   </Order>
   <Order>
     <OrderId>1032</OrderId>
     <TypeOfOrder>SingleOrder</TypeOfOrder>
-    <ShippingAddress>Henrietta Szold St 8, Beersheba, Israel</ShippingAddress>
-    <Latitude>31.26291</Latitude>
-    <Longitude>34.78944</Longitude>
-    <CustomerName>Leah Stern</CustomerName>
-    <CustomerPhone>0599991430</CustomerPhone>
-    <Weight>3.18</Weight>
-    <OrderInitiation>2026-01-13T14:45:13</OrderInitiation>
+    <ShippingAddress>Moriah Blvd 87, Haifa, Israel</ShippingAddress>
+    <Latitude>32.80394</Latitude>
+    <Longitude>34.98627</Longitude>
+    <CustomerName>Sarah Levy</CustomerName>
+    <CustomerPhone>0543156518</CustomerPhone>
+    <Weight>13.82</Weight>
+    <OrderInitiation>2026-01-18T09:37:18</OrderInitiation>
+    <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1033</OrderId>
-    <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>Rager Blvd 45, Beersheba, Israel</ShippingAddress>
-    <Latitude>31.25877</Latitude>
-    <Longitude>34.80021</Longitude>
-    <CustomerName>David Cohen</CustomerName>
-    <CustomerPhone>0514896828</CustomerPhone>
-    <Weight>10.05</Weight>
-    <OrderInitiation>2026-01-13T17:53:13</OrderInitiation>
+    <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <ShippingAddress>King George St 45, Jerusalem, Israel</ShippingAddress>
+    <Latitude>31.77196</Latitude>
+    <Longitude>35.21766</Longitude>
+    <CustomerName>Rina Ben</CustomerName>
+    <CustomerPhone>0548473250</CustomerPhone>
+    <Weight>12.84</Weight>
+    <OrderInitiation>2026-01-18T11:58:18</OrderInitiation>
+    <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1034</OrderId>
     <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>Rager Blvd 45, Beersheba, Israel</ShippingAddress>
-    <Latitude>31.25877</Latitude>
-    <Longitude>34.80021</Longitude>
-    <CustomerName>David Cohen</CustomerName>
-    <CustomerPhone>0599697472</CustomerPhone>
-    <Weight>18.89</Weight>
-    <OrderInitiation>2026-01-13T08:59:13</OrderInitiation>
+    <ShippingAddress>Allenby St 65, Tel Aviv, Israel</ShippingAddress>
+    <Latitude>32.06785</Latitude>
+    <Longitude>34.77049</Longitude>
+    <CustomerName>Michael Gold</CustomerName>
+    <CustomerPhone>0545919204</CustomerPhone>
+    <Weight>20.92</Weight>
+    <OrderInitiation>2026-01-18T16:11:18</OrderInitiation>
+    <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1035</OrderId>
-    <TypeOfOrder>SingleOrder</TypeOfOrder>
-    <ShippingAddress>Herzl St 22, Beersheba, Israel</ShippingAddress>
-    <Latitude>31.25179</Latitude>
-    <Longitude>34.79146</Longitude>
-    <CustomerName>Noam Katz</CustomerName>
-    <CustomerPhone>0572755439</CustomerPhone>
-    <Weight>8.78</Weight>
-    <OrderInitiation>2026-01-13T08:56:13</OrderInitiation>
+    <TypeOfOrder>BulkOrder</TypeOfOrder>
+    <ShippingAddress>Jerusalem Blvd 9, Beersheba, Israel</ShippingAddress>
+    <Latitude>31.25693</Latitude>
+    <Longitude>34.79332</Longitude>
+    <CustomerName>Shira Klein</CustomerName>
+    <CustomerPhone>0598674824</CustomerPhone>
+    <Weight>3.52</Weight>
+    <OrderInitiation>2026-01-18T16:19:18</OrderInitiation>
+    <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1036</OrderId>
     <TypeOfOrder>SingleOrder</TypeOfOrder>
-    <ShippingAddress>Dizengoff St 100, Tel Aviv, Israel</ShippingAddress>
-    <Latitude>32.07538</Latitude>
-    <Longitude>34.77567</Longitude>
-    <CustomerName>Rina Ben</CustomerName>
-    <CustomerPhone>0596292492</CustomerPhone>
-    <Weight>15.24</Weight>
-    <OrderInitiation>2026-01-13T17:43:13</OrderInitiation>
+    <ShippingAddress>Agron St 24, Jerusalem, Israel</ShippingAddress>
+    <Latitude>31.77944</Latitude>
+    <Longitude>35.21803</Longitude>
+    <CustomerName>Michael Gold</CustomerName>
+    <CustomerPhone>0586997948</CustomerPhone>
+    <Weight>12.53</Weight>
+    <OrderInitiation>2026-01-18T05:20:18</OrderInitiation>
+    <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1037</OrderId>
     <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>Jaffa St 28, Jerusalem, Israel</ShippingAddress>
-    <Latitude>31.76832</Latitude>
-    <Longitude>35.21371</Longitude>
-    <CustomerName>Michael Gold</CustomerName>
-    <CustomerPhone>0567459705</CustomerPhone>
-    <Weight>11.37</Weight>
-    <OrderInitiation>2026-01-13T17:29:13</OrderInitiation>
+    <ShippingAddress>Allenby St 65, Tel Aviv, Israel</ShippingAddress>
+    <Latitude>32.06785</Latitude>
+    <Longitude>34.77049</Longitude>
+    <CustomerName>Noam Katz</CustomerName>
+    <CustomerPhone>0539447497</CustomerPhone>
+    <Weight>19.22</Weight>
+    <OrderInitiation>2026-01-18T13:04:18</OrderInitiation>
     <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1038</OrderId>
     <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>Hillel St 12, Jerusalem, Israel</ShippingAddress>
-    <Latitude>31.78106</Latitude>
-    <Longitude>35.21994</Longitude>
-    <CustomerName>David Cohen</CustomerName>
-    <CustomerPhone>0502025357</CustomerPhone>
-    <Weight>9.83</Weight>
-    <OrderInitiation>2026-01-13T16:56:13</OrderInitiation>
-  </Order>
-  <Order>
-    <OrderId>1039</OrderId>
-    <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>HaAtzmaut St 10, Haifa, Israel</ShippingAddress>
-    <Latitude>32.81421</Latitude>
-    <Longitude>34.98912</Longitude>
-    <CustomerName>Sarah Levy</CustomerName>
-    <CustomerPhone>0592245068</CustomerPhone>
-    <Weight>2.33</Weight>
-    <OrderInitiation>2026-01-13T12:56:13</OrderInitiation>
-    <VerbalDescription>Fragile, handle with care</VerbalDescription>
-  </Order>
-  <Order>
-    <OrderId>1040</OrderId>
-    <TypeOfOrder>BulkOrder</TypeOfOrder>
     <ShippingAddress>Moriah Blvd 87, Haifa, Israel</ShippingAddress>
     <Latitude>32.80394</Latitude>
     <Longitude>34.98627</Longitude>
     <CustomerName>Sarah Levy</CustomerName>
-    <CustomerPhone>0503368250</CustomerPhone>
-    <Weight>2.01</Weight>
-    <OrderInitiation>2026-01-13T19:20:13</OrderInitiation>
+    <CustomerPhone>0562143744</CustomerPhone>
+    <Weight>8.31</Weight>
+    <OrderInitiation>2026-01-18T07:27:18</OrderInitiation>
+  </Order>
+  <Order>
+    <OrderId>1039</OrderId>
+    <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <ShippingAddress>Allenby St 65, Tel Aviv, Israel</ShippingAddress>
+    <Latitude>32.06785</Latitude>
+    <Longitude>34.77049</Longitude>
+    <CustomerName>Sarah Levy</CustomerName>
+    <CustomerPhone>0594329983</CustomerPhone>
+    <Weight>20.16</Weight>
+    <OrderInitiation>2026-01-18T06:42:18</OrderInitiation>
+    <VerbalDescription>Fragile, handle with care</VerbalDescription>
+  </Order>
+  <Order>
+    <OrderId>1040</OrderId>
+    <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <ShippingAddress>Rothschild Blvd 14, Tel Aviv, Israel</ShippingAddress>
+    <Latitude>32.06672</Latitude>
+    <Longitude>34.77403</Longitude>
+    <CustomerName>Rina Ben</CustomerName>
+    <CustomerPhone>0563698712</CustomerPhone>
+    <Weight>8.42</Weight>
+    <OrderInitiation>2026-01-18T07:53:18</OrderInitiation>
     <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1041</OrderId>
     <TypeOfOrder>SingleOrder</TypeOfOrder>
-    <ShippingAddress>David HaMelech St 34, Tel Aviv, Israel</ShippingAddress>
-    <Latitude>32.06999</Latitude>
-    <Longitude>34.77224</Longitude>
-    <CustomerName>Tamar Shalev</CustomerName>
-    <CustomerPhone>0585598596</CustomerPhone>
-    <Weight>7.02</Weight>
-    <OrderInitiation>2026-01-13T09:03:13</OrderInitiation>
-    <VerbalDescription>Fragile, handle with care</VerbalDescription>
+    <ShippingAddress>Ibn Gabirol St 59, Tel Aviv, Israel</ShippingAddress>
+    <Latitude>32.07206</Latitude>
+    <Longitude>34.78138</Longitude>
+    <CustomerName>Rina Ben</CustomerName>
+    <CustomerPhone>0509321968</CustomerPhone>
+    <Weight>8.54</Weight>
+    <OrderInitiation>2026-01-18T10:14:18</OrderInitiation>
   </Order>
   <Order>
     <OrderId>1042</OrderId>
-    <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>Moriah Blvd 87, Haifa, Israel</ShippingAddress>
-    <Latitude>32.80394</Latitude>
-    <Longitude>34.98627</Longitude>
-    <CustomerName>Michael Gold</CustomerName>
-    <CustomerPhone>0587930879</CustomerPhone>
-    <Weight>18.95</Weight>
-    <OrderInitiation>2026-01-13T10:24:13</OrderInitiation>
+    <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <ShippingAddress>Herzl St 22, Beersheba, Israel</ShippingAddress>
+    <Latitude>31.25179</Latitude>
+    <Longitude>34.79146</Longitude>
+    <CustomerName>Yossi Azulay</CustomerName>
+    <CustomerPhone>0512786520</CustomerPhone>
+    <Weight>15.39</Weight>
+    <OrderInitiation>2026-01-18T07:22:18</OrderInitiation>
+    <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1043</OrderId>
-    <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <TypeOfOrder>BulkOrder</TypeOfOrder>
     <ShippingAddress>Horev St 15, Haifa, Israel</ShippingAddress>
     <Latitude>32.79354</Latitude>
     <Longitude>34.98321</Longitude>
-    <CustomerName>Shira Klein</CustomerName>
-    <CustomerPhone>0546433600</CustomerPhone>
-    <Weight>7.46</Weight>
-    <OrderInitiation>2026-01-13T15:40:13</OrderInitiation>
+    <CustomerName>Yossi Azulay</CustomerName>
+    <CustomerPhone>0539401444</CustomerPhone>
+    <Weight>19.42</Weight>
+    <OrderInitiation>2026-01-18T09:04:18</OrderInitiation>
   </Order>
   <Order>
     <OrderId>1044</OrderId>
     <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>Rager Blvd 45, Beersheba, Israel</ShippingAddress>
-    <Latitude>31.25877</Latitude>
-    <Longitude>34.80021</Longitude>
-    <CustomerName>Sarah Levy</CustomerName>
-    <CustomerPhone>0514752554</CustomerPhone>
-    <Weight>3.9</Weight>
-    <OrderInitiation>2026-01-13T11:17:13</OrderInitiation>
+    <ShippingAddress>Agron St 24, Jerusalem, Israel</ShippingAddress>
+    <Latitude>31.77944</Latitude>
+    <Longitude>35.21803</Longitude>
+    <CustomerName>Tamar Shalev</CustomerName>
+    <CustomerPhone>0575984595</CustomerPhone>
+    <Weight>13.57</Weight>
+    <OrderInitiation>2026-01-18T13:55:18</OrderInitiation>
   </Order>
   <Order>
     <OrderId>1045</OrderId>
-    <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>Ibn Gabirol St 59, Tel Aviv, Israel</ShippingAddress>
-    <Latitude>32.07206</Latitude>
-    <Longitude>34.78138</Longitude>
-    <CustomerName>Eli Horowitz</CustomerName>
-    <CustomerPhone>0536442074</CustomerPhone>
-    <Weight>19.17</Weight>
-    <OrderInitiation>2026-01-13T18:01:13</OrderInitiation>
+    <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <ShippingAddress>Hillel St 12, Jerusalem, Israel</ShippingAddress>
+    <Latitude>31.78106</Latitude>
+    <Longitude>35.21994</Longitude>
+    <CustomerName>Noam Katz</CustomerName>
+    <CustomerPhone>0546039072</CustomerPhone>
+    <Weight>10.8</Weight>
+    <OrderInitiation>2026-01-18T08:45:18</OrderInitiation>
   </Order>
   <Order>
     <OrderId>1046</OrderId>
     <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>Henrietta Szold St 8, Beersheba, Israel</ShippingAddress>
-    <Latitude>31.26291</Latitude>
-    <Longitude>34.78944</Longitude>
-    <CustomerName>Noam Katz</CustomerName>
-    <CustomerPhone>0572728902</CustomerPhone>
-    <Weight>19.43</Weight>
-    <OrderInitiation>2026-01-13T13:00:13</OrderInitiation>
+    <ShippingAddress>Rager Blvd 45, Beersheba, Israel</ShippingAddress>
+    <Latitude>31.25877</Latitude>
+    <Longitude>34.80021</Longitude>
+    <CustomerName>Shira Klein</CustomerName>
+    <CustomerPhone>0558538179</CustomerPhone>
+    <Weight>9.62</Weight>
+    <OrderInitiation>2026-01-18T07:11:18</OrderInitiation>
+    <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1047</OrderId>
-    <TypeOfOrder>BulkOrder</TypeOfOrder>
-    <ShippingAddress>Ibn Gabirol St 59, Tel Aviv, Israel</ShippingAddress>
-    <Latitude>32.07206</Latitude>
-    <Longitude>34.78138</Longitude>
-    <CustomerName>Noam Katz</CustomerName>
-    <CustomerPhone>0537044308</CustomerPhone>
-    <Weight>5.64</Weight>
-    <OrderInitiation>2026-01-13T18:14:13</OrderInitiation>
+    <TypeOfOrder>SingleOrder</TypeOfOrder>
+    <ShippingAddress>Jaffa St 28, Jerusalem, Israel</ShippingAddress>
+    <Latitude>31.76832</Latitude>
+    <Longitude>35.21371</Longitude>
+    <CustomerName>Leah Stern</CustomerName>
+    <CustomerPhone>0557513072</CustomerPhone>
+    <Weight>5.53</Weight>
+    <OrderInitiation>2026-01-18T10:06:18</OrderInitiation>
+    <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1048</OrderId>
-    <TypeOfOrder>SingleOrder</TypeOfOrder>
-    <ShippingAddress>Henrietta Szold St 8, Beersheba, Israel</ShippingAddress>
-    <Latitude>31.26291</Latitude>
-    <Longitude>34.78944</Longitude>
+    <TypeOfOrder>BulkOrder</TypeOfOrder>
+    <ShippingAddress>Agron St 24, Jerusalem, Israel</ShippingAddress>
+    <Latitude>31.77944</Latitude>
+    <Longitude>35.21803</Longitude>
     <CustomerName>Noam Katz</CustomerName>
-    <CustomerPhone>0541015122</CustomerPhone>
-    <Weight>1.77</Weight>
-    <OrderInitiation>2026-01-13T08:57:13</OrderInitiation>
+    <CustomerPhone>0515237359</CustomerPhone>
+    <Weight>5.16</Weight>
+    <OrderInitiation>2026-01-18T10:00:18</OrderInitiation>
     <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
   <Order>
     <OrderId>1049</OrderId>
-    <TypeOfOrder>SingleOrder</TypeOfOrder>
-    <ShippingAddress>HaAtzmaut St 10, Haifa, Israel</ShippingAddress>
-    <Latitude>32.81421</Latitude>
-    <Longitude>34.98912</Longitude>
-    <CustomerName>Tamar Shalev</CustomerName>
-    <CustomerPhone>0571723773</CustomerPhone>
-    <Weight>12.57</Weight>
-    <OrderInitiation>2026-01-13T12:29:13</OrderInitiation>
+    <TypeOfOrder>BulkOrder</TypeOfOrder>
+    <ShippingAddress>David HaMelech St 34, Tel Aviv, Israel</ShippingAddress>
+    <Latitude>32.06999</Latitude>
+    <Longitude>34.77224</Longitude>
+    <CustomerName>Sarah Levy</CustomerName>
+    <CustomerPhone>0576947031</CustomerPhone>
+    <Weight>9.88</Weight>
+    <OrderInitiation>2026-01-18T09:02:18</OrderInitiation>
+    <VerbalDescription>Fragile, handle with care</VerbalDescription>
   </Order>
 </ArrayOfOrder>

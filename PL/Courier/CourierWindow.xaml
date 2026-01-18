@@ -148,7 +148,7 @@
                     <Button Content="Current Order" 
                             Style="{StaticResource SuccessButton}" 
                             Click="btnCurrentOrder_Click"
-                            Margin="5,0"/>
+                            Margin="5,0" Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}"/>
 
                     <Button Content="{Binding ButtonText}" 
                             Style="{StaticResource PrimaryButton}" 
