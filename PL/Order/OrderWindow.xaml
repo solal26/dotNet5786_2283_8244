@@ -5,78 +5,87 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Courier"
         mc:Ignorable="d"
-        Title="Order"
-        Height="600"
+        Title="Order Details"
+        Height="650"
         Width="650"
+        WindowStartupLocation="CenterScreen"
         Background="#F3F4F6"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Loaded="Window_Loaded"
         Closed="Window_Closed">
 
-    <!-- ================= RESOURCES ================= -->
     <Window.Resources>
-
-        <!-- TextBox -->
         <Style TargetType="TextBox">
-            <Setter Property="Height" Value="30"/>
+            <Setter Property="Height" Value="32"/>
             <Setter Property="Padding" Value="8,4"/>
             <Setter Property="FontSize" Value="13"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="BorderBrush" Value="#CBD5E1"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Background" Value="White"/>
+            <Setter Property="Margin" Value="0,4"/>
         </Style>
 
-        <!-- ComboBox -->
         <Style TargetType="ComboBox">
-            <Setter Property="Height" Value="30"/>
+            <Setter Property="Height" Value="32"/>
             <Setter Property="FontSize" Value="13"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,4"/>
         </Style>
 
-        <!-- Label -->
         <Style TargetType="Label">
             <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Foreground" Value="#475569"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
 
-        <!-- Blue Button -->
         <Style x:Key="BlueButton" TargetType="Button">
-            <Setter Property="Height" Value="38"/>
-            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="MinWidth" Value="120"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Background" Value="#2563EB"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
-        <!-- Red Button -->
-        <Style x:Key="RedButton" TargetType="Button">
-            <Setter Property="Height" Value="38"/>
-            <Setter Property="Width" Value="120"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Foreground" Value="White"/>
+        <Style x:Key="RedButton" TargetType="Button" BasedOn="{StaticResource BlueButton}">
             <Setter Property="Background" Value="#DC2626"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style x:Key="GreenButton" TargetType="Button" BasedOn="{StaticResource BlueButton}">
+            <Setter Property="Background" Value="#059669"/>
         </Style>
 
         <local:ModeToVisibilityConverter x:Key="ModeToVisibilityConverter"/>
         <local:OrderStatusToVisibilityConverter x:Key="OrderStatusToVisibilityConverter"/>
-
     </Window.Resources>
 
-    <!-- ================= CONTENT ================= -->
     <Grid>
-        <Border Width="560"
-                Padding="25"
+        <Border Width="580"
+                Padding="30"
                 Background="White"
-                CornerRadius="12"
+                CornerRadius="16"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
 
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="20" ShadowDepth="4" Opacity="0.1"/>
+            </Border.Effect>
+
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="170"/>
+                    <ColumnDefinition Width="180"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
@@ -93,92 +102,57 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- ID -->
-                <Label Content="Order ID"/>
-                <TextBox Grid.Column="1"
-                         Text="{Binding CurrentOrder.Id}"
-                         IsReadOnly="True"/>
+                <TextBlock Grid.ColumnSpan="2" Text="Order Management" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="#1E293B"/>
 
-                <!-- Type -->
-                <Label Grid.Row="1" Content="Type"/>
-                <ComboBox Grid.Row="1" Grid.Column="1"
-                          ItemsSource="{Binding OrderTypes}"
-                          SelectedItem="{Binding CurrentOrder.Type}"/>
+                <Label Grid.Row="1" Content="Order ID"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding CurrentOrder.Id}" IsReadOnly="True" Background="#F8FAFC"/>
 
-                <!-- Description -->
-                <Label Grid.Row="2" Content="Description"/>
-                <TextBox Grid.Row="2" Grid.Column="1"
-                         Text="{Binding CurrentOrder.Description}"
-                         TextWrapping="Wrap"
-                         AcceptsReturn="True"
-                         Height="60"/>
+                <Label Grid.Row="2" Content="Order Type"/>
+                <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding OrderTypes}" SelectedItem="{Binding CurrentOrder.Type}"/>
 
-                <!-- Address -->
-                <Label Grid.Row="3" Content="Full Address"/>
-                <TextBox Grid.Row="3" Grid.Column="1"
-                         Text="{Binding CurrentOrder.FullAddress}"
-                         TextWrapping="Wrap"
-                         AcceptsReturn="True"
-                         Height="50"/>
+                <Label Grid.Row="3" Content="Description"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding CurrentOrder.Description}" TextWrapping="Wrap" AcceptsReturn="True" Height="60"/>
 
-                <!-- Air Distance -->
-                <Label Grid.Row="4"
-                       Content="Air Distance (km)"
-                       Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}"/>
-                <TextBox Grid.Row="4" Grid.Column="1"
-                         Text="{Binding CurrentOrder.AirDistance}"
-                         IsReadOnly="True"
-                         Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}"/>
+                <Label Grid.Row="4" Content="Full Address"/>
+                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding CurrentOrder.FullAddress}" TextWrapping="Wrap" AcceptsReturn="True" Height="50"/>
 
-                <!-- Customer -->
-                <Label Grid.Row="5" Content="Customer Name"/>
-                <TextBox Grid.Row="5" Grid.Column="1"
-                         Text="{Binding CurrentOrder.CustomerName}"/>
+                <Label Grid.Row="5" Content="Air Distance (km)" Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}"/>
+                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding CurrentOrder.AirDistance}" IsReadOnly="True" Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}" Background="#F8FAFC"/>
 
-                <Label Grid.Row="6" Content="Customer Phone"/>
-                <TextBox Grid.Row="6" Grid.Column="1"
-                         Text="{Binding CurrentOrder.CustomerPhone}"/>
+                <Label Grid.Row="6" Content="Customer Name"/>
+                <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding CurrentOrder.CustomerName}"/>
 
-                <!-- Weight -->
-                <Label Grid.Row="7" Content="Weight (kg)"/>
-                <TextBox Grid.Row="7" Grid.Column="1"
-                         Text="{Binding CurrentOrder.Weight}"/>
+                <Label Grid.Row="7" Content="Customer Phone"/>
+                <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding CurrentOrder.CustomerPhone}"/>
 
-                <!-- Status -->
-                <Label Grid.Row="8" Content="Order Status"/>
-                <ComboBox Grid.Row="8" Grid.Column="1"
-                          ItemsSource="{Binding OrderStatuses}"
-                          SelectedItem="{Binding CurrentOrder.OrderStatus}"
-                          IsEnabled="False"/>
+                <Label Grid.Row="8" Content="Weight (kg)"/>
+                <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding CurrentOrder.Weight}"/>
 
-                <Label Grid.Row="9" Content="Schedule Status"/>
-                <ComboBox Grid.Row="9" Grid.Column="1"
-                          ItemsSource="{Binding ScheduleStatuses}"
-                          SelectedItem="{Binding CurrentOrder.ScheduleStatus}"
-                          IsEnabled="False"/>
+                <Label Grid.Row="9" Content="Order Status"/>
+                <ComboBox Grid.Row="9" Grid.Column="1" ItemsSource="{Binding OrderStatuses}" SelectedItem="{Binding CurrentOrder.OrderStatus}" IsEnabled="False"/>
 
-                <!-- Buttons -->
-                <StackPanel Grid.Row="14"
-                            Grid.ColumnSpan="2"
-                            Orientation="Horizontal"
-                            HorizontalAlignment="Center"
-                            Margin="0,20,0,0">
+                <Label Grid.Row="10" Content="Schedule Status"/>
+                <ComboBox Grid.Row="10" Grid.Column="1" ItemsSource="{Binding ScheduleStatuses}" SelectedItem="{Binding CurrentOrder.ScheduleStatus}" IsEnabled="False"/>
+
+                <StackPanel Grid.Row="11" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,25,0,0">
+
+                    <Button Content="View Deliveries"
+                            Style="{StaticResource GreenButton}"
+                            Click="btnAllDeliveries_Click"
+                            Margin="5,0"/>
 
                     <Button Content="{Binding ButtonText}"
                             Style="{StaticResource BlueButton}"
-                            Click="btnAddUpdate_Click"/>
+                            Click="btnAddUpdate_Click"
+                            Margin="5,0"/>
 
-                    <Button Content="Cancel"
+                    <Button Content="Cancel Order"
                             Style="{StaticResource RedButton}"
-                            Margin="15,0,0,0"
                             Click="btnCancelOrder_Click"
-                            Visibility="{Binding CurrentOrder.OrderStatus,
-                                Converter={StaticResource OrderStatusToVisibilityConverter}}"/>
+                            Margin="5,0"
+                            Visibility="{Binding CurrentOrder.OrderStatus, Converter={StaticResource OrderStatusToVisibilityConverter}}"/>
                 </StackPanel>
 
             </Grid>

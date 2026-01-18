@@ -116,8 +116,8 @@
     <CourierId>234797711</CourierId>
     <typeofshipment>Bike</typeofshipment>
     <TimeBegin>2026-01-13T18:31:13</TimeBegin>
-    <endcour xsi:nil="true" />
-    <TimeEnd xsi:nil="true" />
+    <endcour>Delivered</endcour>
+    <TimeEnd>2026-02-28T16:52:13</TimeEnd>
     <Distance>1.2165604625005542</Distance>
   </Delivery>
 </ArrayOfDelivery>

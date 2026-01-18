@@ -134,7 +134,7 @@ namespace PL
             s_bl.Order.AddObserver(LoadOrderSummary);
             buttonText= IsRunning ? "Stop Simulator" : "Run Simulator";
             LoadOrderSummary();
-            Interval = 1000;
+            Interval = 500;
         }
 
         private void MainWindow_Closed(object Sender, EventArgs e)
