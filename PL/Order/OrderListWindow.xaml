@@ -73,6 +73,13 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
+        <!-- ===== COLLECTIONVIEWSOURCE לקיבוץ ===== -->
+        <CollectionViewSource x:Key="GroupedOrders" Source="{Binding OrderList}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Type"/>
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+
     </Window.Resources>
 
     <!-- ================= MAIN LAYOUT ================= -->
@@ -158,13 +165,27 @@
                 CornerRadius="12"
                 Padding="10">
 
-            <DataGrid ItemsSource="{Binding OrderList}"
+            <DataGrid ItemsSource="{Binding Source={StaticResource GroupedOrders}}"
                       IsReadOnly="True"
                       AutoGenerateColumns="False"
                       EnableRowVirtualization="True"
                       ColumnWidth="*"
                       SelectedItem="{Binding SelectedOrder}"
                       MouseDoubleClick="lsvOrderList_MouseDoubleClick">
+
+                <!-- ====== GROUP HEADER ====== -->
+                <DataGrid.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"
+                                           FontWeight="Bold"
+                                           Background="#E5E7EB"
+                                           Padding="4"/>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </DataGrid.GroupStyle>
 
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding OrderId}" Header="ID"/>

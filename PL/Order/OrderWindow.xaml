@@ -68,6 +68,7 @@
         </Style>
 
         <local:ModeToVisibilityConverter x:Key="ModeToVisibilityConverter"/>
+        <local:OrderStatusAndAddModeToVisibilityConverter x:Key="OrderStatusAndAddModeToVisibilityConverter"/>
         <local:OrderStatusToVisibilityConverter x:Key="OrderStatusToVisibilityConverter"/>
     </Window.Resources>
 
@@ -138,22 +139,34 @@
 
                 <StackPanel Grid.Row="11" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,25,0,0">
 
+                    <!-- View Deliveries -->
                     <Button Content="View Deliveries"
-                            Style="{StaticResource GreenButton}"
-                            Click="btnAllDeliveries_Click"
-                            Margin="5,0"/>
+            Style="{StaticResource GreenButton}"
+            Click="btnAllDeliveries_Click"
+            Margin="5,0" Visibility="{Binding _isAddMode, Converter={StaticResource ModeToVisibilityConverter}}">
+                    </Button>
 
+                    <!-- Add / Update -->
                     <Button Content="{Binding ButtonText}"
-                            Style="{StaticResource BlueButton}"
-                            Click="btnAddUpdate_Click"
-                            Margin="5,0"/>
+            Style="{StaticResource BlueButton}"
+            Click="btnAddUpdate_Click"
+            Margin="5,0"/>
 
+                    <!-- Cancel Order -->
                     <Button Content="Cancel Order"
-                            Style="{StaticResource RedButton}"
-                            Click="btnCancelOrder_Click"
-                            Margin="5,0"
-                            Visibility="{Binding CurrentOrder.OrderStatus, Converter={StaticResource OrderStatusToVisibilityConverter}}"/>
+            Style="{StaticResource RedButton}"
+            Click="btnCancelOrder_Click"
+            Margin="5,0">
+                        <Button.Visibility>
+                            <MultiBinding Converter="{StaticResource OrderStatusAndAddModeToVisibilityConverter}">
+                                <Binding Path="CurrentOrder.OrderStatus"/>
+                                <Binding Path="_isAddMode"/>
+                            </MultiBinding>
+                        </Button.Visibility>
+                    </Button>
+
                 </StackPanel>
+
 
             </Grid>
         </Border>
