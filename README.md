@@ -1,34 +1,28 @@
-Windows Systems Mini-Project
-Project Description
-This repository contains a robust Windows desktop application developed in C# and .NET. The project follows a professional Multitier Architecture, demonstrating a clean separation between data management, business logic, and a modern user interface. The primary focus was to implement industry-standard software engineering principles, moving from a console-based logic to a fully reactive WPF application.
+This Windows-based application is a comprehensive delivery management system designed to coordinate logistics between customers, parcels, and couriers. The project demonstrates the transition from complex business logic to a high-performance graphical interface, focusing on real-world supply chain scenarios.
 
-Technical Stack and Skills
-Language: C#
+Architecture (N-Tier)
+The system is built using a Multitier (3-Layer) Architecture to ensure strict separation of concerns:
 
-UI Framework: WPF (XAML) with Advanced Data Binding
+Data Access Layer (DAL): Manages persistent data storage using XML DOM.
 
-Data Management: XML DOM (Document Object Model) and LINQ for efficient data querying
+Business Logic Layer (BL): Handles core logistics rules, delivery constraints, and data processing via LINQ.
 
-Architecture: MVVM (Model-View-ViewModel) for a scalable and maintainable codebase
+Presentation Layer (PL): A reactive UI built with WPF and the MVVM pattern.
 
-Programming Concepts: Multi-threading, Asynchronous tasks, and Design by Contract
+Technical Stack
+Language & Framework: C# / .NET
 
-Implemented Design Patterns
-To ensure code reusability and robustness, several key Design Patterns were integrated:
+UI: WPF (XAML) with Advanced Data Binding and DataTemplates.
 
-Singleton: Ensuring single instances for data access managers
+Data: XML serialization and LINQ for complex collection filtering.
 
-Observer: For real-time UI updates based on data changes
+Patterns: Singleton (Data Access), Observer (UI updates), Factory Method, and Dependency Injection.
 
-Factory Method: To handle object creation logic cleanly
+Key Functionalities
+Delivery Tracking: Complete management of parcels, drones/couriers, and customer assignments.
 
-Dependency Injection: To reduce hard-coded dependencies between layers
+Operational Logic: Implementation of "Design by Contract" to validate logistics constraints at every step.
 
-Key Features
-Dynamic UI: A responsive interface using Styles, Resources, and DataTemplates to provide a consistent user experience
+Performance: Multi-threading and asynchronous tasks to keep the interface fluid during data processing.
 
-Reliable Data Storage: Persistent data handling using XML files
-
-Advanced Filtering: Using LINQ to process complex data collections and deferred execution
-
-Validation: Implementation of business rules to ensure data integrity at every step
+Dynamic Interface: Specialized XAML Styles and Resources for a professional user experience.
