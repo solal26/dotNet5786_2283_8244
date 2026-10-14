@@ -18,6 +18,7 @@ namespace DalTest
         /// </summary>
         enum MainMenuOption
         {
+
             Exit = 0,
             Couriers = 1,
             Orders = 2,
